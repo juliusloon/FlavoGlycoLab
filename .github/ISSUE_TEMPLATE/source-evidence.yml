@@ -1,0 +1,29 @@
+name: 原始来源和教学证据准入
+description: 登记候选教学数据，不代表通过教师审核
+title: "[来源] "
+labels: [source-evidence, teacher-review]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: 原始来源和DOI
+    validations:
+      required: true
+  - type: textarea
+    id: license
+    attributes:
+      label: 许可和再分发边界
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 分子身份、反应方向、条件与实验测量
+    validations:
+      required: true
+  - type: textarea
+    id: review
+    attributes:
+      label: 教师审核、局限与禁止用途
+    validations:
+      required: true

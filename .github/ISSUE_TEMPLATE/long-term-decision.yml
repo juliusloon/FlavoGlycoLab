@@ -1,0 +1,29 @@
+name: 长期设计决策
+description: 影响多个TASK的科学语义、教学或架构选择
+title: "[决策] "
+labels: [decision]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: 背景和依据
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: 备选方案与风险
+    validations:
+      required: true
+  - type: textarea
+    id: gates
+    attributes:
+      label: 科学、教师审核与公开状态门影响
+    validations:
+      required: true
+  - type: textarea
+    id: review
+    attributes:
+      label: 复审条件
+    validations:
+      required: true

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flavoglycolab"
+version = "0.1.0"
+description = "黄酮糖苷智能生物制造虚拟实验室：可审计候选证据基础"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+"项目主页" = "https://github.com/juliusloon/FlavoGlycoLab#readme"
+"问题反馈" = "https://github.com/juliusloon/FlavoGlycoLab/issues"
+"进展报告" = "https://github.com/juliusloon/FlavoGlycoLab/blob/main/docs/reports/REPORT-003-progress-public-repository.md"
+
+[project.scripts]
+flavoglycolab-evidence = "flavoglycolab.evidence.catalog:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["flavoglycolab*"]

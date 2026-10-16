@@ -1,0 +1,26 @@
+{
+  "captured_at_utc": "2026-10-15T09:49:34.951114+00:00",
+  "flavor_repo": "/home/ljx/FlavoRetro",
+  "flavor_head": "993b22f5e8eed5797d27f02c566af1b86a4b7880",
+  "flavor_dirty_entries": 630,
+  "flavor_porcelain_sha256": "e083b053481f40d1e673c720c633ba4fd01a2889dadbdc13778c7d3b3ed8304f",
+  "restructure_package_dir": "/home/ljx/FlavoRetro/outputs/restructure/future-health-20261015",
+  "restructure_package_files_sha256": {
+    "DELIVERY_HASHES.json": "acce74c1835a18dda647c80bde077788de288a5a5e8eb1218bc804a5c67c5304",
+    "DIRECTORY_DECISION_SUMMARY.csv": "a1d886aad4dc2cac04de650f49a66d0c5628921cb34250c5798cca7be14e796a",
+    "EXACT_TARGET_PRODUCT_REACTIONS.csv": "1e64a5625399aacb04b6146966eec78f0869e15ef9f82d01b9b8de3ee832771d",
+    "HIGH_PRIORITY_MIGRATION_LIST.csv": "aa34635836def19852e7b541ba729e2bbd89621788a46062b9b7f72ecc825fc7",
+    "INVENTORY_SUMMARY.json": "26c1241601a1566bd51016f8816632f8b0bcdfb695d3dbacc0ad6fef34ca35cf",
+    "MASTER_FILE_INVENTORY.csv": "d4d5c02f7b4f88bd581da992ee0d86bb9e51f066cda3fbbd2f387ac894bba8b3",
+    "NON_MIGRATION_POLICY.md": "800736691af803f2ec110c6a28fe99f745d47b269f5fae9f1fcd93cc749e433a",
+    "PUBLICATIONS_AND_GAPS.md": "6a50e201d1982f19174b350db3f521440780d2e3a6e2ba95f0ecfa68e9880b64",
+    "REACTION_CANDIDATE_SCREEN.csv": "90cd97cfd3a1d88c65a407af53ee36efed209f6aad551e485c7f2883e309979a",
+    "README.md": "316913a8f02213d79bf20fcba0a9bae38144f97ff35d133093063e34eff022c1",
+    "REBUILD_EXECUTION_LIST.md": "ff5dcabc4c86bc175da6a6eb907cc16e1371b527bcf340881feb37eeb163cd82",
+    "SOURCE_INTAKE_123.csv": "d1e17015b57d63a92a28a9427744d153e8e2078b4f794ea1c81c0a89549f571a",
+    "TARGET_SCREEN_SUMMARY.json": "b0482c80472d6d9b218a1d6bce52c734762346c77404c8c6aec12eab043a62a8",
+    "VERIFIED_PRIORITY_HASHES.csv": "1bced6e41b8b5f5b9350b049eeae67babf7274f79e46d7174ed4ad92369b670f"
+  },
+  "uncommitted_workspace_preserved": true,
+  "notes": "M0：旧库未提交工作区原样保全，不清理不重置；本文件只登记事实，不改变旧库。"
+}

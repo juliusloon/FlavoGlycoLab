@@ -1,0 +1,52 @@
+{
+  "verified_at_utc": "2026-10-15T09:50:45.140440+00:00",
+  "phase": "verify_post",
+  "head": "ca586b32877f5f162a9156fb03644511da9142d4",
+  "tracked_file_count": 42,
+  "checks": [
+    {
+      "check": "head_present",
+      "pass": true,
+      "head": "ca586b32877f5f162a9156fb03644511da9142d4"
+    },
+    {
+      "check": "no_forbidden_paths_tracked",
+      "pass": true,
+      "violations": []
+    },
+    {
+      "check": "snapshot_tracked_set",
+      "pass": true,
+      "expected_count": 17,
+      "actual_count": 17,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "check": "top_level_license_tracked",
+      "pass": true
+    },
+    {
+      "check": "migrations_tracked",
+      "pass": true
+    },
+    {
+      "check": "registries_tracked",
+      "pass": true
+    },
+    {
+      "check": "authored_docs_tracked",
+      "pass": true
+    },
+    {
+      "check": "v3_copy_present_untracked",
+      "pass": true
+    },
+    {
+      "check": "no_approval_markers",
+      "pass": true,
+      "violations": []
+    }
+  ],
+  "ok": true
+}

@@ -1,0 +1,384 @@
+{
+  "verified_at_utc": "2026-10-15T09:49:34.963100+00:00",
+  "phase": "build",
+  "p0_all_match": true,
+  "p0_mismatch": [],
+  "p0_targets": [
+    {
+      "source": "LICENSE",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "expected_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "match": true,
+          "git_tracked": true
+        },
+        {
+          "target": "LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "LICENSES/README.md",
+      "source_sha256": "1f8ff209ce7262139d3abdc5f75e2b3d15203ed74627d4722e1495fb9554ecd3",
+      "expected_sha256": "1f8ff209ce7262139d3abdc5f75e2b3d15203ed74627d4722e1495fb9554ecd3",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/LICENSES/README.md",
+          "sha256": "1f8ff209ce7262139d3abdc5f75e2b3d15203ed74627d4722e1495fb9554ecd3",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "data/derived/v3/manifest.json",
+      "source_sha256": "07a41aa61e3a031d4e48b1e16c8739c5351cdd8a93cc2cd871e9306a6e1a5a0e",
+      "expected_sha256": "07a41aa61e3a031d4e48b1e16c8739c5351cdd8a93cc2cd871e9306a6e1a5a0e",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/data/derived/v3/manifest.json",
+          "sha256": "07a41aa61e3a031d4e48b1e16c8739c5351cdd8a93cc2cd871e9306a6e1a5a0e",
+          "match": true,
+          "git_tracked": false
+        }
+      ]
+    },
+    {
+      "source": "data/derived/v3/records.json",
+      "source_sha256": "448dbbdcd511df0aade80903d33abc34707fdcc2d529d3ecb29dbae94898192e",
+      "expected_sha256": "448dbbdcd511df0aade80903d33abc34707fdcc2d529d3ecb29dbae94898192e",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/data/derived/v3/records.json",
+          "sha256": "448dbbdcd511df0aade80903d33abc34707fdcc2d529d3ecb29dbae94898192e",
+          "match": true,
+          "git_tracked": false
+        }
+      ]
+    },
+    {
+      "source": "environment/requirements-linux-py310.lock",
+      "source_sha256": "5e4e425b67340898e91d22c0b8733e4ba52675631c29c907eff635a81afc3f8a",
+      "expected_sha256": "5e4e425b67340898e91d22c0b8733e4ba52675631c29c907eff635a81afc3f8a",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/environment/requirements-linux-py310.lock",
+          "sha256": "5e4e425b67340898e91d22c0b8733e4ba52675631c29c907eff635a81afc3f8a",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/contracts.py",
+      "source_sha256": "d3aae7ee1160f56c8201e2c7bfe09b9940494d76f7de2cbec207facf46689647",
+      "expected_sha256": "d3aae7ee1160f56c8201e2c7bfe09b9940494d76f7de2cbec207facf46689647",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/contracts.py",
+          "sha256": "d3aae7ee1160f56c8201e2c7bfe09b9940494d76f7de2cbec207facf46689647",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/database.py",
+      "source_sha256": "b2d6031c8d8191ea9880fbd0a86bec88025b5c0c20f08e721aaaa624306640f6",
+      "expected_sha256": "b2d6031c8d8191ea9880fbd0a86bec88025b5c0c20f08e721aaaa624306640f6",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/database.py",
+          "sha256": "b2d6031c8d8191ea9880fbd0a86bec88025b5c0c20f08e721aaaa624306640f6",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/policies.py",
+      "source_sha256": "f7c894203078ea4ee3d92b2fddc8dd2e3a076e1716759c5b16a26ef351aeba1f",
+      "expected_sha256": "f7c894203078ea4ee3d92b2fddc8dd2e3a076e1716759c5b16a26ef351aeba1f",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/policies.py",
+          "sha256": "f7c894203078ea4ee3d92b2fddc8dd2e3a076e1716759c5b16a26ef351aeba1f",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/resources.py",
+      "source_sha256": "b92bfdc7bd52a72c6412d95d7b0eba0189087ef317cb67e6dc6ad66325dd8816",
+      "expected_sha256": "b92bfdc7bd52a72c6412d95d7b0eba0189087ef317cb67e6dc6ad66325dd8816",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/resources.py",
+          "sha256": "b92bfdc7bd52a72c6412d95d7b0eba0189087ef317cb67e6dc6ad66325dd8816",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/reviewed_resources.py",
+      "source_sha256": "b29aea81836a79de8915c346ac34c7215c72ccecb75a023ed3112c2c4b82e161",
+      "expected_sha256": "b29aea81836a79de8915c346ac34c7215c72ccecb75a023ed3112c2c4b82e161",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/reviewed_resources.py",
+          "sha256": "b29aea81836a79de8915c346ac34c7215c72ccecb75a023ed3112c2c4b82e161",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/search.py",
+      "source_sha256": "4361b8baded20f6ee877d2e1366c81ff7be3d72b5439170db2af3e377a09cf8f",
+      "expected_sha256": "4361b8baded20f6ee877d2e1366c81ff7be3d72b5439170db2af3e377a09cf8f",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/search.py",
+          "sha256": "4361b8baded20f6ee877d2e1366c81ff7be3d72b5439170db2af3e377a09cf8f",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/service.py",
+      "source_sha256": "3a6589b6b23bb48f4bb7f880b02fe46b4c65b844cc44ffe34b7a108a078b6142",
+      "expected_sha256": "3a6589b6b23bb48f4bb7f880b02fe46b4c65b844cc44ffe34b7a108a078b6142",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/service.py",
+          "sha256": "3a6589b6b23bb48f4bb7f880b02fe46b4c65b844cc44ffe34b7a108a078b6142",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/topology.py",
+      "source_sha256": "afcafe2759c7756786f32ef05f18e2265d1167b0b3ec9c1345014ef2efd3d757",
+      "expected_sha256": "afcafe2759c7756786f32ef05f18e2265d1167b0b3ec9c1345014ef2efd3d757",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/topology.py",
+          "sha256": "afcafe2759c7756786f32ef05f18e2265d1167b0b3ec9c1345014ef2efd3d757",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/worker.py",
+      "source_sha256": "5d47ed354b8b7b25332954305ba502128eb010e9a0c5b20efaafebb4560a8f3f",
+      "expected_sha256": "5d47ed354b8b7b25332954305ba502128eb010e9a0c5b20efaafebb4560a8f3f",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/worker.py",
+          "sha256": "5d47ed354b8b7b25332954305ba502128eb010e9a0c5b20efaafebb4560a8f3f",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "flavoretro/workspace.py",
+      "source_sha256": "d77e8628560370f98adc70ef342b176cbf81fd8d1a16757b48c5a6604f01c155",
+      "expected_sha256": "d77e8628560370f98adc70ef342b176cbf81fd8d1a16757b48c5a6604f01c155",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/flavoretro/workspace.py",
+          "sha256": "d77e8628560370f98adc70ef342b176cbf81fd8d1a16757b48c5a6604f01c155",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "metadata/active.json",
+      "source_sha256": "93364d67a68d05e2f5b418187b989bca02a4b23fc1171f9d5ec20c57f0b5346e",
+      "expected_sha256": "93364d67a68d05e2f5b418187b989bca02a4b23fc1171f9d5ec20c57f0b5346e",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/metadata/active.json",
+          "sha256": "93364d67a68d05e2f5b418187b989bca02a4b23fc1171f9d5ec20c57f0b5346e",
+          "match": true,
+          "git_tracked": false
+        }
+      ]
+    },
+    {
+      "source": "metadata/note-relocations.json",
+      "source_sha256": "3463b894cfed1cbecdf3b519ae92062cca53bbd0650027c3148949142c77f2fa",
+      "expected_sha256": "3463b894cfed1cbecdf3b519ae92062cca53bbd0650027c3148949142c77f2fa",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/metadata/note-relocations.json",
+          "sha256": "3463b894cfed1cbecdf3b519ae92062cca53bbd0650027c3148949142c77f2fa",
+          "match": true,
+          "git_tracked": false
+        }
+      ]
+    },
+    {
+      "source": "metadata/release.json",
+      "source_sha256": "a723703a33d447653dcc9a00401ab60981a5ecee49eb883f71723da2308b0b4d",
+      "expected_sha256": "a723703a33d447653dcc9a00401ab60981a5ecee49eb883f71723da2308b0b4d",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/metadata/release.json",
+          "sha256": "a723703a33d447653dcc9a00401ab60981a5ecee49eb883f71723da2308b0b4d",
+          "match": true,
+          "git_tracked": false
+        }
+      ]
+    },
+    {
+      "source": "metadata/sources.json",
+      "source_sha256": "5cf93746bd26d51a76d0d157cb509ad5756ff399881c707b6502e436826aafa9",
+      "expected_sha256": "5cf93746bd26d51a76d0d157cb509ad5756ff399881c707b6502e436826aafa9",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/metadata/sources.json",
+          "sha256": "5cf93746bd26d51a76d0d157cb509ad5756ff399881c707b6502e436826aafa9",
+          "match": true,
+          "git_tracked": false
+        }
+      ]
+    },
+    {
+      "source": "outputs/researchwrite/flavoretro-future-health-20261015/02_evidence_table.md",
+      "source_sha256": "1fafb148e9123356187edb3a222edce7b1e55a286f870f91a44b5ff31ecd9026",
+      "expected_sha256": "1fafb148e9123356187edb3a222edce7b1e55a286f870f91a44b5ff31ecd9026",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/outputs/researchwrite/flavoretro-future-health-20261015/02_evidence_table.md",
+          "sha256": "1fafb148e9123356187edb3a222edce7b1e55a286f870f91a44b5ff31ecd9026",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "outputs/researchwrite/flavoretro-future-health-20261015/exports/FlavoRetro_FutureHealth_Feasibility_20261015.md",
+      "source_sha256": "27c67394e706409634f8ae3fc3ad9130eb3757faaac97d56af3496f14fc9f073",
+      "expected_sha256": "27c67394e706409634f8ae3fc3ad9130eb3757faaac97d56af3496f14fc9f073",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/outputs/researchwrite/flavoretro-future-health-20261015/exports/FlavoRetro_FutureHealth_Feasibility_20261015.md",
+          "sha256": "27c67394e706409634f8ae3fc3ad9130eb3757faaac97d56af3496f14fc9f073",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "outputs/researchwrite/flavoretro-future-health-20261015/sources/README.md",
+      "source_sha256": "c2499fc2ee75a260198ea226c94bd0f8493e3cda861d6df8decadf63daededa4",
+      "expected_sha256": "c2499fc2ee75a260198ea226c94bd0f8493e3cda861d6df8decadf63daededa4",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/outputs/researchwrite/flavoretro-future-health-20261015/sources/README.md",
+          "sha256": "c2499fc2ee75a260198ea226c94bd0f8493e3cda861d6df8decadf63daededa4",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    },
+    {
+      "source": "pyproject.toml",
+      "source_sha256": "eef41606d46338cb0d9c7281bdb904dbd0364dfa8fb1ea4967f3e31fa452602e",
+      "expected_sha256": "eef41606d46338cb0d9c7281bdb904dbd0364dfa8fb1ea4967f3e31fa452602e",
+      "source_match_verified": true,
+      "targets": [
+        {
+          "target": "reference/flavoretro-snapshot/pyproject.toml",
+          "sha256": "eef41606d46338cb0d9c7281bdb904dbd0364dfa8fb1ea4967f3e31fa452602e",
+          "match": true,
+          "git_tracked": true
+        }
+      ]
+    }
+  ],
+  "p1_rows": 49,
+  "p1_all_pending": true,
+  "p1_content_copied": false,
+  "p1_leaks": [],
+  "source_registry": {
+    "rows": 123,
+    "sha256": "d1e17015b57d63a92a28a9427744d153e8e2078b4f794ea1c81c0a89549f571a",
+    "byte_equal_to_package": true
+  },
+  "case_admission": {
+    "rows": 22,
+    "all_pending_teacher_review": true
+  },
+  "skeleton_dirs": [
+    "docs/decision",
+    "docs/curriculum",
+    "docs/cases/isoquercitrin",
+    "docs/policy/ilab-2026",
+    "src/futurehealth/chemistry",
+    "src/futurehealth/evidence",
+    "src/futurehealth/experiment",
+    "src/futurehealth/teaching",
+    "src/futurehealth/platform",
+    "frontend/student",
+    "frontend/teacher",
+    "tests",
+    "migrations",
+    "data/registries",
+    "data/private/sources",
+    "data/private/cases/isoquercitrin"
+  ],
+  "gitkeep_dirs": [
+    "docs/decision",
+    "docs/curriculum",
+    "docs/cases/isoquercitrin",
+    "docs/policy/ilab-2026",
+    "src/futurehealth/chemistry",
+    "src/futurehealth/evidence",
+    "src/futurehealth/experiment",
+    "src/futurehealth/teaching",
+    "src/futurehealth/platform",
+    "frontend/student",
+    "frontend/teacher",
+    "tests",
+    "migrations",
+    "data/registries"
+  ],
+  "ok": true
+}

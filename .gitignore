@@ -1,0 +1,21 @@
+# 原始/受限数据与受控副本的数据层：禁入 Git（依据 migrations/mapping.csv git_tracked 列）
+data/private/
+reference/flavoretro-snapshot/data/
+reference/flavoretro-snapshot/metadata/
+
+# macOS 挂载旁车与系统文件
+._*
+.DS_Store
+.AppleDouble
+__MACOSX/
+
+# 过程暂存与缓存
+temp/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Standalone restricted source originals and locally rebuilt candidate indices
+/data/raw/
+/data/derived/
+/data/private/
