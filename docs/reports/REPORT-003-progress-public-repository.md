@@ -31,6 +31,7 @@
 | 当前事实与规划归属 | STATE、PROGRESS、ARCHITECTURE、ROADMAP | 区分公开代码与教学发布；登记导出脚本、公开检出及草案顺延 |
 | 执行证据 | 本TASK/REPORT、docs索引、proposal草案 | 新合同/报告及编号引用；原草案不执行 |
 | 公开界面与守卫 | .github、tests/test_governance.py | 中文显示、标签关联及连续任务编号守卫 |
+| 登记字节保留 | .gitattributes | 对来源登记和迁移mapping关闭自动换行转换，保持原有CRLF字节 |
 | 许可与公开导出 | LICENSES/README、scripts/export_public_repository.py | 文档许可链接、受限数值撤下及可重现导出 |
 | 已有修改保全 | PROJECT、TASK/REPORT-002、研究报告及原ROADMAP改动 | 保留启动时已存在修改；原研究报告字节不变 |
 
@@ -41,6 +42,7 @@
 4. 使用独立公开快照撤下11项数值；本地原表、旧提交和所有来源原件保持。公开检出仅从已提交树生成，无旧parent，不执行push --all或force push。
 5. 创建[juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)为public并推送独立main；填写中文描述/主页/文档及9个英文主题、18个英文名称标签和中文说明。首次核验发现GitHub另有默认accessibility标签，补齐其中文说明。
 6. 公开根提交的远端SHA与本地一致，GitHub治理CI实际成功。更新本轮合同、报告、STATE与PROGRESS后，以同一清理导出流程同步闭环文档，不把旧研究历史接入公开父链。
+7. 最终提交树对照初验发现3文件差异：预期案例表撤下，以及Git默认将source_registry.csv、migrations/mapping.csv由CRLF转成LF。两者字段未变，本地原表未变；为这两表增加-text规则并重新提交原字节，最终两树仅案例表不同，避免静默字节转换。前两次公开提交中的换行差异保留为真实历史，不改写提交。
 
 ## 验证
 | 执行命令/检查 | 分母、结果和证据 |
@@ -59,6 +61,7 @@
 | GitHub Actions | [公开根快照治理CI](https://github.com/juliusloon/FlavoGlycoLab/actions/runs/38868187571)实际completed/success，包含7项治理检查及受限文件拒绝 |
 | 仓库元数据 | public、main、中文简介、真实README主页、9 topics、18个议题标签且说明中文；Issues开启，空Wiki/Projects关闭 |
 | 本地误推保护 | 原工作区public远端登记，无main公开upstream；.git/hooks/pre-push对本公开URL拒绝，模拟返回1；仅独立公开检出允许推送 |
+| 提交树最终对照 | 来源登记与mapping恢复原CRLF；本地/公开树文件集一致，仅case_admission.csv的11项数值撤下造成内容差异，原登记及冻结资产字节保持 |
 
 ## 与任务合同的偏差
 初拟审计通过后推送原历史，实际发现受限数值，改为本地保留原历史、仅同步清理后的独立公开快照。修订已写回事前合同，属于完成已授权公开同步所需的安全技术选择，不是来源再分发批准。

@@ -10,6 +10,7 @@
 - 执行者：Agent（机器核查及工程操作，不代替教师审定）
 - 修改预算：本TASK及同号REPORT；README、STATE、PROGRESS、ARCHITECTURE、ROADMAP、docs各索引、docs/research/README；pyproject项目说明/链接；.github工作流和模板的中文展示；tests/test_governance.py的任务编号守卫；保留并同步现有PROJECT及TASK/REPORT-002文字修改。将未批准的proposals/TASK-003-feasibility-gate.md仅顺延为TASK-004并修正引用，内容与Proposed状态不变。GitHub仅操作juliusloon/FlavoGlycoLab的创建、描述、主页、主题、议题标签/模板、功能设置、main同步及CI核验。
 - 关联ADR：0003、0004；不新增科学或教学政策。
+- 字节核对补充预算：`.gitattributes`仅为source_registry.csv和migrations/mapping.csv禁用自动换行转换，保留原有CRLF字节；不修改两表字段、来源原件或迁移哈希。
 
 ### 公开审计后的实施修订（同一human_direct授权范围）
 本次只读审计发现case_admission.csv及两个历史blob含11项尚无再分发授权的产率值，触发“停止全历史公开”条件；全历史push方案终止。采用独立公开快照：原表、原提交和私有字节保留在本地；新增scripts/export_public_repository.py只从已提交树导出允许文件，在导出副本将11项数值标为withheld_unlicensed，保留原有missing及审核状态。公开检出位于忽略目录temp/public-repository，使用新的无旧parent根提交及origin/main；原工作区只登记public远端，不给本地main设置公开上游，也不推送旧分支。新增脚本归属在ARCHITECTURE登记，LICENSES/README补充公开边界；不修改原case_admission.csv或任何冻结字节。REPORT记录这一安全实施偏差及两个Git历史的区别。

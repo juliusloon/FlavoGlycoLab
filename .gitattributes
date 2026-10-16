@@ -8,3 +8,7 @@
 *.pdf binary
 *.png binary
 *.xlsx binary
+
+# 来源登记与迁移凭据保留既有CRLF字节，不参与自动换行转换
+/data/registries/source_registry.csv -text
+/migrations/mapping.csv -text
