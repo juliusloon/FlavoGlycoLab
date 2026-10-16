@@ -60,6 +60,7 @@
 | 远端SHA | 首次普通push后origin/main=`f3b7a9ed4547ffd76691eaa6632ec5d876e26b69`，与公开检出main一致 |
 | GitHub Actions | [公开根快照治理CI](https://github.com/juliusloon/FlavoGlycoLab/actions/runs/38868187571)实际completed/success，包含7项治理检查及受限文件拒绝 |
 | 仓库元数据 | public、main、中文简介、真实README主页、9 topics、18个议题标签且说明中文；Issues开启，空Wiki/Projects关闭 |
+| 额外匿名API访问核验 | 请求遇共享出口速率限制HTTP 403，未取得独立匿名响应；认证GitHub API已确认public/private=false，未把限流解释为仓库私有或宣称匿名核验通过 |
 | 本地误推保护 | 原工作区public远端登记，无main公开upstream；.git/hooks/pre-push对本公开URL拒绝，模拟返回1；仅独立公开检出允许推送 |
 | 提交树最终对照 | 来源登记与mapping恢复原CRLF；本地/公开树文件集一致，仅case_admission.csv的11项数值撤下造成内容差异，原登记及冻结资产字节保持 |
 
