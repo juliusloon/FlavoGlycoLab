@@ -2,9 +2,10 @@
 
 ## 对应任务
 - TASK文件：docs/tasks/TASK-003-progress-public-repository.md
-- 状态：执行中，最终验收待填写
+- 状态：Completed（进展分析、独立公开快照及GitHub同步验收完成）
 - 基线提交与分支：286ec2f，main；工作分支codex/progress-public-repository
-- 结果提交：pending；本地原历史与公开快照为两个不同Git历史，不推送含受限值的旧历史。
+- 本地构建提交：0a70aa59f0fe3d664e871fcf0a4fce6c6681381f；公开根提交：f3b7a9ed4547ffd76691eaa6632ec5d876e26b69。
+- 本报告闭环更新随各自主分支继续提交；最终提交为本文件所在main版本，可用git log -1核对。两个Git历史不同，公开提交不包含旧本地提交的父链。
 - 授权来源：human_direct，2026-10-16所有者要求进展分析及同名public GitHub同步。
 
 ## 进展结论与可行性目标对照
@@ -38,6 +39,8 @@
 2. 初始历史4提交、157个可达对象、94个独立blob；禁止数据路径和二进制载荷为0，所查高风险凭据模式匹配0。
 3. 发现两个case_admission历史blob含11项未获再分发许可的数值，停止全历史公开方案。10项原有missing和1项主案例的非适用状态另行保留。
 4. 使用独立公开快照撤下11项数值；本地原表、旧提交和所有来源原件保持。公开检出仅从已提交树生成，无旧parent，不执行push --all或force push。
+5. 创建[juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)为public并推送独立main；填写中文描述/主页/文档及9个英文主题、18个英文名称标签和中文说明。首次核验发现GitHub另有默认accessibility标签，补齐其中文说明。
+6. 公开根提交的远端SHA与本地一致，GitHub治理CI实际成功。更新本轮合同、报告、STATE与PROGRESS后，以同一清理导出流程同步闭环文档，不把旧研究历史接入公开父链。
 
 ## 验证
 | 执行命令/检查 | 分母、结果和证据 |
@@ -48,7 +51,14 @@
 | 原案例表SHA | `b9662cd99142091e6097a316e6d79782cc76b43d8c38eadb34779b32d1aa1cc7`，保持原字节 |
 | 导出器初验 | 对286ec2f导出84文件，11项撤下/10项missing；非空目标、外部目标、非法ref、未知状态、受限路径/二进制及凭据拒绝；重复撤下不改变公开表字节 |
 | `git diff --check` | 通过 |
-| 正式公开检出、远端与CI | 待同步后填写实际结果 |
+| 正式公开导出 | 从0a70aa5导出90文件；89文件字节相同，仅案例表22个单元格变化，11项withheld/10项missing；原表不变 |
+| 公开表SHA | `bf4c2127a4c5a0b4f4dce403a6ac89a839a472dc74cca94292975494e1bcb963` |
+| 公开历史审计 | 根快照1提交、112可达对象、76独立blob；禁止路径、受限二进制和所查凭据模式0，两项旧数值blob不可达；公开副本数值载荷0 |
+| 公开治理检查 | 在不含raw/derived/private的独立公开检出运行，7/7通过 |
+| 远端SHA | 首次普通push后origin/main=`f3b7a9ed4547ffd76691eaa6632ec5d876e26b69`，与公开检出main一致 |
+| GitHub Actions | [公开根快照治理CI](https://github.com/juliusloon/FlavoGlycoLab/actions/runs/38868187571)实际completed/success，包含7项治理检查及受限文件拒绝 |
+| 仓库元数据 | public、main、中文简介、真实README主页、9 topics、18个议题标签且说明中文；Issues开启，空Wiki/Projects关闭 |
+| 本地误推保护 | 原工作区public远端登记，无main公开upstream；.git/hooks/pre-push对本公开URL拒绝，模拟返回1；仅独立公开检出允许推送 |
 
 ## 与任务合同的偏差
 初拟审计通过后推送原历史，实际发现受限数值，改为本地保留原历史、仅同步清理后的独立公开快照。修订已写回事前合同，属于完成已授权公开同步所需的安全技术选择，不是来源再分发批准。
@@ -63,7 +73,12 @@
 案例身份/方向/重复、论文条件和原测量、数据/展示许可仍待专业人员确认；无课程负责人、平台承载或校内推荐的新增证据。历史REPORT-002中的下一TASK建议属于当时快照，以本轮登记及STATE为当前编号。
 
 ## 遗留风险、仓库与CI
-创建及同步完成后在此补齐GitHub实际元数据、两个Git历史、公开SHA与CI。禁止后续将本地main或旧分支直接推至公开远端；只能从清理后的公开检出同步。
+- 公开仓库：[FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)；默认main。主页指向README，不代表已有教学服务URL。
+- 本地研究工作区main保留全部旧提交和私有资产；公开检出位于`temp/public-repository`，origin/main使用无旧parent的新历史。两处工作树在提交后保持干净。
+- 本地根仓库的public远端不设推送上游，且本地pre-push hook拒绝向此URL推送；不得绕过守卫推送本地main、旧分支或--all。后续只能在公开检出同步重新清理的文件树。
+- 公开仓库没有私有数据，完整证据CLI和全量测试不能在公开clone直接运行；README已将公开治理检查与完整本机检查分开。
+- 凭据/载荷审计覆盖本轮允许树及列出的模式，不能视作通用安全或法律认证。原报告政策/日期保持2026-10-15快照，本轮未重新核验。
+- 无新模型/化学实验、教师审核、教学效果评价、业务部署、申报或GitHub Release。后续public_teaching_release仍需单独批准及真实验收。
 
 ## 建议的下一TASK
 TASK-004可行性门槛仍未批准；案例证据、课程合同和服务合同按ROADMAP分别定约，不能因公开代码自动启动。

@@ -1,9 +1,9 @@
 # FlavoGlycoLab 状态
 
-截至：2026-10-16。当前操作：TASK-003，进展对照与公开代码仓库同步（执行中）。以下状态区分本地证据、公开代码与教学发布。
+截至：2026-10-16。当前操作：TASK-003，进展对照与公开代码仓库同步（已验收）。以下状态区分本地证据、公开代码与教学发布。
 
 ## 一句话状态
-独立证据仓库已具备自身原始来源、候选记录、SQLite与只读校验器；22条案例全部待教师审核，教学仿真、AI导师、师生服务和公众教学发布仍未实现。公开代码快照正在独立验收，不包含受限原件与旧历史中的未授权数值。
+独立证据仓库已具备自身原始来源、候选记录、SQLite与只读校验器；22条案例全部待教师审核，教学仿真、AI导师、师生服务和公众教学发布仍未实现。独立公开代码快照已同步GitHub且治理CI通过，不包含受限原件与旧历史中的未授权数值。
 
 ## 当前状态元数据
 | 项 | 当前事实 |
@@ -16,10 +16,13 @@
 | v3候选资源 | 3059条，可本地读取 |
 | 候选教学案例 | 22条，pending_teacher_review，人工审核0 |
 | P1待审资产 | 12项本地private custody，37项尚未移入 |
-| 独立运行 | Python标准库只读校验；测试见TASK-002 REPORT |
+| 独立运行 | 本机完整18/18测试通过；公开检出治理7/7通过，见REPORT-003 |
 | 教学/发布 | 未实现，public_teaching_release=not_started，public_release=false |
-| GitHub代码 | 待创建juliusloon/FlavoGlycoLab；最终状态以本轮REPORT及远端核验为准 |
+| GitHub代码 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public，独立公开main；治理CI通过 |
+| Git同步位置 | 原工作区public远端仅登记、main无公开upstream且本地hook拒绝误推；temp/public-repository的origin/main用于公开同步 |
 | 公开边界 | 导出副本11项历史数值为withheld_unlicensed，10项missing保留；本地原表与旧历史不公开 |
+
+上述来源、v3与P1计数指原本地研究工作区；公开克隆不含这些私有资产。`temp/public-repository/`是原工作区的公开导出位置，公开克隆本身无需此目录。
 
 ## 当前模块状态
 | 层 | 状态 | 说明 |
@@ -34,7 +37,7 @@
 | frontend | scaffold | 学生与教师页面未建设 |
 
 ## 最新操作
-- TASK-003：依据指定研究报告对照进展；发现登记表旧历史含未授权数值，改用独立公开快照；实际验收见docs/reports/REPORT-003-progress-public-repository.md。
+- TASK-003：完成进展对照、中文仓库入口及同名public代码仓库同步；发现受限数值后采用独立公开历史，根快照CI通过。原表和私有来源不变，验收见docs/reports/REPORT-003-progress-public-repository.md。
 - TASK-002：实施项目名称与治理体系改造。逐文件结果见docs/reports/REPORT-002-governance-and-rename.md。
 - TASK-001：完成122项可用原件、3059候选资源本地自包含核验；11项工程检查通过，历史科学结论未复核。
 

@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | G0 仓库隔离与资料保全 | 独立Git、原始资料内部可取、来源SHA | Completed (engineering) | TASK-001；122真实来源、3059资源、受限资料不入Git |
 | G1 名称与治理闭环 | 项目更名、根文档、模板规范与责任表 | Completed (local governance) | TASK-002；详见REPORT-002 |
-| 公开代码与进展对照 | 中文入口、受限数值撤下、同名GitHub代码仓库 | 执行中 | TASK-003；独立公开快照验收中，公众教学发布仍未启动 |
+| 公开代码与进展对照 | 中文入口、受限数值撤下、同名GitHub代码仓库 | 已完成（代码与文档公开） | TASK-003；同名public仓库已同步、治理CI通过；公众教学发布仍未启动 |
 | S1 科学案例身份与许可 | 异槲皮苷、21命中、Pei/Zhang/Niu逐条复核 | Blocked on expert review | 22/22未审，许可未核 |
 | S2 可教学定量数据 | 来源实验设计/观测/条件准入，D1依据 | Planned | 0项教师核验的教学真值 |
 | E1 课程与实验 | 24步教学、酶法主线、工程菌比较 | Planned | 课程/实验模块scaffold |
@@ -18,4 +18,4 @@
 ## 里程碑证据
 - TASK-001：完成自包含证据读取与字节级保护。
 - TASK-002：复用CondRxnBench操作管理机制，产生独立PROJECT/ARCHITECTURE/STATE/PROGRESS及事前/事后/长期决定模板，项目名由FutureHealth调整为FlavoGlycoLab。
-- TASK-003：进展对照及公开代码快照同步，验收以REPORT-003为准；不执行原顺延为TASK-004的可行性草案。
+- TASK-003：完成进展对照、独立公开代码快照及GitHub同步，中文入口、元数据与标签说明已配置；完整18项/公开治理7项通过。未执行原顺延为TASK-004的可行性草案。
