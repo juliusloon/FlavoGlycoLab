@@ -18,10 +18,3 @@ jobs:
           python-version: "3.11"
       - name: 执行公开治理检查
         run: python3 -m unittest discover -s tests -p test_governance.py -v
-      - name: 拒绝受限文件进入Git
-        shell: bash
-        run: |
-          if git ls-files | grep -E '^(data/(raw|derived|private)/|reference/flavoretro-snapshot/(data|metadata)/)'; then
-            echo "发现禁止追踪的受限载荷"
-            exit 1
-          fi

@@ -12,3 +12,5 @@
 - [REPORT-007-remove-hook-public-sync.md](REPORT-007-remove-hook-public-sync.md)：删除指定本地钩子、恢复独立公开检出、列明导出排除项并记录GitHub同步验收。
 
 命名规则REPORT-NNN-short-title.md，编号和短名严格匹配TASK；使用TEMPLATE.md。REPORT保存历史，STATE保存最新事实。没有对应验证数据不写“通过”。
+
+- [REPORT-008-pdf-public-sync.md](REPORT-008-pdf-public-sync.md)：三篇PDF范围、SHA和公开同步验收。

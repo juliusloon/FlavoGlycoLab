@@ -21,3 +21,7 @@
 ## 边界声明
 
 候选/未审核是数据状态描述，不构成任何化学事实的许可或担保。本仓库当前 0 项教师审定数据；case_admission.csv 全部行仅为待审登记。
+
+## TASK-008公开范围例外（2026-10-18）
+
+所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`PUBLIC_PDFS`（`scripts/export_public_repository.py`）登记的精确路径及SHA公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。

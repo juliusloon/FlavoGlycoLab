@@ -66,4 +66,10 @@ python3 -m unittest discover -s tests -v
 - [待决事项](docs/decisions-needed.md)：需要所有者、教师、平台和权利人确认的内容。
 - [问题反馈](https://github.com/juliusloon/FlavoGlycoLab/issues)：工程问题、来源线索和设计讨论；请勿上传受限原件、个人数据或密钥。
 
-后续按10-26/27节点及[分工方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)准备。[006实施基线](docs/policy/ilab-2026/readiness-evidence-2026.md)作为技术输入；可分别授权[文档准备008](docs/tasks/proposals/TASK-008-ljx-document-preparation.md)和[本地演示009](docs/tasks/proposals/TASK-009-ljx-local-demo.md)，不必等同事交接。完整内容/部署/提交仍须真实数据、授权与服务凭据，三个状态门不变。贡献前请阅读[AGENTS](AGENTS.md)和[贡献规范](CONTRIBUTING.md)。
+后续按10-26/27节点及[分工方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)准备。[006实施基线](docs/policy/ilab-2026/readiness-evidence-2026.md)作为技术输入；可分别授权[文档准备009](docs/tasks/proposals/TASK-009-ljx-document-preparation.md)和[本地演示010](docs/tasks/proposals/TASK-010-ljx-local-demo.md)，不必等同事交接。完整内容/部署/提交仍须真实数据、授权与服务凭据，三个状态门不变。贡献前请阅读[AGENTS](AGENTS.md)和[贡献规范](CONTRIBUTING.md)。
+
+## 日常公开同步
+
+研究根目录提交修改后运行`git publish`（等价于`python3 scripts/publish.py`），自动导出、检查并沿现有公开main普通推送。`git push public main`推的是研究父链，两套历史不能快进。
+
+TASK-008按所有者明确指令公开`data/raw/literature/`中的三篇PDF；文件保持原字节，新提交作者julius。精确例外登记在导出脚本PUBLIC_PDFS，出版方rights_verified=false；其余私有来源不公开，教师与教学发布门不变。

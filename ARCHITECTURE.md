@@ -9,11 +9,11 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 
 2026-10-18：应所有者指令新增申报冲刺工作计划（docs/p10ns/261019/），仅登记与排程，不新增业务模块或科学/教学审核事实，不改变三个状态门。
 
-2026-10-18 TASK-005：审计LJX独立范围并编制008文档准备、009本地演示两份Proposed合同；原可行性草案顺延006。只完成文档定约，前端/教学模块仍scaffold，三个状态门不变。
+2026-10-18 TASK-005：审计LJX独立范围并编制009文档准备、010本地演示两份Proposed合同；原可行性草案顺延006。只完成文档定约，前端/教学模块仍scaffold，三个状态门不变。
 
 2026-10-18 TASK-006：所有者确认当前Ubuntu并human_direct授权实施；只读主机清点与唯一申报基线已验收。整机/当前可用/项目预算分开，技术目标未压测。该文档工件不新增active业务模块、真实D1/AI或教学服务，不改变三个状态门。
 
-2026-10-18 TASK-007：按所有者明确命令删除本地pre-push钩子并恢复独立公开检出；公开更新继续沿用远端已有父链，导出排除本地汇报包与两份申报附件。候选合同顺延008/009，仍未实施。
+2026-10-18 TASK-007：按所有者明确命令删除本地pre-push钩子并恢复独立公开检出；公开更新继续沿用远端已有父链，导出排除本地汇报包与两份申报附件。候选合同顺延009/010，仍未实施。
 
 ## 模块与依赖拓扑
     data/raw (private, registered original bytes)
@@ -73,6 +73,8 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 候选案例准入 | data/registries/case_admission.csv | yes | 22未审 |
 | 学术参考文献索引 | data/registries/publication_sources.csv | yes | 6参考，不等于全文审查 |
 | 运行资源相对路径 | metadata/active.json | yes | active |
+| 三篇指定文献PDF | data/raw/literature/；路径/SHA唯一登记在scripts/export_public_repository.py的PUBLIC_PDFS | yes，human_direct例外 | 原字节公开，rights_verified=false，不作为教师批准 |
+| 日常公开同步入口 | scripts/publish.py | yes | git publish导出/检查/沿公开父链普通push |
 | 来源原件/外部模型 | data/raw/legacy/ | no | local restricted |
 | 派生候选记录与SQLite | data/derived/v3/ | no | local candidate |
 | 私有教师待审候选 | data/private/review_candidates/ | no | local pending |
@@ -83,11 +85,11 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 老师阶段汇报（非状态真值） | docs/p10ns/261017/ | 本地研究Git已跟踪；公开导出排除 | 29页汇报、讲稿与第三方参考资源保留本地；不构成审核或发布 |
 | 申报冲刺工作计划（非状态真值） | docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md | yes | active（human_direct 2026-10-18）；16任务卡、13条交接矩阵、AI赋能§1.4；实施须另行TASK批准 |
 | LJX范围审计（历史判断，非实时状态） | docs/reports/REPORT-005-ljx-independent-work-audit.md | yes | 15项范围与13条交接；不修改原方案或代签 |
-| 校内沟通唯一记录 | docs/p10ns/261019/communication_log.md | 待许可核查后按内容决定；不公开个人信息/回执原件 | planned，008仅准备问题与记录框；实际回复后续由责任人确认；F0—F4矩阵引用此处，不复制回复真值 |
-| LJX申报技术分段 | docs/p10ns/261019/shenbaoshu_sections_LJX.md | 原创准备稿可纳入，提交/同步另授权 | planned，008底稿；沟通①/T-H2/实测后方可定稿 |
-| 站会唯一记录 | docs/p10ns/261019/standup_log.md | 按实际内容与授权决定 | planned，008模板；真实参会/交接不预填 |
+| 校内沟通唯一记录 | docs/p10ns/261019/communication_log.md | 待许可核查后按内容决定；不公开个人信息/回执原件 | planned，009仅准备问题与记录框；实际回复后续由责任人确认；F0—F4矩阵引用此处，不复制回复真值 |
+| LJX申报技术分段 | docs/p10ns/261019/shenbaoshu_sections_LJX.md | 原创准备稿可纳入，提交/同步另授权 | planned，009底稿；沟通①/T-H2/实测后方可定稿 |
+| 站会唯一记录 | docs/p10ns/261019/standup_log.md | 按实际内容与授权决定 | planned，009模板；真实参会/交接不预填 |
 | 申报实施基线、主机实况、技术目标与F0—F4条件汇总 | docs/policy/ilab-2026/readiness-evidence-2026.md | 原创非数值/脱敏汇总可登记；原凭据按许可决定 | active document，TASK-006；唯一维护活跃目标与替换凭据，引用沟通记录，不替代教师审定。Ubuntu已选，未部署，性能值null；TASK中的目标表只为事前快照 |
-| 学生本地演示内容 | frontend/student/content/demo-content.json | 原创非数值规划文本可纳入，提交/同步另授权 | planned，009；仅演示内容及来源指纹，不作案例准入、观测或教学真值副本 |
+| 学生本地演示内容 | frontend/student/content/demo-content.json | 原创非数值规划文本可纳入，提交/同步另授权 | planned，010；仅演示内容及来源指纹，不作案例准入、观测或教学真值副本 |
 | iLab政策 | docs/policy/ilab-2026/ | yes | scaffold |
 | 学生/教师交互 | frontend/ | yes | scaffold |
 | 迁移只读审计 | migrations/ | yes | frozen provenance (see notes) |
@@ -121,3 +123,9 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
            PROGRESS (milestones only)
 
 ADR保存跨任务长期选择与复审条件，不能替代执行授权或事实验收。
+
+## TASK-008公开范围例外（2026-10-18）
+
+所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`PUBLIC_PDFS`（`scripts/export_public_repository.py`）登记的精确路径及SHA公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。
+
+`PUBLIC_PDFS`是三个原件路径/SHA例外的唯一登记；`scripts/publish.py`负责根目录git publish操作，临时检出仍归temp/public-repository，不引入新的业务模块。

@@ -57,10 +57,12 @@ class StandaloneCatalogTest(unittest.TestCase):
         self.assertFalse((ROOT / "data/approved_simulation_data").exists())
 
     def test_restricted_not_tracked(self):
-        paths = subprocess.run(["git", "-C", str(ROOT), "ls-files"], check=True,
-                               capture_output=True, text=True).stdout.splitlines()
+        import runpy
+        allowed = runpy.run_path(str(ROOT / "scripts/export_public_repository.py"))["PUBLIC_PDFS"]
+        paths = subprocess.run(["git", "-C", str(ROOT), "ls-files", "-z"], check=True,
+                               capture_output=True, text=True).stdout.split("\0")
         self.assertFalse([p for p in paths if p.startswith(("data/raw/", "data/derived/",
-                                                             "data/private/"))])
+                                                             "data/private/")) and p not in allowed])
 
 
 if __name__ == "__main__":

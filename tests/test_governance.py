@@ -2,9 +2,11 @@
 import pathlib
 import re
 import subprocess
+import runpy
 import unittest
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
+POLICY=runpy.run_path(str(ROOT/"scripts/export_public_repository.py"))
 
 class GovernanceContractTest(unittest.TestCase):
     def test_root_contracts_and_templates(self):
@@ -48,12 +50,25 @@ class GovernanceContractTest(unittest.TestCase):
                 self.assertNotIn(needle,body,path)
 
     def test_restricted_data_not_in_git(self):
-        tracked=subprocess.run(["git","-C",str(ROOT),"ls-files"],
-                               capture_output=True,text=True,check=True).stdout.splitlines()
+        tracked=subprocess.run(["git","-C",str(ROOT),"ls-files","-z"],
+                               capture_output=True,text=True,check=True).stdout.split("\0")
         restricted=("data/raw/","data/derived/","data/private/",
                     "reference/flavoretro-snapshot/data/",
                     "reference/flavoretro-snapshot/metadata/")
-        self.assertEqual([p for p in tracked if p.startswith(restricted)],[])
+        self.assertEqual([p for p in tracked if p.startswith(restricted)
+                          and p not in POLICY["PUBLIC_PDFS"]],[])
+        for name in POLICY["PUBLIC_PDFS"]:
+            self.assertIn(name,tracked)
+            POLICY["check_content"](name,(ROOT/name).read_bytes())
+
+    def test_pdf_exception_is_exact(self):
+        for name in ("data/raw/literature/unknown.pdf", "data/raw/secret.txt",
+                     "data/derived/result.csv", "data/private/source.pdf"):
+            with self.assertRaises(POLICY["ExportError"]):
+                POLICY["check_path"](name)
+        for name in POLICY["PUBLIC_PDFS"]:
+            with self.assertRaises(POLICY["ExportError"]):
+                POLICY["check_content"](name,b"%PDF-1.7 changed bytes")
 
     def test_template_minimum_content(self):
         task=(ROOT/"docs/tasks/TEMPLATE.md").read_text(encoding="utf-8")

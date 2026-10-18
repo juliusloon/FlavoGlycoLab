@@ -44,3 +44,7 @@ UNDERSTAND → SPECIFY → APPROVE → EXECUTE → VERIFY → REPORT → UPDATE 
 - tests：工程合同守卫；真实教学和化学验证另有门槛。
 
 创建持久文件前先查 ARCHITECTURE 的 Artifact Registry，避免一份真值多处登记。
+
+## TASK-008公开范围例外（2026-10-18）
+
+所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`PUBLIC_PDFS`（`scripts/export_public_repository.py`）登记的精确路径及SHA公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。

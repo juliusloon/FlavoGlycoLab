@@ -6,7 +6,7 @@
 - D-04：首版24步课程中酶法/去糖与工程菌章节的目标深度、关键分支和评分细则。
 - D-05：D1允许输出哪些已审定观测数据，超出域时如何拒绝/解释。
 - D-06：目标承载已由所有者确定为当前Ubuntu服务器，[006实施基线](policy/ilab-2026/readiness-evidence-2026.md)记录实况。身份认证、AI权限、iLab、域名/TLS/外网路径、带宽、配额、备份和安全凭据仍需实际实施/验收；已有主机不等于已部署或已通过容量/发布门。
-- D-07：006已获human_direct实施授权，范围为主机只读核实及申报基线；[报告](reports/REPORT-006-feasibility-gate.md)记录执行。后续[文档准备008](tasks/proposals/TASK-008-ljx-document-preparation.md)和[本地演示009](tasks/proposals/TASK-009-ljx-local-demo.md)仍待各自授权。T-Z1/T-Y1/T-H2定稿、真实D1/AI、W-06部署及W-07/08/T-L4继续按各自合同/前置门执行，本地原型获批不等于公众发布获批。
+- D-07：006已获human_direct实施授权，范围为主机只读核实及申报基线；[报告](reports/REPORT-006-feasibility-gate.md)记录执行。后续[文档准备009](tasks/proposals/TASK-009-ljx-document-preparation.md)和[本地演示010](tasks/proposals/TASK-010-ljx-local-demo.md)仍待各自授权。T-Z1/T-Y1/T-H2定稿、真实D1/AI、W-06部署及W-07/08/T-L4继续按各自合同/前置门执行，本地原型获批不等于公众发布获批。
 - D-08：Git路径与公开范围待所有者决定。可分别选择提交原创方案/审计/合同，不能整目录加入`docs/p10ns/`（261017汇报local only）；附件1/附件2须核再分发许可再决定是否纳入公开导出。本地commit、公开同步、公众教学发布分别决定，本轮均未执行。研究历史不能直接push至公开远端。
 
 已定事项：项目正式命名（ADR0003）、管理控制闭环（ADR0004）、独立来源数据原则（ADR0002）。

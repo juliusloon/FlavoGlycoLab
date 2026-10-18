@@ -16,6 +16,11 @@ __pycache__/
 .pytest_cache/
 
 # Standalone restricted source originals and locally rebuilt candidate indices
-/data/raw/
+/data/raw/*
+!/data/raw/literature/
+/data/raw/literature/*
+!/data/raw/literature/Biotransformation of rutin to isoquercitrin using recombinant α-l-rhamnosidase from Bifidobacterium breve.pdf
+!/data/raw/literature/Combinatorial metabolic engineering of Bacillus subtilis enables the efficient biosynthesis of isoquercitrin from quercetin.pdf
+!/data/raw/literature/Synergistic Catalysis of Glycosyltransferase and Sucrose Synthase to Produce Isoquercitrin Through Glycosylation of Quercetin.pdf
 /data/derived/
 /data/private/
