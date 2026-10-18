@@ -19,4 +19,4 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 
 - [TASK-008-pdf-public-sync.md](TASK-008-pdf-public-sync.md)：Completed，human_direct；三篇指定PDF已公开、julius作者及git publish入口验收通过；原候选008/010顺延010/011。
 
-- [TASK-009-normal-git-push.md](TASK-009-normal-git-push.md)：human_direct；当前main普通推送修复，旧研究历史完整本地归档，候选顺延010/011。
+- [TASK-009-normal-git-push.md](TASK-009-normal-git-push.md)：Completed，human_direct；当前main普通推送修复，旧研究历史完整本地归档，候选顺延010/011。

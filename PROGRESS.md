@@ -31,4 +31,4 @@
 
 - TASK-008：human_direct授权三篇PDF公开及作者julius，git publish入口真实同步及重复执行通过；三篇PDF已公开，19/19本地、8/8公开检查、171保护字节不变，首次CI成功。候选010/011未实施。
 
-- TASK-009：当前main接续公开父链，原命令git push -u public main已成功，上游public/main、差异0/0；旧研究历史、原表及本地文件完整保全，闭环验收进行中。
+- TASK-009：当前main接续公开父链，原命令git push -u public main已成功，上游public/main、差异0/0；旧研究历史、原表及本地文件完整保全；原命令及直接git push真实成功，19/19本地、8/8公开治理与171保护字节保全通过，首次修复CI成功。

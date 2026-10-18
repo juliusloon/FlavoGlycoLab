@@ -1,7 +1,7 @@
 # TASK-009：修复当前main的普通Git推送
 
 ## 合同元数据
-- 任务ID：TASK-009；状态：In Progress；基线研究main eb82c66，公开main fb6050a。
+- 任务ID：TASK-009；状态：Completed；基线研究main eb82c66，公开main fb6050a。
 - 授权来源：human_direct，2026-10-18用户再次明确要求解决当前目录`git push -u public main`拒绝；此前替代命令未满足实际使用方式。
 - 修改预算：本TASK/REPORT、README/STATE/PROGRESS/ARCHITECTURE/ROADMAP、docs索引/待决入口、.gitignore、scripts/publish.py、docs/adr/0005-normal-main-push.md及ADR索引、tests/test_governance.py的ADR编号守卫；Git分支/上游/别名配置；候选009/010顺延010/011，仅编号及活跃引用。备份归temp/task-009与data/private/research-history-20261018，不公开。三个PDF、原始来源、源登记、迁移与科学状态字节不改。
 
@@ -19,10 +19,10 @@
 不公开更多资料、不修改PDF或实验结果、不改写历史作者，不提升三个状态门，不执行候选任务。
 
 ## 验收标准
-- [ ] 旧研究分支与bundle保留原HEAD/历史；35项本地文件、原案例表及全部私有原件字节可读且不变。
-- [ ] 当前main以原公开main为祖先，旧研究提交/受限案例blob不在当前main可达集合。
-- [ ] 本地完整测试、公开治理/原件SHA通过；新作者仍julius。
-- [ ] `git push -u public main`实际成功，public/main上游设定、远端SHA一致，CI如实记录。
+- [x] 旧研究分支与bundle保留原HEAD/历史；35项本地文件、原案例表及全部私有原件字节可读且不变。
+- [x] 当前main以原公开main为祖先，旧研究提交/受限案例blob不在当前main可达集合。
+- [x] 本地完整测试、公开治理/原件SHA通过；新作者仍julius。
+- [x] `git push -u public main`实际成功，public/main上游设定、远端SHA一致，CI如实记录。
 
 ## 验证
 git merge-base --is-ancestor fb6050a main；git push -u public main；git rev-list --left-right --count main...public/main；python3 -m unittest discover -s tests -v；保护字节及Git bundle verify；远端CI。

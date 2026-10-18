@@ -1,6 +1,6 @@
 # FlavoGlycoLab 状态
 
-截至：2026-10-18。TASK-009执行中：当前main已接续公开main，原命令git push -u public main实测成功，上游public/main，差异0/0。旧历史/原表/35本地文件已保全，科学/教师/教学发布门不变；候选010/011未实施。
+截至：2026-10-18。无在执行TASK，最近完成TASK-009：当前main与GitHub main同一父链，原命令git push -u public main及直接git push实测成功，上游public/main、差异0/0，首次修复CI通过，作者julius。旧历史/原件完整本地归档，科学/教师/教学发布门不变；候选010/011未实施。
 
 ## 一句话状态
 独立证据仓库具备自身来源、候选记录、SQLite与只读校验器；22条案例全部待教师审核，教学仿真、AI导师、师生服务和公众教学发布未实现。TASK-007已更新独立公开代码快照，不包含受限原件、旧历史未授权数值、本地汇报包及两份申报附件。2026申报分工方案仍属工作计划；TASK-006已核实当前Ubuntu并完成实施基线，网站/申报成品实施未开始，三个状态门不变。
@@ -10,7 +10,7 @@
 | --- | --- |
 | 项目 | FlavoGlycoLab，原临时项目名FutureHealth |
 | 仓库 | 当前main与公开main同一父链；旧研究历史完整本地归档 |
-| 当前TASK | TASK-009：普通git push修复，验收中 |
+| 当前TASK | 最近完成TASK-009：当前main普通Git推送修复；无在执行TASK |
 | 前一TASK | TASK-008：三篇PDF公开与作者julius，已完成 |
 | 推荐资格 | 所有者2026-10-18会话确认“有”；未附校内书面通知，不据此否定筹备输入 |
 | 校内与内部期限 | 所有者确认当前校内2026-10-27截止；内部2026-10-26定版；校内具体时刻及签章/提交安排待补 |
@@ -79,4 +79,4 @@
 
 ## TASK-009当前事实
 
-旧研究HEAD eb82c66完整保存在codex/archive-research-20261018和已verify的bundle中。35项本地文件恢复原路径，原案例表字节保存在data/private/research-history-20261018/case_admission.csv；当前tracked表采用远端原有脱敏表示。原命令已成功，剩余验收记录/新提交推送进行中。
+旧研究HEAD eb82c66完整保存在codex/archive-research-20261018和已verify的bundle中。35项本地文件恢复原路径，原案例表字节保存在data/private/research-history-20261018/case_admission.csv；当前tracked表采用远端原有脱敏表示。原命令及直接git push均实际成功，新提交远端一致、差异0/0；19/19本地与8/8公开治理通过、171项保护字节完整保全，首次修复CI成功，见REPORT-009。
