@@ -5,6 +5,16 @@
 ## 当前基线
 日期：2026-10-16。TASK-001实现自包含历史证据池和标准库读取器，TASK-002建设命名与治理；TASK-003对照进展并建立独立公开代码快照。课程模拟、评分、师生前端、AI服务和公网教学发布均未实现。所有路径相对于本项目根目录，受限私有原件不进入公开Git。
 
+TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模块或科学/教学审核事实。
+
+2026-10-18：应所有者指令新增申报冲刺工作计划（docs/p10ns/261019/），仅登记与排程，不新增业务模块或科学/教学审核事实，不改变三个状态门。
+
+2026-10-18 TASK-005：审计LJX独立范围并编制008文档准备、009本地演示两份Proposed合同；原可行性草案顺延006。只完成文档定约，前端/教学模块仍scaffold，三个状态门不变。
+
+2026-10-18 TASK-006：所有者确认当前Ubuntu并human_direct授权实施；只读主机清点与唯一申报基线已验收。整机/当前可用/项目预算分开，技术目标未压测。该文档工件不新增active业务模块、真实D1/AI或教学服务，不改变三个状态门。
+
+2026-10-18 TASK-007：按所有者明确命令删除本地pre-push钩子并恢复独立公开检出；公开更新继续沿用远端已有父链，导出排除本地汇报包与两份申报附件。候选合同顺延008/009，仍未实施。
+
 ## 模块与依赖拓扑
     data/raw (private, registered original bytes)
          |                  metadata/active.json (local-relative manifest)
@@ -70,13 +80,23 @@
 | 分子结构审核包 | docs/cases/isoquercitrin/ | yes | draft, not approved |
 | 24步课程 | docs/curriculum/ | yes | scaffold |
 | 背景研究（非状态/政策真值） | docs/research/ | yes | reference only |
+| 老师阶段汇报（非状态真值） | docs/p10ns/261017/ | 本地研究Git已跟踪；公开导出排除 | 29页汇报、讲稿与第三方参考资源保留本地；不构成审核或发布 |
+| 申报冲刺工作计划（非状态真值） | docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md | yes | active（human_direct 2026-10-18）；16任务卡、13条交接矩阵、AI赋能§1.4；实施须另行TASK批准 |
+| LJX范围审计（历史判断，非实时状态） | docs/reports/REPORT-005-ljx-independent-work-audit.md | yes | 15项范围与13条交接；不修改原方案或代签 |
+| 校内沟通唯一记录 | docs/p10ns/261019/communication_log.md | 待许可核查后按内容决定；不公开个人信息/回执原件 | planned，008仅准备问题与记录框；实际回复后续由责任人确认；F0—F4矩阵引用此处，不复制回复真值 |
+| LJX申报技术分段 | docs/p10ns/261019/shenbaoshu_sections_LJX.md | 原创准备稿可纳入，提交/同步另授权 | planned，008底稿；沟通①/T-H2/实测后方可定稿 |
+| 站会唯一记录 | docs/p10ns/261019/standup_log.md | 按实际内容与授权决定 | planned，008模板；真实参会/交接不预填 |
+| 申报实施基线、主机实况、技术目标与F0—F4条件汇总 | docs/policy/ilab-2026/readiness-evidence-2026.md | 原创非数值/脱敏汇总可登记；原凭据按许可决定 | active document，TASK-006；唯一维护活跃目标与替换凭据，引用沟通记录，不替代教师审定。Ubuntu已选，未部署，性能值null；TASK中的目标表只为事前快照 |
+| 学生本地演示内容 | frontend/student/content/demo-content.json | 原创非数值规划文本可纳入，提交/同步另授权 | planned，009；仅演示内容及来源指纹，不作案例准入、观测或教学真值副本 |
 | iLab政策 | docs/policy/ilab-2026/ | yes | scaffold |
 | 学生/教师交互 | frontend/ | yes | scaffold |
 | 迁移只读审计 | migrations/ | yes | frozen provenance (see notes) |
 | 历史核心文件快照 | reference/flavoretro-snapshot/ | mixed | reference only, never runtime |
 | 自动测试 | tests/ | yes | active engineering |
-| 公开代码快照导出 | scripts/export_public_repository.py | yes | 仅导出已提交允许树；副本撤下未授权数值，不改本地原表 |
+| 公开代码快照导出 | scripts/export_public_repository.py | yes | 从已提交树排除明确本地保留项并报告路径/原因；副本撤下未授权数值，不改本地原表 |
 | 公开检出与过程暂存 | temp/public-repository/ | no | 独立Git根历史；仅此检出的main同步GitHub |
+
+公开导出的精确排除项由脚本中的`LOCAL_ONLY_PREFIXES`、`LOCAL_ONLY_FILES`维护：`docs/p10ns/261017/`及两份申报DOCX/PDF附件。该登记只收窄导出集合，不授予第三方许可；新增未知载荷仍由原守卫拒绝。本地推送钩子已依TASK-007删除，没有安装替代钩子。
 
 公开仓库与本地研究历史分离：本地case_admission原表保留未授权历史数值，不能直接推送本地main或旧分支。导出副本只改变historical_yield_raw及yield_status的公开呈现，保留来源定位、SHA、missing和待审状态；公开代码不改变三个状态门。
 

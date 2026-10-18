@@ -18,6 +18,16 @@ import tarfile
 ROOT = Path(__file__).resolve().parents[1]
 CASE_PATH = "data/registries/case_admission.csv"
 WITHHELD = "withheld_unlicensed"
+# 已核定的本地保留范围；未知文件仍由下方路径/内容守卫拒绝。
+LOCAL_ONLY_PREFIXES = {
+    "docs/p10ns/261017/": "本地老师汇报包及其第三方参考资源，不在公开范围",
+}
+LOCAL_ONLY_FILES = {
+    "docs/research/附件1_2026年度“人工智能”虚拟仿真实验教学项目申报书(1).docx":
+        "申报附件的再分发许可未核实，保留本地",
+    "docs/research/附件2_2026年度“人工智能”虚拟仿真实验教学项目征集说明(1).pdf":
+        "申报附件的再分发许可未核实，保留本地",
+}
 RESTRICTED_PREFIXES = (
     "data/raw/", "data/derived/", "data/private/",
     "reference/flavoretro-snapshot/data/",
@@ -91,6 +101,15 @@ def destination_path(value: str) -> Path:
     ):
         raise ExportError("目标路径已存在且不是空目录；拒绝覆盖。")
     return destination
+
+
+def exclusion_reason(name: str) -> str | None:
+    if name in LOCAL_ONLY_FILES:
+        return LOCAL_ONLY_FILES[name]
+    for prefix, reason in LOCAL_ONLY_PREFIXES.items():
+        if name == prefix.rstrip("/") or name.startswith(prefix):
+            return reason
+    return None
 
 
 def check_path(name: str) -> None:
@@ -176,10 +195,15 @@ def export(ref: str, target: str) -> dict:
     # 先审核整个已提交树；不读取工作树，也不复制Git对象或忽略文件。
     entries = git("ls-tree", "-r", "-z", commit).split(b"\0")
     expected = set()
+    excluded = []
     for entry in filter(None, entries):
         info, raw_name = entry.split(b"\t", 1)
         mode, kind, _ = info.split(b" ")
         name = os.fsdecode(raw_name)
+        reason = exclusion_reason(name)
+        if reason is not None:
+            excluded.append({"path": name, "reason": reason})
+            continue
         check_path(name)
         if kind != b"blob" or mode not in {b"100644", b"100755"}:
             raise ExportError(f"公开范围不包含链接或子模块：{name}")
@@ -190,6 +214,8 @@ def export(ref: str, target: str) -> dict:
     archive_bytes = git("archive", "--format=tar", commit)
     with tarfile.open(fileobj=io.BytesIO(archive_bytes), mode="r:") as archive:
         for member in archive:
+            if exclusion_reason(member.name) is not None:
+                continue
             check_path(member.name)
             if member.isdir():
                 continue
@@ -220,6 +246,7 @@ def export(ref: str, target: str) -> dict:
     return {
         "ok": True, "message": "公开快照已导出；未初始化Git、联网或推送。",
         "source_commit": commit, "destination": str(destination), "file_count": len(files),
+        "excluded_file_count": len(excluded), "excluded_files": excluded,
         **counts,
         "case_admission_original_sha256": hashlib.sha256(original_case).hexdigest(),
         "case_admission_public_sha256": hashlib.sha256(files[CASE_PATH][0]).hexdigest(),

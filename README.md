@@ -2,13 +2,13 @@
 
 **面向健康相关黄酮糖苷酶法合成与生物制造的实验教学建设项目。当前处于可审计候选证据基础阶段。**
 
-[当前状态](STATE.md) · [进展与验收](docs/reports/REPORT-003-progress-public-repository.md) · [路线规划](ROADMAP.md) · [可行性研究](docs/research/FlavoRetro_FutureHealth_Feasibility_20261015.md) · [贡献规范](CONTRIBUTING.md)
+[当前状态](STATE.md) · [进展与验收](docs/reports/REPORT-003-progress-public-repository.md) · [路线规划](ROADMAP.md) · [可行性研究](docs/research/FlavoRetro_FutureHealth_Feasibility_20261015.md) · [申报分工与执行方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md) · [贡献规范](CONTRIBUTING.md)
 
 项目拟以异槲皮苷为首个待审案例，让学生设计方案、审查AI建议、依据真实实验观测分析酶法路线，并比较有证据的工程菌制造案例。实验数值须来自教师审定的观测和明确的适用范围，来源缺失时拒绝生成结果。
 
 ## 当前进展
 
-截至2026-10-16，已完成独立证据基础和项目治理；唯一活动业务模块为本地只读证据目录。
+截至2026-10-18，唯一活动业务模块仍为本地只读证据目录。所有者确认资格、当前校内10-27截止/内部10-26定版、拟用化学生物学实验课程，并指定当前Ubuntu服务器。[TASK-006](docs/tasks/TASK-006-feasibility-gate.md)已形成[申报实施基线](docs/policy/ilab-2026/readiness-evidence-2026.md)：主机实况、项目预算、技术目标、字段及交接。教学授权、服务部署、容量压测和发布门仍待落实；[文档准备/本地演示候选合同](docs/reports/REPORT-005-ljx-independent-work-audit.md)未随006自动实施。
 
 | 建设内容 | 当前事实 |
 | --- | --- |
@@ -20,6 +20,7 @@
 | 24步课程、对照、取样、分析与评分 | 规划中，尚无可运行教学闭环 |
 | AI导师、师生门户、权限与会话 | 未实现，相关目录为占位结构 |
 | iLab接入、试教、安全与公众服务 | 未开展，须独立验收 |
+| 2026申报冲刺执行方案 | 已定稿v2.1（[docs/p10ns/261019/](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)）：四名成员32人日、16张任务卡与交付矩阵，窗口10-19→10-26；网站/申报包实施仍须TASK授权，尚未开始 |
 
 可行性研究中的MCTS、模型辅助搜索及研究网页属于历史FlavoRetro背景能力。本仓库的参考快照不作为运行依赖，也不代表这些功能已在FlavoGlycoLab提供。3,059条资源不是3,059个实验，21条结构命中不是21项独立酶法研究。
 
@@ -50,6 +51,8 @@ python3 -m unittest discover -s tests -v
 
 公开案例表中11项尚无再分发许可的历史数值标为`withheld_unlicensed`；原有10项缺失仍为`missing`。本地原表和旧Git历史保留，公开仓库使用清理后的独立提交历史。生成方法与边界见[本轮报告](docs/reports/REPORT-003-progress-public-repository.md)和[导出脚本](scripts/export_public_repository.py)。
 
+[TASK-007](docs/tasks/TASK-007-remove-hook-public-sync.md)按所有者指令删除本地推送钩子并恢复公开同步。公开更新继续使用`temp/public-repository`的现有远端历史；先通过导出脚本生成新的空目录快照，核对后更新公开检出，再在该检出提交和`git push origin main`。研究工作区的`git push public main`会携带原研究历史，不是文件树脱敏同步。导出会列明排除路径及原因：老师汇报包`docs/p10ns/261017/`（含字体与参考资源）和两份申报DOCX/PDF附件保留本地。
+
 原创代码采用[Apache-2.0](LICENSE)，原创文档采用[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hans)；数据与第三方材料保留各自许可，详见[许可说明](LICENSES/README.md)。
 
 **公开源码不代表公众教学服务已经发布。** 研究评价、教师案例审定和公众教学发布分别设门，当前教师批准为0，教学发布状态为`not_started`。
@@ -63,4 +66,4 @@ python3 -m unittest discover -s tests -v
 - [待决事项](docs/decisions-needed.md)：需要所有者、教师、平台和权利人确认的内容。
 - [问题反馈](https://github.com/juliusloon/FlavoGlycoLab/issues)：工程问题、来源线索和设计讨论；请勿上传受限原件、个人数据或密钥。
 
-后续优先关闭案例来源、真实观测和教师审核缺口；双轨申报可行性草案仍未批准，课程、AI及平台建设须另立TASK。贡献前请阅读[AGENTS](AGENTS.md)和[贡献规范](CONTRIBUTING.md)。
+后续按10-26/27节点及[分工方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)准备。[006实施基线](docs/policy/ilab-2026/readiness-evidence-2026.md)作为技术输入；可分别授权[文档准备008](docs/tasks/proposals/TASK-008-ljx-document-preparation.md)和[本地演示009](docs/tasks/proposals/TASK-009-ljx-local-demo.md)，不必等同事交接。完整内容/部署/提交仍须真实数据、授权与服务凭据，三个状态门不变。贡献前请阅读[AGENTS](AGENTS.md)和[贡献规范](CONTRIBUTING.md)。
