@@ -1,6 +1,6 @@
 # FlavoGlycoLab 状态
 
-截至：2026-10-18。当前操作：无在执行TASK，最近完成TASK-008。三篇指定PDF已依human_direct公开，作者配置及新提交为julius；git publish入口和重复执行验收通过，首次内容同步CI成功。业务仍仅evidence active，科学/教师/教学发布门不变；候选009/010未实施。
+截至：2026-10-18。TASK-009执行中：当前main已接续公开main，原命令git push -u public main实测成功，上游public/main，差异0/0。旧历史/原表/35本地文件已保全，科学/教师/教学发布门不变；候选010/011未实施。
 
 ## 一句话状态
 独立证据仓库具备自身来源、候选记录、SQLite与只读校验器；22条案例全部待教师审核，教学仿真、AI导师、师生服务和公众教学发布未实现。TASK-007已更新独立公开代码快照，不包含受限原件、旧历史未授权数值、本地汇报包及两份申报附件。2026申报分工方案仍属工作计划；TASK-006已核实当前Ubuntu并完成实施基线，网站/申报成品实施未开始，三个状态门不变。
@@ -9,9 +9,9 @@
 | 项 | 当前事实 |
 | --- | --- |
 | 项目 | FlavoGlycoLab，原临时项目名FutureHealth |
-| 仓库 | 独立本地研究历史；公开快照在temp/public-repository使用新根Git历史，不依赖其他研究repo |
-| 当前TASK | 最近完成TASK-008：三篇PDF公开、julius作者及git publish入口；无在执行TASK |
-| 前一TASK | TASK-007：钩子删除与独立公开同步，已完成 |
+| 仓库 | 当前main与公开main同一父链；旧研究历史完整本地归档 |
+| 当前TASK | TASK-009：普通git push修复，验收中 |
+| 前一TASK | TASK-008：三篇PDF公开与作者julius，已完成 |
 | 推荐资格 | 所有者2026-10-18会话确认“有”；未附校内书面通知，不据此否定筹备输入 |
 | 校内与内部期限 | 所有者确认当前校内2026-10-27截止；内部2026-10-26定版；校内具体时刻及签章/提交安排待补 |
 | 拟用课程 | 化学生物学实验课程（所有者确认用途）；不表示已开设或教师量规已通过 |
@@ -25,7 +25,7 @@
 | 独立运行 | 本轮完整19/19测试通过、122现存来源核验通过；公开检出治理8/8通过，见REPORT-008 |
 | 教学/发布 | 未实现，public_teaching_release=not_started，public_release=false |
 | GitHub代码 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public，独立公开main；治理CI通过 |
-| Git同步位置 | 原工作区运行git publish，自动向temp/public-repository的origin/main同步允许树；研究main无公开upstream，钩子仍已删除 |
+| Git同步位置 | 当前项目main → public/main；直接git push -u public main或git push；作者julius，无拦截钩子 |
 | 公开边界 | 导出副本11项历史数值为withheld_unlicensed，10项missing保留；本地原表与旧历史不公开 |
 | 本轮公开排除 | docs/p10ns/261017/本地汇报包及两份DOCX/PDF申报附件；原文件保留本地，未知载荷继续拒绝导出 |
 
@@ -44,9 +44,9 @@
 | frontend | scaffold | 学生与教师页面未建设 |
 
 ## 最新操作
-- TASK-007：已删除指定本地钩子并恢复独立公开检出，101文件公开/35文件排除，11项数值脱敏/10项missing保留；18/18本地、7/7公开治理、168/168保护字节核对与公开历史复核通过，普通push及治理CI成功。原候选007/009顺延009/010，仍未批准；过程失败与完整分母见REPORT-007。
-- TASK-006：完成当前Ubuntu主机只读核实及唯一实施基线；26项字段、9项目标、17项条件、13条交接、24步范围和54个活跃链接检查通过，治理7/7；7项输入SHA、125项受保护文件及Git索引/HEAD不变。009/010、安装/服务启动、部署、压测、申报提交未执行；见docs/reports/REPORT-006-feasibility-gate.md。
-- TASK-005：完成15项范围与13条交接审计、文档准备009与本地演示010两份Proposed合同；治理7/7、5项输入SHA及49个本地链接检查通过。原可行性草案仅顺延006、未执行；009/010未获实施授权，准备稿成品/前端代码/部署均未开始。审计见docs/reports/REPORT-005-ljx-independent-work-audit.md。
+- TASK-007：已删除指定本地钩子并恢复独立公开检出，101文件公开/35文件排除，11项数值脱敏/10项missing保留；18/18本地、7/7公开治理、168/168保护字节核对与公开历史复核通过，普通push及治理CI成功。原候选007/010顺延010/011，仍未批准；过程失败与完整分母见REPORT-007。
+- TASK-006：完成当前Ubuntu主机只读核实及唯一实施基线；26项字段、9项目标、17项条件、13条交接、24步范围和54个活跃链接检查通过，治理7/7；7项输入SHA、125项受保护文件及Git索引/HEAD不变。010/011、安装/服务启动、部署、压测、申报提交未执行；见docs/reports/REPORT-006-feasibility-gate.md。
+- TASK-005：完成15项范围与13条交接审计、文档准备010与本地演示011两份Proposed合同；治理7/7、5项输入SHA及49个本地链接检查通过。原可行性草案仅顺延006、未执行；010/011未获实施授权，准备稿成品/前端代码/部署均未开始。审计见docs/reports/REPORT-005-ljx-independent-work-audit.md。
 - TASK-004：本地最终HTML的22页主讲、7页附录及讲稿全部改写为面向老师的中文；保留29页、互动和科学状态。结构、29页Chromium显示与7项治理检查通过，尚未现场投屏；见docs/reports/REPORT-004-presentation-language.md。汇报包后续已入本地研究Git，TASK-007公开导出仍排除该包，仅公开治理合同/报告。
 - TASK-003：完成进展对照、中文仓库入口及同名public代码仓库同步；发现受限数值后采用独立公开历史，根快照CI通过。原表和私有来源不变，验收见docs/reports/REPORT-003-progress-public-repository.md。
 - TASK-002：实施项目名称与治理体系改造。逐文件结果见docs/reports/REPORT-002-governance-and-rename.md。
@@ -64,15 +64,19 @@
 2. 异槲皮苷主案例身份、21条反应来源/方向与重复计数需教师核验。
 3. Pei2019、Zhang2015、Niu2024实际实验条件/可用定量数据及再分发权需逐篇核对。
 4. 面向学生的D1仿真、24步课程、审核流程与公开部署均未开发。
-5. 本地raw/derived/private及含未授权数值的旧Git历史不推送到公开远端。公开代码不含可教学定量数据；不得直接push本地main或旧分支。
+5. 未明确公开的raw/derived/private仍不推送；原案例表与旧研究历史保存在本地private副本/归档分支。当前main使用公开脱敏表，可直接普通push，归档分支不公开。
 
 ## 下一任务建议（未批准）
-- 文档准备：docs/tasks/proposals/TASK-009-ljx-document-preparation.md，五项沟通问法、6/7栏底稿、站会模板；估算0.75人日，无同事交接前置，未编制成品。
-- 本地演示：docs/tasks/proposals/TASK-010-ljx-local-demo.md，W-01/W-05完整演示范围及W-02/03/04局部；估算2.25人日，不接模型/真实数值、不部署，前端仍scaffold。
-- 007仅执行Git同步，009/010仍可分别批准，候选号按实际批准次序连续登记，不自动执行。实际沟通由LJX负责；T-Z1/T-Y1/T-H2接收、科学/教学审定、真实部署/定版另行定约。D-07后续实施与D-08 Git取舍仍待决定。
+- 文档准备：docs/tasks/proposals/TASK-010-ljx-document-preparation.md，五项沟通问法、6/7栏底稿、站会模板；估算0.75人日，无同事交接前置，未编制成品。
+- 本地演示：docs/tasks/proposals/TASK-011-ljx-local-demo.md，W-01/W-05完整演示范围及W-02/03/04局部；估算2.25人日，不接模型/真实数值、不部署，前端仍scaffold。
+- 007仅执行Git同步，010/011仍可分别批准，候选号按实际批准次序连续登记，不自动执行。实际沟通由LJX负责；T-Z1/T-Y1/T-H2接收、科学/教学审定、真实部署/定版另行定约。D-07后续实施与D-08 Git取舍仍待决定。
 
-## TASK-008当前操作
+## TASK-008既有交付
 
-所有者已明确授权三篇PDF公开；仅精确路径/SHA例外，171项保护文件原字节保留。两处工作区作者已改julius及账号隐私邮箱；三篇PDF已公开，19/19本地、8/8公开治理、171/171保护字节及远端3/3文件核对通过，首次CI成功；git publish重复执行无空提交。候选文档准备009/本地演示010未批准。
+所有者已明确授权三篇PDF公开；仅精确路径/SHA例外，171项保护文件原字节保留。两处工作区作者已改julius及账号隐私邮箱；三篇PDF已公开，19/19本地、8/8公开治理、171/171保护字节及远端3/3文件核对通过，首次CI成功；git publish重复执行无空提交。候选文档准备010/本地演示011未批准。
 
 | 三篇PDF原件 | data/raw/literature/，PUBLIC_PDFS精确SHA例外，human_direct公开；rights_verified=false，教师审核不变 |
+
+## TASK-009当前事实
+
+旧研究HEAD eb82c66完整保存在codex/archive-research-20261018和已verify的bundle中。35项本地文件恢复原路径，原案例表字节保存在data/private/research-history-20261018/case_admission.csv；当前tracked表采用远端原有脱敏表示。原命令已成功，剩余验收记录/新提交推送进行中。

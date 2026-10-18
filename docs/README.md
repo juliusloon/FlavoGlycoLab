@@ -18,10 +18,12 @@
 
 进展分析与公开代码同步见[REPORT-003](reports/REPORT-003-progress-public-repository.md)。所有者确认资格、10-27校内截止/10-26内部定版、拟用化学生物学实验课程，并指定当前Ubuntu服务器后，正式授权[TASK-006](tasks/TASK-006-feasibility-gate.md)。[实施基线](policy/ilab-2026/readiness-evidence-2026.md)与[REPORT-006](reports/REPORT-006-feasibility-gate.md)记录主机实况、项目预算、技术目标、条件与交接；教学授权/公开接入/认证后续落实，容量未压测，服务未部署。
 
-本地推送钩子删除和公开更新见[TASK-007](tasks/TASK-007-remove-hook-public-sync.md)与[REPORT-007](reports/REPORT-007-remove-hook-public-sync.md)。公开导出明确排除本地汇报包及两份申报附件，公开历史仍与研究历史分离；文档准备/本地演示候选顺延009/010。
+本地推送钩子删除和公开更新见[TASK-007](tasks/TASK-007-remove-hook-public-sync.md)与[REPORT-007](reports/REPORT-007-remove-hook-public-sync.md)。公开导出明确排除本地汇报包及两份申报附件，公开历史仍与研究历史分离；文档准备/本地演示候选顺延010/011。
 
 老师汇报HTML全文表达优化见[REPORT-004](reports/REPORT-004-presentation-language.md)；仅本地文档交付，没有启动案例审定、教学建设或可行性调查。2026申报冲刺的[分工与执行方案v2.1](p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)为所有者human_direct工作计划；实施仍须TASK授权，未启动。
 
-[REPORT-005](reports/REPORT-005-ljx-independent-work-audit.md)审计LJX独立范围与13条交接；[文档准备009](tasks/proposals/TASK-009-ljx-document-preparation.md)和[本地演示010](tasks/proposals/TASK-010-ljx-local-demo.md)仍为可分别批准的Proposed合同，成品/代码尚未实施，006不自动启动它们。历史报告/汇报保留当时草案路径和状态，活跃任务入口以上述正式索引为准。
+[REPORT-005](reports/REPORT-005-ljx-independent-work-audit.md)审计LJX独立范围与13条交接；[文档准备010](tasks/proposals/TASK-010-ljx-document-preparation.md)和[本地演示011](tasks/proposals/TASK-011-ljx-local-demo.md)仍为可分别批准的Proposed合同，成品/代码尚未实施，006不自动启动它们。历史报告/汇报保留当时草案路径和状态，活跃任务入口以上述正式索引为准。
 
-三篇PDF公开与日常git publish入口见[TASK-008](tasks/TASK-008-pdf-public-sync.md)、[REPORT-008](reports/REPORT-008-pdf-public-sync.md)。候选合同顺延009/010，不自动执行。
+三篇PDF公开与日常git publish入口见[TASK-008](tasks/TASK-008-pdf-public-sync.md)、[REPORT-008](reports/REPORT-008-pdf-public-sync.md)。候选合同顺延010/011，不自动执行。
+
+当前Git操作以[TASK-009](tasks/TASK-009-normal-git-push.md)/[REPORT-009](reports/REPORT-009-normal-git-push.md)为准：当前main直接普通push，不再依赖独立检出同步。历史报告保留当时两套历史的事实。

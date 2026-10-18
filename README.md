@@ -51,7 +51,7 @@ python3 -m unittest discover -s tests -v
 
 公开案例表中11项尚无再分发许可的历史数值标为`withheld_unlicensed`；原有10项缺失仍为`missing`。本地原表和旧Git历史保留，公开仓库使用清理后的独立提交历史。生成方法与边界见[本轮报告](docs/reports/REPORT-003-progress-public-repository.md)和[导出脚本](scripts/export_public_repository.py)。
 
-[TASK-007](docs/tasks/TASK-007-remove-hook-public-sync.md)按所有者指令删除本地推送钩子并恢复公开同步。公开更新继续使用`temp/public-repository`的现有远端历史；先通过导出脚本生成新的空目录快照，核对后更新公开检出，再在该检出提交和`git push origin main`。研究工作区的`git push public main`会携带原研究历史，不是文件树脱敏同步。导出会列明排除路径及原因：老师汇报包`docs/p10ns/261017/`（含字体与参考资源）和两份申报DOCX/PDF附件保留本地。
+[TASK-009](docs/tasks/TASK-009-normal-git-push.md)已将当前main接续公开历史，当前目录直接使用普通Git提交和推送。旧研究分支完整保存在本地；35项汇报/附件保持原路径且已忽略。当前案例表沿用公开脱敏表示，原表原字节保存于`data/private/research-history-20261018/case_admission.csv`。
 
 原创代码采用[Apache-2.0](LICENSE)，原创文档采用[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hans)；数据与第三方材料保留各自许可，详见[许可说明](LICENSES/README.md)。
 
@@ -66,10 +66,16 @@ python3 -m unittest discover -s tests -v
 - [待决事项](docs/decisions-needed.md)：需要所有者、教师、平台和权利人确认的内容。
 - [问题反馈](https://github.com/juliusloon/FlavoGlycoLab/issues)：工程问题、来源线索和设计讨论；请勿上传受限原件、个人数据或密钥。
 
-后续按10-26/27节点及[分工方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)准备。[006实施基线](docs/policy/ilab-2026/readiness-evidence-2026.md)作为技术输入；可分别授权[文档准备009](docs/tasks/proposals/TASK-009-ljx-document-preparation.md)和[本地演示010](docs/tasks/proposals/TASK-010-ljx-local-demo.md)，不必等同事交接。完整内容/部署/提交仍须真实数据、授权与服务凭据，三个状态门不变。贡献前请阅读[AGENTS](AGENTS.md)和[贡献规范](CONTRIBUTING.md)。
+后续按10-26/27节点及[分工方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)准备。[006实施基线](docs/policy/ilab-2026/readiness-evidence-2026.md)作为技术输入；可分别授权[文档准备010](docs/tasks/proposals/TASK-010-ljx-document-preparation.md)和[本地演示011](docs/tasks/proposals/TASK-011-ljx-local-demo.md)，不必等同事交接。完整内容/部署/提交仍须真实数据、授权与服务凭据，三个状态门不变。贡献前请阅读[AGENTS](AGENTS.md)和[贡献规范](CONTRIBUTING.md)。
 
 ## 日常公开同步
 
-研究根目录提交修改后运行`git publish`（等价于`python3 scripts/publish.py`），自动导出、检查并沿现有公开main普通推送。`git push public main`推的是研究父链，两套历史不能快进。
+在当前项目目录提交后运行：
+
+```bash
+git push -u public main
+```
+
+上游已配置，之后也可直接`git push`。`git publish`保留为普通push兼容入口，不再需要切换到另一个检出。
 
 TASK-008按所有者明确指令公开`data/raw/literature/`中的三篇PDF；文件保持原字节，新提交作者julius。精确例外登记在导出脚本PUBLIC_PDFS，出版方rights_verified=false；其余私有来源不公开，教师与教学发布门不变。

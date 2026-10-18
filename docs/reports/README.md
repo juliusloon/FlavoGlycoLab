@@ -14,3 +14,5 @@
 命名规则REPORT-NNN-short-title.md，编号和短名严格匹配TASK；使用TEMPLATE.md。REPORT保存历史，STATE保存最新事实。没有对应验证数据不写“通过”。
 
 - [REPORT-008-pdf-public-sync.md](REPORT-008-pdf-public-sync.md)：三篇PDF范围、SHA和公开同步验收。
+
+- [REPORT-009-normal-git-push.md](REPORT-009-normal-git-push.md)：实际git push原命令、分支保全及原件验证。

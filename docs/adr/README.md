@@ -8,3 +8,5 @@ ADR回答为什么长期采用某项结构或数据语义决策，不替代TASK�
 - 0004-project-governance.md：采用CondRxnBench式控制闭环及三状态门。
 
 新增ADR使用TEMPLATE.md，不改写旧ADR中的当时事实。ADR编号从0001递增，不接续其它项目。
+
+- [0005-normal-main-push.md](0005-normal-main-push.md)：当前main普通推送与旧研究归档。

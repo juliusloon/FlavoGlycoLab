@@ -24,3 +24,8 @@ __pycache__/
 !/data/raw/literature/Synergistic Catalysis of Glycosyltransferase and Sucrose Synthase to Produce Isoquercitrin Through Glycosylation of Quercetin.pdf
 /data/derived/
 /data/private/
+
+# TASK-009：本地保留的汇报与申报附件
+/docs/p10ns/261017/
+/docs/research/附件1_2026年度“人工智能”虚拟仿真实验教学项目申报书(1).docx
+/docs/research/附件2_2026年度“人工智能”虚拟仿真实验教学项目征集说明(1).pdf
