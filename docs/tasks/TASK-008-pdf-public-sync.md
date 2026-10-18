@@ -1,7 +1,7 @@
 # TASK-008：三篇PDF公开同步与提交身份修正
 
 ## 合同元数据
-- 任务ID：TASK-008；状态：In Progress。
+- 任务ID：TASK-008；状态：Completed。
 - 基线：main，d6817ca；原公开main：14cdfe8。
 - 授权来源：human_direct，2026-10-18用户要求作者名改成julius，并明确选择“三篇PDF也要公开”。这是项目所有者的公开范围指令，不声称完成出版方许可核验或教师审核。
 - 修改预算：本TASK/配对REPORT；scripts/export_public_repository.py与新增scripts/publish.py；tests/test_governance.py、tests/test_standalone.py、.github/workflows/governance.yml；AGENTS、PROJECT、ARCHITECTURE、STATE、PROGRESS、README、ROADMAP、.gitignore、LICENSES/README、docs/data-governance及文档/任务/报告/待决索引；候选008/009顺延009/010，仅编号/引用变化；本地两处Git作者及git publish别名配置。原PDF/数据/历史字节不改。
@@ -24,10 +24,10 @@
 3. 本地/公开检查、完整公开历史审核、普通推送并核验远端PDF与CI；闭环更新。
 
 ## 验收标准
-- [ ] 三篇PDF在远端main存在且SHA与原件一致；新提交作者julius。
-- [ ] 未知raw/PDF或指定PDF字节变化仍拒绝；原受保护字节不变。
-- [ ] 本地完整测试、公开治理、全部公开历史审核通过，远端CI真实记录。
-- [ ] git publish在研究根目录可执行且重复执行不制造空提交；没有force push或旧历史合入。
+- [x] 三篇PDF在远端main存在且SHA与原件一致；新提交作者julius。
+- [x] 未知raw/PDF或指定PDF字节变化仍拒绝；原受保护字节不变。
+- [x] 本地完整测试、公开治理、全部公开历史审核通过，远端CI真实记录。
+- [x] git publish在研究根目录可执行且重复执行不制造空提交；没有force push或旧历史合入。
 
 ## 验证
 python3 -m unittest discover -s tests -v；公开治理检查；git publish；GitHub SHA、作者及CI读回。

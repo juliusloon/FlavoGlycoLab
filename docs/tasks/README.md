@@ -17,4 +17,4 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 命名规范：TASK-NNN-short-title.md；须与docs/reports/REPORT-NNN-short-title.md完全对应编号与短名。状态：Proposed、Approved、In Progress、Completed、Partial、Blocked、Rejected、Reverted。批准后不静默扩项；必要时重新定约。TASK不是REPORT，不包含虚构的事后验收。
 模板见TEMPLATE.md，最新事实见STATE.md。
 
-- [TASK-008-pdf-public-sync.md](TASK-008-pdf-public-sync.md)：human_direct，三篇指定PDF公开、julius作者及git publish入口；原候选008/009顺延009/010。
+- [TASK-008-pdf-public-sync.md](TASK-008-pdf-public-sync.md)：Completed，human_direct；三篇指定PDF已公开、julius作者及git publish入口验收通过；原候选008/009顺延009/010。

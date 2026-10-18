@@ -1,6 +1,6 @@
 # FlavoGlycoLab 状态
 
-截至：2026-10-18。当前操作：TASK-008执行中，按所有者明确指令公开三篇PDF并修正提交作者及日常同步入口。业务仍仅evidence active，科学/教师/教学发布门不变；候选009/010未实施。
+截至：2026-10-18。当前操作：无在执行TASK，最近完成TASK-008。三篇指定PDF已依human_direct公开，作者配置及新提交为julius；git publish入口和重复执行验收通过，首次内容同步CI成功。业务仍仅evidence active，科学/教师/教学发布门不变；候选009/010未实施。
 
 ## 一句话状态
 独立证据仓库具备自身来源、候选记录、SQLite与只读校验器；22条案例全部待教师审核，教学仿真、AI导师、师生服务和公众教学发布未实现。TASK-007已更新独立公开代码快照，不包含受限原件、旧历史未授权数值、本地汇报包及两份申报附件。2026申报分工方案仍属工作计划；TASK-006已核实当前Ubuntu并完成实施基线，网站/申报成品实施未开始，三个状态门不变。
@@ -10,7 +10,7 @@
 | --- | --- |
 | 项目 | FlavoGlycoLab，原临时项目名FutureHealth |
 | 仓库 | 独立本地研究历史；公开快照在temp/public-repository使用新根Git历史，不依赖其他研究repo |
-| 当前TASK | TASK-008：三篇PDF公开、julius作者与git publish入口；验证/同步中 |
+| 当前TASK | 最近完成TASK-008：三篇PDF公开、julius作者及git publish入口；无在执行TASK |
 | 前一TASK | TASK-007：钩子删除与独立公开同步，已完成 |
 | 推荐资格 | 所有者2026-10-18会话确认“有”；未附校内书面通知，不据此否定筹备输入 |
 | 校内与内部期限 | 所有者确认当前校内2026-10-27截止；内部2026-10-26定版；校内具体时刻及签章/提交安排待补 |
@@ -22,7 +22,7 @@
 | v3候选资源 | 3059条，可本地读取 |
 | 候选教学案例 | 22条，pending_teacher_review，人工审核0 |
 | P1待审资产 | 12项本地private custody，37项尚未移入 |
-| 独立运行 | 本轮完整18/18测试通过、122现存来源核验通过；公开检出治理7/7通过，见REPORT-007 |
+| 独立运行 | 本轮完整19/19测试通过、122现存来源核验通过；公开检出治理8/8通过，见REPORT-008 |
 | 教学/发布 | 未实现，public_teaching_release=not_started，public_release=false |
 | GitHub代码 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public，独立公开main；治理CI通过 |
 | Git同步位置 | 原工作区运行git publish，自动向temp/public-repository的origin/main同步允许树；研究main无公开upstream，钩子仍已删除 |
@@ -73,6 +73,6 @@
 
 ## TASK-008当前操作
 
-所有者已明确授权三篇PDF公开；仅精确路径/SHA例外，171项保护文件原字节保留。两处工作区作者已改julius及账号隐私邮箱，git publish入口已实现，验证/公开推送进行中。候选文档准备009/本地演示010未批准。
+所有者已明确授权三篇PDF公开；仅精确路径/SHA例外，171项保护文件原字节保留。两处工作区作者已改julius及账号隐私邮箱；三篇PDF已公开，19/19本地、8/8公开治理、171/171保护字节及远端3/3文件核对通过，首次CI成功；git publish重复执行无空提交。候选文档准备009/本地演示010未批准。
 
 | 三篇PDF原件 | data/raw/literature/，PUBLIC_PDFS精确SHA例外，human_direct公开；rights_verified=false，教师审核不变 |
