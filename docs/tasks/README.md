@@ -8,7 +8,7 @@
 - TASK-004-presentation-language.md：依所有者直接授权优化最终HTML全部页面、附录与讲稿表达；不开展科学或教学建设。
 - [TASK-005-ljx-independent-work-audit.md](TASK-005-ljx-independent-work-audit.md)：LJX独立范围审计与任务拆分，human_direct；只审计和定约，不实施网站/申报包。
 - [TASK-006-feasibility-gate.md](TASK-006-feasibility-gate.md)：Completed，human_direct；已核实当前Ubuntu并交付唯一申报基线，26字段/17条件/9目标/13交接/24步检查和治理7/7通过。资源清点/计划目标不等于部署或容量压测。
-- [TASK-007-remove-hook-public-sync.md](TASK-007-remove-hook-public-sync.md)：In Progress，human_direct；删除指定本地推送钩子，恢复独立公开检出并同步允许公开的更新。
+- [TASK-007-remove-hook-public-sync.md](TASK-007-remove-hook-public-sync.md)：Completed，human_direct；指定钩子已删除，独立公开检出恢复、101文件公开/35排除、普通push与CI成功；完整18/18、公开治理7/7及168保护字节核对通过。
 - [proposals/TASK-008-ljx-document-preparation.md](proposals/TASK-008-ljx-document-preparation.md)：Proposed；五项沟通问法、6/7栏底稿、站会模板，估算0.75人日，无同事交接前置。
 - [proposals/TASK-009-ljx-local-demo.md](proposals/TASK-009-ljx-local-demo.md)：Proposed；W-01/W-05及W-02/03/04局部本地演示，估算2.25人日，不部署。
 
