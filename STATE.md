@@ -1,102 +1,66 @@
-# FlavoGlycoLab 状态
+# FlavoGlycoLab 当前状态
 
-截至：2026-10-19。最近完成TASK-012：以案例、路线和操作为核心的六阶段虚拟实验台已更新到原LAN入口，实时Qwen辅导已接入。局部及LAN浏览器各81项、补充8项、状态机9项、服务边界11项、治理8项通过；107项已有保护字节不变。systemd active/enabled、自动恢复实测通过。入口与运行见docs/operations/lan-site.md。当前是过程演练，真实实验观测/数值仿真、完整课程评分与公众教学发布未实现。无Git提交/push。
+截至2026-10-20。TASK-013已完成本地协作交付验证，正在同步GitHub并验证跨平台CI；最终远端状态见REPORT-013。本机已完成的TASK-010/011/012实验台已纳入公开提交，默认public不依赖私有数据或所有者服务器。当前仍是过程演练，真实观测、数值仿真、完整课程评分与公众教学发布未实现。
 
-## 一句话状态
-独立证据仓库已有来源、候选记录、SQLite与只读校验器；学生现在可选择路线、装配材料、设计条件与对照、按序演练并建立取样标签、写反思和导出记录，AI按当前方案实时辅导。22条案例仍全部待教师审核，观测为空、结果null，三个状态门不晋级。2026申报成品与正式教学系统仍按后续交接和审定推进。
+## 运行与协作
 
-## 当前状态元数据
 | 项 | 当前事实 |
 | --- | --- |
-| 项目 | FlavoGlycoLab，原临时项目名FutureHealth |
-| 仓库 | 当前main与公开main同一父链；旧研究历史完整本地归档 |
-| 当前TASK | 最近完成TASK-012：交互实验台与实时Qwen；无在执行TASK |
-| 前一TASK | TASK-011：局域网持续托管，已完成 |
-| 推荐资格 | 所有者2026-10-18会话确认“有”；未附校内书面通知，不据此否定筹备输入 |
-| 校内与内部期限 | 所有者确认当前校内2026-10-27截止；内部2026-10-26定版；校内具体时刻及签章/提交安排待补 |
-| 拟用课程 | 化学生物学实验课程（所有者确认用途）；不表示已开设或教师量规已通过 |
-| 授权与承载 | 当前Ubuntu已获human_direct局域网原型托管授权；systemd用户服务持续运行；原文教学使用授权/公众接入/认证仍未通过 |
-| 局域网入口与运维 | docs/operations/lan-site.md为唯一活跃说明；8766，active/enabled，Restart=always，既有Linger=yes；未做其它物理设备或真实开机测试 |
-| 主机实况 | Ubuntu24.04.4 LTS；48物理核/96逻辑CPU；125.37 GiB RAM，快照可用26.61 GiB；项目卷可用181.47 GiB；2张RTX PRO6000。均共享，未为本项目预留 |
-| 技术基线 | docs/policy/ilab-2026/readiness-evidence-2026.md；起始4逻辑CPU/8 GiB/20 GiB软预算，50会话/10轻量请求及100Mbps均为待验目标，实测容量/时延为null |
-| 来源 | 登记123，现存122，缺OS元数据.DS_Store |
-| v3候选资源 | 3059条，可本地读取 |
-| 候选教学案例 | 22条，pending_teacher_review，人工审核0 |
-| P1待审资产 | 12项本地private custody，37项尚未移入 |
-| 独立运行 | 本轮完整19/19测试通过、122现存来源核验通过；公开检出治理8/8通过，见REPORT-008 |
-| 教学/发布 | 工程过程交互已实现；正式教学未验收，public_teaching_release=not_started，public_release=false |
-| GitHub代码 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public，独立公开main；治理CI通过 |
-| Git同步位置 | 当前项目main → public/main；直接git push -u public main或git push；作者julius，无拦截钩子 |
-| 公开边界 | 导出副本11项历史数值为withheld_unlicensed，10项missing保留；本地原表与旧历史不公开 |
-| 本轮公开排除 | docs/p10ns/261017/本地汇报包及两份DOCX/PDF申报附件；原文件保留本地，未知载荷继续拒绝导出 |
+| 代码仓库 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public；main沿用现有公开父链 |
+| 当前TASK | TASK-013：团队克隆/运行与分层数据交付；本地验收通过，远端/CI验证中 |
+| 本地入口 | `python scripts/dev.py`，默认127.0.0.1:8767，Python 3.10+标准库，无需Conda/npm/GPU/私有数据/模型密钥 |
+| 默认工程检查 | `python scripts/dev.py check`；45项Python中42通过、3项研究资产明确跳过；Node可用时9项状态测试 |
+| 本地干净克隆验收 | Python 3.12.3；默认检查通过，三路线×三视口浏览器84项，11项HTTP资产/私有路径检查通过，未配置AI可操作并保留明确报错 |
+| 可选research | 导入离线包后显式选择；新克隆全量45项Python、9项JS、3059记录及117必需现存原件/SQLite核验通过 |
+| 研究包 | 121文件＝117非模型原件＋4项v3派生；首次导入121、重复导入0/相同121。包约12.3 MB，SHA与本地路径见REPORT-013；未自动发送给成员 |
+| 实时AI | 可选本机private/runtime/tutor.json；无配置不阻断流程；原LAN的Qwen接入历史验收见REPORT-012，当前未复做实时模型测量 |
+| 练习保存 | 当前浏览器/站点源localStorage；最多12快照，可比较并导出；无账号或跨设备同步 |
+| 原LAN托管 | flavoglycolab-lan.service，8766；本轮只读状态active，未改服务/模型/网卡/防火墙；唯一说明docs/operations/lan-site.md |
+| 数据/来源保护 | 本轮172项原件/派生/private/登记/迁移/参考文件SHA不变 |
+| 日常Git | 当前main可普通提交/push；所有者远端public，成员克隆通常origin；不要推送旧研究归档分支 |
 
-上述来源、v3与P1计数指原本地研究工作区；公开克隆不含这些私有资产。`temp/public-repository/`是原工作区的公开导出位置，公开克隆本身无需此目录。
+协作步骤唯一维护于[docs/operations/collaboration.md](docs/operations/collaboration.md)，现行规范[docs/data-governance.md](docs/data-governance.md)。此前公开仓库仅到TASK-009、前端未提交的问题由TASK-013解决；历史“无提交/push”只描述对应旧任务结束时的状态。
 
-## 当前模块状态
-| 层 | 状态 | 说明 |
-| --- | --- | --- |
-| 来源原件及注册表 | local active restricted | 源SHA与许可登记保留 |
-| 衍生v3数据 | local candidate | 不是教师通过的数据集 |
-| evidence catalog | active read-only | 能本地核验、分组汇总 |
-| chemistry | scaffold | 无完成身份/反应方向的系统级教师认证 |
-| experiment | scaffold | 无真实D1量化仿真 |
-| teaching | scaffold | 24步课程未实施 |
-| platform | src模块scaffold；独立LAN服务active | scripts/serve_lab.py提供同源health/tutor；无账号/教师/成绩 |
-| frontend | student interactive LAN prototype | 六阶段过程交互、浏览器保存/快照/比较/导出、实时Qwen；教师端/真实分析/正式评分未建设 |
+## 数据与审核门
 
-## 最新操作
-- TASK-012：三路线×三视口完整流程回归，局部及实际LAN各81/81；状态9/9、服务11/11、治理8/8，107项保护字节不变。两个网卡18/18资产、10/10拒绝路径、2/2模型配置状态通过；异常自动恢复与重复安装通过。真实Qwen回复、证据拒绝、失败恢复分开验收。完整证据与限制见REPORT-012。
-- TASK-011：本机两LAN接口20/20运行资产字节及10/10拒绝路径通过；主LAN入口53/53浏览器检查通过，治理8/8、117项已有文件原字节不变。服务由systemd托管，已enable，自动/手动重启和幂等安装验证通过。无其它物理客户端/真实主机重启实测；未提交/push，见REPORT-011。
-- TASK-010：完成原生静态学生网站骨架；6路由×3视口、24步选择、AI三脚本切换、无数据及来源边界等53/53检查通过。Chromium153.0.8010.12，治理8/8、JS语法8/8、80项受保护字节不变。仅127.0.0.1本地预览，未提交/push/部署；见REPORT-010。旧候选完整演示与文档准备未获批准。
-- TASK-007：已删除指定本地钩子并恢复独立公开检出，101文件公开/35文件排除，11项数值脱敏/10项missing保留；18/18本地、7/7公开治理、168/168保护字节核对与公开历史复核通过，普通push及治理CI成功。原候选007/010顺延010/011，仍未批准；过程失败与完整分母见REPORT-007。
-- TASK-006：完成当前Ubuntu主机只读核实及唯一实施基线；26项字段、9项目标、17项条件、13条交接、24步范围和54个活跃链接检查通过，治理7/7；7项输入SHA、125项受保护文件及Git索引/HEAD不变。010/011、安装/服务启动、部署、压测、申报提交未执行；见docs/reports/REPORT-006-feasibility-gate.md。
-- TASK-005：完成15项范围与13条交接审计、文档准备010与本地演示011两份Proposed合同；治理7/7、5项输入SHA及49个本地链接检查通过。原可行性草案仅顺延006、未执行；010/011未获实施授权，准备稿成品/前端代码/部署均未开始。审计见docs/reports/REPORT-005-ljx-independent-work-audit.md。
-- TASK-004：本地最终HTML的22页主讲、7页附录及讲稿全部改写为面向老师的中文；保留29页、互动和科学状态。结构、29页Chromium显示与7项治理检查通过，尚未现场投屏；见docs/reports/REPORT-004-presentation-language.md。汇报包后续已入本地研究Git，TASK-007公开导出仍排除该包，仅公开治理合同/报告。
-- TASK-003：完成进展对照、中文仓库入口及同名public代码仓库同步；发现受限数值后采用独立公开历史，根快照CI通过。原表和私有来源不变，验收见docs/reports/REPORT-003-progress-public-repository.md。
-- TASK-002：实施项目名称与治理体系改造。逐文件结果见docs/reports/REPORT-002-governance-and-rename.md。
-- TASK-001：完成122项可用原件、3059候选资源本地自包含核验；11项工程检查通过，历史科学结论未复核。
+| 层/状态 | 当前事实 |
+| --- | --- |
+| 默认public | metadata/active.json默认public；22条真实待审案例索引、123条来源元数据、三个指定PDF随Git提供；全量研究record_count=null |
+| 完整本地原件 | 登记123，原本地工作区现存122；缺少1项OS元数据.DS_Store，非化学来源 |
+| 研究包原件 | 117项现存非模型证据；5项external_model不随包交付且非运行依赖，允许缺失但存在时仍核对SHA |
+| v3候选资源 | 3059条混合候选，不等于3059个实验；records.json原SHA不变 |
+| 候选案例 | 1主案例＋21历史反应结构命中＝22条，全部pending_teacher_review；human_review_status=not_performed |
+| 公开案例值 | 11项withheld_unlicensed；10项原缺失missing保留；原表在private历史副本保全 |
+| P1待审材料 | 历史登记12项本地private custody，37项未移入；本轮未重新盘点/迁移 |
+| research_evaluation | 历史研究候选与计算证据；不表示独立化学实验验证 |
+| teaching_case_review | 22/22待审，教师批准0；工程守卫/AI回复不代签 |
+| public_teaching_release | not_started；public_release=false，公开源码不代表教学服务验收 |
+| 三篇公开PDF | TASK-008 human_direct精确例外；metadata/public_sources.json唯一登记路径/SHA，PUBLIC_PDFS兼容加载；出版方rights_verified=false |
 
-## 冻结资产与禁止碰触
-- data/raw、data/derived、data/private的原始字节与第三方许可状态。
-- migrations中的迁移SHA和历史路径归属证据；更名只更新项目自身身份，不重写旧项目操作历史。
-- 参考快照的23个源文件保持哈希一致。
-- 未经教师或许可审批不得升格 case_admission 或发布/训练/评分真值。
-- 不引用外部工作区来满足活动程序执行条件。
+原始/派生/private其余字节不入公共Git。受限离线包不是公开数据集，不包含旧模型、private、密钥或Git历史，不自动发送/上传。内部交接仍按实际使用权限，不追认第三方版权。程序只读本项目相对路径，导入落点也限定项目内。
 
-## 未解决事项
-1. 校内截止时刻、签章/提交流程、具名课程负责人和授权待落实。推荐资格/日期和本机承载选择已确认，不再整体标未知；网络入口、资源配额、带宽/容量、服务/安全凭据仍待验。
-2. 异槲皮苷主案例身份、21条反应来源/方向与重复计数需教师核验。
-3. Pei2019、Zhang2015、Niu2024实际实验条件/可用定量数据及再分发权需逐篇核对。
-4. 学生六阶段过程交互与实时Qwen已可用；真实观测驱动的D1/色谱/分析、完整24步课程验收、评分、教师流程与公众教学发布仍未完成。
-5. 未明确公开的raw/derived/private仍不推送；原案例表与旧研究历史保存在本地private副本/归档分支。当前main使用公开脱敏表，可直接普通push，归档分支不公开。
+## 当前模块
 
-## 下一任务建议（未批准；历史候选编号执行时重新连续登记）
-- 文档准备：docs/tasks/proposals/TASK-010-ljx-document-preparation.md，五项沟通问法、6/7栏底稿、站会模板；估算0.75人日，无同事交接前置，未编制成品。
-- 本地演示：docs/tasks/proposals/TASK-011-ljx-local-demo.md，W-01/W-05完整演示范围及W-02/03/04局部；估算2.25人日，不接模型/真实数值、不部署；该历史提案未被整份批准；其中部分能力已由独立TASK-012重新定约实现，应按当前设计与验收评估，不套用旧范围。
-- 历史候选文档准备与完整本地演示仍可分别批准，执行时重新连续编号，不自动执行。实际沟通由LJX负责；T-Z1/T-Y1/T-H2接收、科学/教学审定、公众发布/定版另行定约。Git推送已由TASK-009恢复；当前LAN交互与模型按TASK-012完成。
+| 模块 | 当前能力与局限 |
+| --- | --- |
+| evidence | 默认公开案例/来源读取与三个PDF核验；显式research读取v3/核验历史原件，缺失或损坏明确失败 |
+| frontend/student | 三路线、装配、条件/对照、过程演练/计划样品、缺数据审查、反思、快照/比较/导出，六阶段连续操作 |
+| scripts/serve_lab.py | student限定资产及同源health/tutor；模型配置仅后端，不提供任意文件/命令工具 |
+| chemistry/experiment/teaching | scaffold；无教师审定的身份/反应系统校验、真实D1/色谱、完整24步课程或正式评分 |
+| platform/teacher | scaffold；无正式师生账户、审核工作流、成绩/公众教学服务 |
 
-## TASK-008既有交付
+输入条件均为学生方案，动画时间不代表反应速度；样品为计划标签，没有真实测量，observations=[]、quantitative_result=null。来源非数值摘要不是独立全文审定，模型不修改方案/创建批准。
 
-所有者已明确授权三篇PDF公开；仅精确路径/SHA例外，171项保护文件原字节保留。两处工作区作者已改julius及账号隐私邮箱；三篇PDF已公开，19/19本地、8/8公开治理、171/171保护字节及远端3/3文件核对通过，首次CI成功；git publish重复执行无空提交。候选文档准备010/本地演示011未批准。
+## 申报与未解决事项
 
-| 三篇PDF原件 | data/raw/literature/，PUBLIC_PDFS精确SHA例外，human_direct公开；rights_verified=false，教师审核不变 |
+- 所有者确认推荐资格、拟用化学生物学实验课程、校内2026-10-27截止及内部10-26定版；具体时刻、签章/提交安排和具名负责人待补。
+- 异槲皮苷主案例身份、21命中的来源/方向/重复，以及Pei2019、Zhang2015、Niu2024条件/定量观测/再分发权限仍待逐条审定。
+- 工程过程演练已可用；真实观测驱动仿真、分析、教师量规、完整24步、公众教学发布尚未完成。
+- 2026-10-18主机/共享资源快照和规划预算仅作历史实施输入，当前未重测容量/带宽/并发或实际跨物理设备/主机开机。唯一基线docs/policy/ilab-2026/readiness-evidence-2026.md。
+- 三名成员的实际设备/账号与真人验收未获得回执；研究包已经本地生成/新克隆实测，不声称已经发给成员或成员已经运行。
+- 原研究历史保存在本地codex/archive-research-20261018及已核验bundle；35项历史汇报/附件本地保留，不混入公开父链。
+- 历史文档准备/完整演示提案保留proposals目录；未被整份批准，不因本轮修复自动实施。后续任务须使用新的连续编号。
 
-## TASK-009当前事实
+## 事实入口
 
-旧研究HEAD eb82c66完整保存在codex/archive-research-20261018和已verify的bundle中。35项本地文件恢复原路径，原案例表字节保存在data/private/research-history-20261018/case_admission.csv；当前tracked表采用远端原有脱敏表示。原命令及直接git push均实际成功，新提交远端一致、差异0/0；19/19本地与8/8公开治理通过、171项保护字节完整保全，首次修复CI成功，见REPORT-009。
-
-## TASK-010历史范围
-
-本轮human_direct仅批准今天的网站结构与导航骨架；不等于批准旧候选文档准备010或完整本地演示011。原候选文件名保留历史定位，实际执行须按下一正式编号重排。本机运行仅需Python标准库静态服务，student目录全部自包含；启动/停止见frontend/student/README.md。观测为空、结果null，案例/来源/许可状态未改，三个状态门均不晋级。
-
-## TASK-011历史范围
-
-局域网托管已由所有者直接批准，入口/启停/回滚在docs/operations/lan-site.md唯一维护；模板和安装器只维护本项目用户服务，不改其它端口、网卡、路由、防火墙或账户Linger。当前原型内容保持TASK-010字节，研究/教师/公众教学三门不晋级。历史候选完整演示仍未批准。
-
-## TASK-012当前事实
-
-所有者直接授权重建并提供已有Qwen服务。原六展示页已变为实验台/实验记录两入口，六阶段形成过程操作闭环。修改路线、装配或条件会使相应下游样品/结论失效；自动保存、损坏记录保全、明确重置与最多12个快照已实施。状态只存在当前浏览器源，两个LAN地址不自动同步；没有账户/跨设备服务。
-
-模型通过本项目标准库后端调用，配置仅data/private/runtime/tutor.json且0600，未入Git、不下发浏览器。学生问题和当前方案按请求发送，真实模型回复与证据守卫区分。模型不会修改方案、生成教师批准或作为观测。
-
-三路线素材为非数值候选摘要，材料匹配与输入校验是工程规则；动画不代表反应速度，样品为计划标签，不提供虚构产率/色谱/正式成绩。没有另一个物理客户端或真正主机重启/课程试教验证。当前工作区未提交内容包含TASK-010/011/012；源原件、案例注册表与三审核门保持不变。
+[TASK-013](docs/tasks/TASK-013-collaboration-ready.md) / [REPORT-013](docs/reports/REPORT-013-collaboration-ready.md)维护本次验收；[REPORT-012](docs/reports/REPORT-012-interactive-workbench.md)保存原LAN/实时AI历史验收；其余历史见docs/reports。STATE仅保存当前事实，里程碑见PROGRESS。

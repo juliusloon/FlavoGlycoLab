@@ -3,7 +3,7 @@
 本文件是当前职责与工件归属规范。当前已实现与计划内容必须分开；不存在的接口不被描述成已运行。
 
 ## 当前基线
-日期：2026-10-19（TASK-012更新）。TASK-001实现自包含历史证据池和标准库读取器，TASK-002建设命名与治理；TASK-003对照进展并建立独立公开代码快照。真实数据驱动的课程仿真、评分、师生身份和公众教学发布未实现；TASK-012在既有LAN托管上重建六阶段交互工作台，并接入服务器端Qwen辅导。所有路径相对于本项目根目录，受限私有原件不进入公开Git。
+日期：2026-10-20（TASK-013更新）。TASK-001实现自包含历史证据池和标准库读取器，TASK-002建设命名与治理；TASK-003对照进展并建立独立公开代码快照。真实数据驱动的课程仿真、评分、师生身份和公众教学发布未实现；TASK-012在既有LAN托管上重建六阶段交互工作台，并接入服务器端Qwen辅导。所有路径相对于本项目根目录，受限私有原件不进入公开Git。
 
 TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模块或科学/教学审核事实。
 
@@ -39,7 +39,7 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 
 | 所有者/模块 | 输入 | 输出 | 当前状态 | 约束 |
 | --- | --- | --- | --- | --- |
-| src/flavoglycolab/evidence/ | data/derived/v3/records.json, data/registries, metadata/active.json | 只读记录/来源登记、SHA核验与候选状态 | active local read-only | 不计算产率；拒绝工作区外路径 |
+| src/flavoglycolab/evidence/ | 默认data/registries及公开来源，research显式读取data/derived/v3/records.json，metadata/active.json | 只读记录/来源登记、SHA核验与候选状态 | active local read-only | 不计算产率；拒绝工作区外路径 |
 | src/flavoglycolab/chemistry/ | 候选分子、结构与原始文献 | 结构身份、糖连接/反应方向/角色校验 | scaffold | 需来源证据与人工复核 |
 | src/flavoglycolab/experiment/ | 教师审定的条件与数值 | D1仿真状态、取样与结果反馈 | scaffold | 无经准入观测不得合成数值 |
 | src/flavoglycolab/teaching/ | 课程步骤、案例与人工教学决议 | 学习进程、评分依据、教学指导 | scaffold | 24步仍属规划 |
