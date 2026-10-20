@@ -18,12 +18,16 @@ def digest(path):
 
 
 class MigrationIntegrityTest(unittest.TestCase):
-    def test_snapshot_23_unique_and_all_actual_hashes(self):
+    def test_snapshot_manifest_and_public_file_hashes(self):
         with (ROOT/"migrations/mapping.csv").open(encoding="utf-8-sig",newline="") as f:
             rows=[r for r in csv.DictReader(f) if r["decision"]=="CORE_REUSE"]
         self.assertEqual(len(rows),24)  # LICENSE also copied to top-level
         self.assertEqual(len(set(r["source_relative_path"] for r in rows)),23)
-        for row in rows:
+        public_rows = [r for r in rows if r["git_tracked"] == "true"]
+        self.assertEqual(len(public_rows),18)
+        # Six private snapshot payloads remain historical evidence, not clone dependencies.
+        self.assertEqual(len(rows) - len(public_rows),6)
+        for row in public_rows:
             with self.subTest(path=row["target_relative_path"]):
                 p=ROOT/row["target_relative_path"]
                 self.assertTrue(p.is_file())
