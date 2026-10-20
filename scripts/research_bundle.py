@@ -13,7 +13,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
-from flavoglycolab.evidence.catalog import EvidenceCatalog, sha256_file
+from flavoglycolab.evidence.catalog import EvidenceCatalog, configure_console, sha256_file
 
 MANIFEST = 'bundle-manifest.json'
 
@@ -167,6 +167,7 @@ def import_bundle(root, bundle, expected_sha):
 
 
 def main():
+    configure_console()
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     export = sub.add_parser('export', help='提供方在数据齐全的本地工作区生成包，不自动发送')

@@ -1,9 +1,11 @@
 """Public mode independence and explicit research failures in an isolated workspace."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
+import subprocess
 import tempfile
 import unittest
 
@@ -71,6 +73,22 @@ class ProfileTests(unittest.TestCase):
     def test_unknown_profile_rejected(self):
         with self.assertRaisesRegex(ValueError, 'Unknown'):
             EvidenceCatalog(self.root, 'automatic-fallback')
+
+    def test_cli_output_survives_windows_legacy_pipe_encoding(self):
+        env = {**os.environ, 'PYTHONIOENCODING': 'cp1252', 'PYTHONUTF8': '0',
+               'PYTHONPATH': str(ROOT / 'src')}
+        commands = [
+            [sys.executable, str(ROOT / 'scripts/dev.py'), 'doctor'],
+            [sys.executable, str(ROOT / 'scripts/research_bundle.py'), '--help'],
+            [sys.executable, '-m', 'flavoglycolab.evidence.catalog', '--workspace', str(self.root)],
+        ]
+        for command in commands:
+            result = subprocess.run(command, cwd=ROOT, env=env, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8', errors='replace'))
+            self.assertTrue(result.stdout.decode('utf-8'))
+        result = subprocess.run(commands[-1] + ['--profile', 'research'], cwd=ROOT, env=env, capture_output=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('research_bundle.py import', result.stdout.decode('utf-8'))
 
 
 if __name__ == '__main__':

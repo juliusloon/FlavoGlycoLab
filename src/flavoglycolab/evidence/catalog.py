@@ -7,9 +7,17 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import sys
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
+
+
+def configure_console() -> None:
+    """Keep Chinese CLI output valid when Windows redirects a legacy-codepage pipe."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
 
 
 def sha256_file(path: Path) -> str:
@@ -119,6 +127,7 @@ class EvidenceCatalog:
 
 
 def main() -> None:
+    configure_console()
     parser = argparse.ArgumentParser(description="公开案例索引（默认）或可选本地研究证据核验")
     parser.add_argument("--workspace", default=".")
     parser.add_argument("--profile", choices=("public", "research"))

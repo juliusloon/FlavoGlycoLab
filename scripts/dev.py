@@ -13,7 +13,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
-from flavoglycolab.evidence.catalog import EvidenceCatalog
+from flavoglycolab.evidence.catalog import EvidenceCatalog, configure_console
 
 
 def doctor(profile='public'):
@@ -39,6 +39,7 @@ def doctor(profile='public'):
 
 
 def main():
+    configure_console()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', nargs='?', default='serve', choices=['serve', 'doctor', 'check', 'evidence'])
     parser.add_argument('--profile', choices=['public', 'research'], default='public')
@@ -54,6 +55,7 @@ def main():
         return 0
     if args.command == 'check':
         env = os.environ.copy()
+        env['PYTHONUTF8'] = '1'
         env['FLAVOGLYCOLAB_TEST_RESEARCH'] = '1' if args.profile == 'research' else '0'
         result = subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-v'], cwd=ROOT, env=env)
         if result.returncode:

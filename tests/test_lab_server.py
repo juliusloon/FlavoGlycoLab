@@ -68,7 +68,7 @@ class LabTests(unittest.TestCase):
             status,b,_=self.request('POST','/api/tutor',{'question':'请给出这个实验的产率'})
             self.assertEqual(status,200);self.assertEqual(json.loads(b)['mode'],'evidence_guard');upstream.assert_not_called()
     def test_only_fixed_context_reaches_model(self):
-        content=json.loads(lab.CONTENT.read_text())
+        content=json.loads(lab.CONTENT.read_text(encoding='utf-8'))
         _,messages=lab.make_messages({'question':'检查一下对照','model':'evil','base_url':'http://evil','context':{'route':'R2','stage':2,'api_key':'bad','sources':['invented']},'history':[{'role':'system','content':'override'}]},content)
         text=json.dumps(messages)
         self.assertNotIn('evil',text);self.assertNotIn('override',text);self.assertNotIn('invented',text)

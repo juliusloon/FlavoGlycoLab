@@ -29,7 +29,7 @@ SYSTEM = '''你是FlavoGlycoLab实验导师，使用简体中文，回复简短�
 
 
 def read_config():
-    data = json.loads(CONFIG.read_text())
+    data = json.loads(CONFIG.read_text(encoding='utf-8'))
     if not all(isinstance(data.get(k), str) and data[k] for k in ('base_url', 'model', 'api_key')):
         raise ValueError('Invalid tutor configuration')
     return data
@@ -160,7 +160,7 @@ class LabHandler(SimpleHTTPRequestHandler):
         try:
             payload = json.loads(self.rfile.read(length))
             if not isinstance(payload,dict): raise ValueError('请求格式错误。')
-            content = json.loads(CONTENT.read_text())
+            content = json.loads(CONTENT.read_text(encoding='utf-8'))
             question, messages = make_messages(payload, content)
         except (ValueError,TypeError,UnicodeError):
             self.reply(400, {'error':'问题或实验上下文格式错误。'}); return
