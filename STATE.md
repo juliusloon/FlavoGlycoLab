@@ -1,21 +1,22 @@
 # FlavoGlycoLab 当前状态
 
-截至2026-10-20。TASK-013已完成本地协作交付验证，正在同步GitHub并验证跨平台CI；最终远端状态见REPORT-013。本机已完成的TASK-010/011/012实验台已纳入公开提交，默认public不依赖私有数据或所有者服务器。当前仍是过程演练，真实观测、数值仿真、完整课程评分与公众教学发布未实现。
+截至2026-10-20。TASK-013已完成协作交付并同步GitHub main；Windows/macOS/Linux检查及Linux浏览器CI四个job全部通过，远端结果见REPORT-013。本机已完成的TASK-010/011/012实验台已纳入公开提交，默认public不依赖私有数据或所有者服务器。当前仍是过程演练，真实观测、数值仿真、完整课程评分与公众教学发布未实现。
 
 ## 运行与协作
 
 | 项 | 当前事实 |
 | --- | --- |
 | 代码仓库 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public；main沿用现有公开父链 |
-| 当前TASK | TASK-013：团队克隆/运行与分层数据交付；本地验收通过，远端/CI验证中 |
+| 当前TASK | 最近完成TASK-013：团队克隆/运行与分层数据交付；无在执行TASK |
 | 本地入口 | `python scripts/dev.py`，默认127.0.0.1:8767，Python 3.10+标准库，无需Conda/npm/GPU/私有数据/模型密钥 |
-| 默认工程检查 | `python scripts/dev.py check`；45项Python中42通过、3项研究资产明确跳过；Node可用时9项状态测试 |
-| 本地干净克隆验收 | Python 3.12.3；默认检查通过，三路线×三视口浏览器84项，11项HTTP资产/私有路径检查通过，未配置AI可操作并保留明确报错 |
-| 可选research | 导入离线包后显式选择；新克隆全量45项Python、9项JS、3059记录及117必需现存原件/SQLite核验通过 |
+| 默认工程检查 | `python scripts/dev.py check`；46项Python中43通过、3项研究资产明确跳过；Node可用时9项状态测试 |
+| 本地干净克隆验收 | Python 3.12.3；默认46项（43通过/3研究skip），三路线×三视口浏览器84项，11项HTTP资产/私有路径检查通过，未配置AI可操作并保留明确报错 |
+| 可选research | 导入离线包后显式选择；新克隆全量46项Python、9项JS、3059记录及117必需现存原件/SQLite核验通过 |
 | 研究包 | 121文件＝117非模型原件＋4项v3派生；首次导入121、重复导入0/相同121。包约12.3 MB，SHA与本地路径见REPORT-013；未自动发送给成员 |
 | 实时AI | 可选本机private/runtime/tutor.json；无配置不阻断流程；原LAN的Qwen接入历史验收见REPORT-012，当前未复做实时模型测量 |
 | 练习保存 | 当前浏览器/站点源localStorage；最多12快照，可比较并导出；无账号或跨设备同步 |
-| 原LAN托管 | flavoglycolab-lan.service，8766；本轮只读状态active，未改服务/模型/网卡/防火墙；唯一说明docs/operations/lan-site.md |
+| 原LAN托管 | flavoglycolab-lan.service，8766；本轮只读状态active，未调整常驻配置/模型/网卡/防火墙；唯一说明docs/operations/lan-site.md |
+| 跨平台CI | 功能提交f3826d6，Actions39369460723四个job success；三平台Python/JS/安装CLI与Linux浏览器84项通过 |
 | 数据/来源保护 | 本轮172项原件/派生/private/登记/迁移/参考文件SHA不变 |
 | 日常Git | 当前main可普通提交/push；所有者远端public，成员克隆通常origin；不要推送旧研究归档分支 |
 

@@ -1,9 +1,9 @@
 # REPORT-013：协作者克隆即可运行与分层数据交付
 
 ## 对应任务
-- TASK：[TASK-013-collaboration-ready.md](../tasks/TASK-013-collaboration-ready.md)。状态：In Progress（本地验收完成，远端同步/CI验证中）。
+- TASK：[TASK-013-collaboration-ready.md](../tasks/TASK-013-collaboration-ready.md)。状态：Completed（工程协作交付）。
 - 日期：2026-10-20；授权来源：human_direct。所有者要求直接修复三位成员pull后无法运行、缺私有数据且被引向服务器的问题。
-- 基线main / 279d76b；实现分支codex/collaboration-ready；实现提交e4239e8、快照测试修复42fc987，最终远端事实在同步后更新。
+- 基线main / 279d76b；实现分支codex/collaboration-ready；实现提交e4239e8、快照测试修复42fc987、验收记录d45353a、Windows编码修复f3826d6；均已普通推送public/main。结果提交包括上述实现及承载本报告的最终文档提交；不在文件内编造自身SHA。
 - 执行者Cano；验收性质agent_task_audit，human_reviewed=false，不代表三位成员或教师的真人验收。
 
 ## 结果与实际操作
@@ -35,7 +35,7 @@
 | scripts/export_public_repository.py | 读取PDF清单；精确原创装置图例外，其余载荷/凭据守卫保留 |
 | frontend/student/index.html、app.js、lab-state.js、ui.js、styles.css、views/workbench.js、content/demo-content.json、assets/lab-bench.png、package.json、README.md | 已完成六阶段过程实验台完整交付；更新运行与QA文档，不重建产品设计 |
 | package.json、package-lock.json、.gitignore | 固定Playwright1.64.1作为可选QA依赖；忽略node_modules/venv/构建物 |
-| tests/test_data_profiles.py、tests/test_research_bundle.py | 6项配置/缺失/损坏/隔离与8项离线包正常/幂等/失败/冲突/链接测试 |
+| tests/test_data_profiles.py、tests/test_research_bundle.py | 7项配置/缺失/损坏/隔离/Windows编码与8项离线包正常/幂等/失败/冲突/链接测试 |
 | tests/test_standalone.py、tests/test_migration_integrity.py、tests/test_governance.py | 默认公开分母、显式3项研究检查、18公开快照文件核验、ADR连续性 |
 | tests/test_lab_server.py、tests/test_workbench_state.mjs、tests/test_workbench_browser.mjs、tests/test_frontend_scaffold.mjs | 纳入已有服务/状态/浏览器守卫；默认无AI、可移植依赖定位、旧入口兼容、Windows无符号链接权限时明确skip |
 | .github/workflows/governance.yml | Windows/macOS/Linux默认运行与可选包CLI，Linux无密钥浏览器流程 |
@@ -58,13 +58,13 @@
 | AC3 public证据 | 3/3公开PDF固定SHA、22/22待审案例，record_count=null；无研究资产不影响public。缺research明确退出1，给出导入命令，不用空列表冒充。clean-check.log、clean-http-and-missing-research.json |
 | AC3 研究包交接 | 导出121文件，12,294,560字节；新research-clone首次导入121、第二次0新增/121相同。research-export.json、research-import.json、research-reimport.json |
 | AC3 导入后研究核验 | records=3059；来源registered=123/present=117/optional_absent=5/OS缺失1/errors=[]；SQLite只读PRAGMA integrity_check=ok。research-evidence.json、imported-research-check.log |
-| AC4 默认Python | 干净克隆45项：42通过、3项研究资产明确skip；不把skip称作已核验。clean-check.log |
-| AC4 显式研究Python | 原工作区及新导入研究克隆均45/45通过，无skip。research-check.log、imported-research-check.log |
+| AC4 默认Python | GitHub重新克隆最终代码46项：43通过、3项研究资产明确skip；不把skip称作已核验。github-clone-check.log；旧clean-check.log是增加编码回归前的45项 |
+| AC4 显式研究Python | 最终代码在原工作区及新导入研究克隆均46/46通过，无skip。research-check-final.log、imported-research-check-final.log |
 | AC4 JS状态 | 9/9通过，默认与research检查均包含；流程/快照/恢复/无观测导出。对应check.log |
-| AC4 数据边界 | 6项profile＋8项研究包测试均通过；覆盖错整包SHA、错文件SHA、未知/越界/private路径、链接/重复/缺失、已有冲突及相同包幂等；拒绝分支未写入目标原件 |
+| AC4 数据边界 | 7项profile＋8项研究包测试均通过；覆盖错整包SHA、错文件SHA、未知/越界/private路径、链接/重复/缺失、已有冲突及相同包幂等；拒绝分支未写入目标原件 |
 | AC5 字节保护 | baseline.json登记的172/172 SHA一致；含raw/derived/private/登记/migrations/reference，不输出私有内容。protected-integrity.json |
 | AC5 公开导出 | e4239e8已提交树147文件通过原公开导出与凭据/载荷守卫；已脱敏11值、原missing10保留，案例表原/导出SHA相同。public-export.json |
-| AC6 远端/跨平台 | 正在同步并等待GitHub Actions；此行在真实结果返回后更新 |
+| AC6 远端/跨平台 | 已推送public/main；GitHub重新clone默认检查46项、JS9项通过。f3826d6的[Actions39369460723](https://github.com/juliusloon/FlavoGlycoLab/actions/runs/39369460723)四个job全部success：Ubuntu/Python3.10、Windows/Python3.12、macOS/Python3.12默认检查＋安装CLI；Linux三路线/三视口浏览器84项。github-ci-second.json、ci-success.log、github-clone-check.log |
 
 证据均位于本地temp/task-013，不随公共Git交付；可复现命令与守卫随Git提供。另三个成员的实体机器/浏览器和真人回执未测，不把CI或同主机独立克隆当其本人测试。
 
@@ -79,13 +79,16 @@
 - 实现阶段初次apply_patch因同一文件delete/add重复目标被工具拒绝，未产生文件改动，分步完成；不影响来源字节。
 - 使用已有Chromium可执行文件通过环境变量验证，而测试默认路径已移除个人home与历史temp。浏览器QA依赖固定于npm lock，运行依赖仍为标准库。
 
+- 首次跨平台CI（d45353a，Actions39369253951）Linux/浏览器/macOS通过，Windows因重定向终端cp1252无法输出中文失败。修复CLI stdout/stderr为UTF-8、子进程UTF-8模式及服务JSON显式UTF-8读取，新增强制cp1252重定向的真实CLI回归（doctor/研究包帮助/默认证据/缺研究错误）。f3826d6重跑四个job全部通过，不用仅在CI设置环境变量掩盖成员本地问题。ci-first-failed.log、github-ci-first.json、ci-success.log保存失败与修复证据。
+- 最后复核172项保护SHA及33个活跃文档相对链接通过；公开父链233个可达blob均通过载荷/凭据守卫，历史案例表一直保留11项脱敏/10项missing。对应final-local-verification.json、reachable-history-audit.json。该可达历史审查绑定d45353a，后续编码/报告变更仍逐文件审核，不把旧计数当最终全量blob数。
+
 ## 数据、许可与审核门
 
 research_evaluation=历史候选，无本轮独立化学实验证明；teaching_case_review=22/22 pending_teacher_review，human_reviewed=false；public_teaching_release=not_started，public_release=false。所有数值结果null，模型未配置不冒充成功。公开PDF仍是TASK-008所有者范围决定，rights_verified=false；本轮未新增第三方原件公开或恢复脱敏值。研究包工具不授予版权、不向公共服务提供受限材料。
 
 ## 遗留风险、仓库与CI
 
-GitHub CI和最终提交/远端SHA待同步后回填；不执行force push，不推归档分支。原LAN服务本轮只读is-active=active，不做网络/模型/部署变更；跨物理设备、真实重启/容量、成员真实环境与课程试教仍未测。实际实时AI连接是历史TASK-012证据，本轮默认QA不调用真实模型，其失败fixture只验证界面。
+当前main已经普通推送；功能提交f3826d6的跨平台/浏览器CI四个job全成功，最终文档闭环提交后正常推送；未force push、未推归档分支。最终HEAD可从GitHub main或本报告所在提交读取。原LAN服务本轮只读is-active=active，不做网络/模型/部署变更；跨物理设备、真实重启/容量、成员真实环境与课程试教仍未测。实际实时AI连接是历史TASK-012证据，本轮默认QA不调用真实模型，其失败fixture只验证界面。
 
 ## 建议的下一TASK
 
