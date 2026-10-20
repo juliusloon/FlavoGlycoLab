@@ -10,7 +10,7 @@
 ## 实际结果
 
 1. **第6、7栏准备稿完成。** 对照本地附件1的word/document.xml第279—382段，6栏14项、7栏12项合计26/26；每项有可填文案/事实或待补标记。当前/拟建架构两图、六工具6/6真实状态、ai_data三字段3/3的计数/重试/未知语义齐全。原表路径/SHA在本地source-form-provenance.json，第三方DOCX原件没有改写或公开。
-2. **实际Chrome/Edge走查与录屏完成。** 官方Chrome155.0.8059.84和Edge155.0.4283.62，Ubuntu上各87/87完整过程检查；各3视口/3路线，页面正常错误0、外部请求0。现有LAN每品牌8/8真实AI与无数据守卫检查，共2次真实模型回复、2次直接证据拒绝，AI没有改写学生方案。源码app/状态机/服务不需产品修复。
+2. **实际Chrome/Edge走查与录屏完成。** 官方Chrome155.0.8059.84和Edge155.0.4283.62，Ubuntu上各87/87完整过程检查；各3视口/3路线，页面正常错误0、外部请求0。现有LAN每品牌8/8真实AI与无数据守卫检查，主验收共2次真实模型回复、2次直接证据拒绝，另补两品牌各1次拒绝提示可见性截图（合计4次直接守卫，无额外模型请求），AI没有改写学生方案。源码app/状态机/服务不需产品修复。
 3. **交接/接入准备完成。** 13条原交接加LJX技术稿共14项，四类核心交付有字段/来源/缺项/接入合同；站会15分钟议程与会后槽位已准备。未收到同事材料的行仍“未登记接收”，未召开/未签收不编造。校内办理职责更正为两位指导老师。
 
 ## 改动文件与职责
@@ -40,7 +40,7 @@
 | AC3 品牌身份 | 官方Chrome155.0.8059.84、Microsoft Edge155.0.4283.62，包URL/大小/SHA、version stdout/stderr及UA保留。Edge包另与官方Packages索引SHA比对。browser-packages.json、browsers/edge-package.json；仅项目temp解压，没有系统安装 |
 | AC3 无私有配置流程 | 每品牌87/87；1536×1024/R1、768×1024/R3、375×812/R2；正常页面错误0/外部请求0。chrome/results.json、edge/results.json及各目录PNG/WebM。87＝原84项＋3视口UA身份检查 |
 | AC3 流程与异常 | 路线/装配/条件/对照/单位/取样/无观测/反思到记录可走通；错材料/错取样阻断，刷新恢复、上游失效、快照/比较/导出、取消重置、损坏备份与内容恢复通过。模拟模型502和内容503是独立fixture，不假冒真实模型或正常错误统计 |
-| AC3 LAN真实AI | 每品牌8/8，共16检查；127.0.0.1:8766实际已有服务、mode=model真实回复，定量请求mode=evidence_guard，学生方案不变，页面错误/外部请求0。chrome-live/results.json、edge-live/results.json、live-ai-check.log及PNG/WebM；只做小量功能检查，不测容量 |
+| AC3 LAN真实AI | 每品牌8/8，共16检查；127.0.0.1:8766实际已有服务、mode=model真实回复，定量请求mode=evidence_guard，学生方案不变，页面错误/外部请求0。chrome-live/results.json、edge-live/results.json、live-ai-check.log及PNG/WebM；只做小量功能检查，不测容量；补充两品牌各1次拒绝提示可见性检查见guard-visual-check.json与evidence-guard-visible.png |
 | AC3 录屏与图像 | 每品牌3段完整路线WebM、3个H.264/25fps MP4和1个三路线拼接MP4；真实AI另各1段WebM/MP4。最终验收引用6段流程＋2段AI的8个原始会话视频、10个MP4（含2拼接总览），ffprobe校验可播放且时长>1秒，SHA/大小/尺寸见video-manifest.json、live-video-manifest.json |
 | AC3 视觉复核 | 同轮查看Chrome1536-records及Edge375-analysis，记录/缺数据界面清楚、三视口自动溢出检查通过；实际AI回复/守卫独立截图。没有改视觉设计，不做概念图或像素等价声明 |
 | AC4 接收合同 | H01—H14精确14/14；四类核心合同覆盖文献、案例、24步和脚本，接入层/责任/版本/缺项明确；所有未到件/未开会保持未登记。document-verification.json及三份准备文件 |
@@ -72,9 +72,9 @@ research_evaluation仍为历史研究候选；teaching_case_review仍22/22 pendi
 
 ## 遗留风险、仓库与CI
 
-本轮未做实体Windows/macOS/手机、Safari/Firefox、带宽/负载/排队/长稳或真实主机重启；未做老师/成员真人签收、完整课程/正式评分、资质或公众服务验收。技术稿后续需同事的案例/教学/文献输入及两位老师负责的校内依据。原LAN/systemd/模型配置没有调整。
+本轮未做实体Windows/macOS/手机、Safari/Firefox、带宽/负载/排队/长稳或真实主机重启；未做老师/成员真人签收、完整课程/正式评分、资质或公众服务验收。技术稿后续需同事的案例/教学/文献输入及两位老师负责的校内依据。实际模型答复偶有control等内部字段名，记录为后续辅导用语改进项；本次仅确认真实回复与证据拒绝，不将模型文本审为科学/教学定稿。原LAN/systemd/模型配置没有调整。
 
-提交及同步在全部本地核验后普通执行；不force push、不推旧研究归档分支。当前GitHub CI沿用TASK-013的三平台公开检查/默认浏览器流程，不能冒充本轮品牌包QA的另一份独立人审证据。
+实现提交204b232已普通同步public/main，远端/本地一致且工作树清洁；本报告闭环补充随后正常提交同步。公开导出153文件通过、原11项脱敏/10项missing保留；不force push、不推旧研究归档分支。[Actions39378915182](https://github.com/juliusloon/FlavoGlycoLab/actions/runs/39378915182)绑定204b232，Windows/macOS/Ubuntu公开检查及默认浏览器共4个job全部success，证据github-ci.json。该CI不能冒充本轮品牌包QA的另一份独立人审证据。
 
 ## 建议的下一TASK
 

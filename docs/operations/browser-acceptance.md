@@ -22,7 +22,7 @@ TASK-014，2026-10-20。实际品牌流程和LAN实时AI检查已通过，录像
 
 每品牌覆盖1536×1024/R1、768×1024/R3、375×812/R2；87项是既有84项加三个实际UA身份核验。各有三段完整过程录像，桌面为酶促路线、平板为工程菌、手机为选择性水解。记录阶段的刷新/保存/上游修改失效/取消重置/保留历史/比较/JSON导出均实际操作。3个视口是工程模拟，不能写成3台实体客户端。
 
-LAN检查使用http://127.0.0.1:8766/现有服务：两品牌各一次真正上游回复mode=model、一次无数据定量请求mode=evidence_guard；学生方案未被AI改写，正常页面无控制台错误或外部请求。两次真实上游调用和两次直接守卫是本轮小样QA事实，不等于已实现全平台ai_data汇总。没有读取或输出密钥，不变更LAN/模型配置。
+LAN检查使用http://127.0.0.1:8766/现有服务：两品牌各一次真正上游回复mode=model、一次无数据定量请求mode=evidence_guard；学生方案未被AI改写，正常页面无控制台错误或外部请求。主验收的两次真实上游调用和两次直接守卫是小样QA事实；另各执行一次仅拒绝分支的可见性截图检查（新增两次直接守卫、无新增模型请求），不等于已实现全平台ai_data汇总。没有读取或输出密钥，不变更LAN/模型配置。
 
 | QA项目 | 结果与证据 |
 | --- | --- |
@@ -33,7 +33,7 @@ LAN检查使用http://127.0.0.1:8766/现有服务：两品牌各一次真正上�
 | 截图复核 | 同轮查看Chrome1536-records与Edge375-analysis，记录/缺数据展示清楚；非视觉重设计 |
 | 录像 | 两品牌分别三条路线的原始WebM、逐路线MP4与拼接总览；真实AI另各一段WebM/MP4。录像为代理逐步操作，不冒充真人签收或申报成片 |
 
-本地证据根temp/task-014：chrome/results.json、edge/results.json、chrome-live/results.json、edge-live/results.json；各目录PNG；chrome-walkthrough.mp4、edge-walkthrough.mp4、chrome-live-ai.mp4、edge-live-ai.mp4。逐片文件名、SHA、时长/分辨率/帧率由video-manifest.json及live-video-manifest.json记录；原件保留，不将录像/浏览器包上传公共Git。
+本地证据根temp/task-014：chrome/results.json、edge/results.json、chrome-live/results.json、edge-live/results.json、guard-visual-check.json；各目录PNG（拒绝提示完整可见的截图为evidence-guard-visible.png）；chrome-walkthrough.mp4、edge-walkthrough.mp4、chrome-live-ai.mp4、edge-live-ai.mp4。逐片文件名、SHA、时长/分辨率/帧率由video-manifest.json及live-video-manifest.json记录；原件保留，不将录像/浏览器包上传公共Git。
 
 首轮录屏遇到Playwright专用ffmpeg缺失，随后在本项目pw-runtime补齐；另一次隔离预览随父shell退出导致连接拒绝，已用持续exec会话承载并复测。错误日志保留在初始*-initial-*文件，不计为产品流程失败。为便于逐帧审阅，录屏模式默认每次驱动操作留120ms间隔，可用QA_SLOW_MO_MS调整；不把该延时视为产品性能测量。
 

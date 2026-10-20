@@ -16,7 +16,7 @@
 | 实时AI | 可选本机private/runtime/tutor.json；无配置不阻断流程；原LAN的Qwen接入历史验收见REPORT-012，TASK-014实际完成两品牌各1次真实上游答复和1次无数据守卫，小量QA不当容量测量 |
 | 练习保存 | 当前浏览器/站点源localStorage；最多12快照，可比较并导出；无账号或跨设备同步 |
 | 原LAN托管 | flavoglycolab-lan.service，8766；本轮只读状态active，未调整常驻配置/模型/网卡/防火墙；唯一说明docs/operations/lan-site.md |
-| 跨平台CI | 功能提交f3826d6，Actions39369460723四个job success；三平台Python/JS/安装CLI与Linux浏览器84项通过 |
+| 跨平台CI | 最近技术准备提交204b232，Actions39378915182四个job success；三平台Python/JS/安装CLI与Linux浏览器84项通过 |
 | 数据/来源保护 | 本轮172项原件/派生/private/登记/迁移/参考文件SHA不变 |
 | 日常Git | 当前main可普通提交/push；所有者远端public，成员克隆通常origin；不要推送旧研究归档分支 |
 
