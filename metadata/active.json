@@ -1,21 +1,31 @@
 {
-  "schema_version": 2,
   "relative_path_policy": "workspace_root",
-  "resource_version": "v3",
-  "records": "data/derived/v3/records.json",
-  "records_sha256": "448dbbdcd511df0aade80903d33abc34707fdcc2d529d3ecb29dbae94898192e",
   "source_registry": "data/registries/source_registry.csv",
-  "source_files_base": ".",
-  "source_count_declared": 123,
-  "source_copies_present": 122,
-  "missing_nonchemical_source": [
-    {
-      "path": "data/raw/legacy/import_raw/.DS_Store",
-      "reason": "OS metadata absent; not chemistry source"
-    }
-  ],
   "scientific_status": "research_candidate",
   "teaching_case_review": "pending_teacher_review",
   "public_release": false,
-  "notes": "No external source repo paths. Private sources, model weights and experimental reports are NOT approved for redistribution."
+  "schema_version": 3,
+  "default_profile": "public",
+  "case_registry": "data/registries/case_admission.csv",
+  "public_sources": "metadata/public_sources.json",
+  "profiles": {
+    "public": {
+      "resource_version": "public-metadata-v1",
+      "records": null,
+      "description": "随Git分发的22条待审索引及三个指定PDF，无全量研究记录或审定观测。"
+    },
+    "research": {
+      "resource_version": "v3",
+      "records": "data/derived/v3/records.json",
+      "records_sha256": "448dbbdcd511df0aade80903d33abc34707fdcc2d529d3ecb29dbae94898192e",
+      "source_count_declared": 123,
+      "optional_source_roles": [
+        "external_model"
+      ],
+      "missing_nonchemical_source": [
+        "data/raw/legacy/import_raw/.DS_Store"
+      ],
+      "description": "可选本地研究包，117项现存证据与v3；5项旧外部模型不是运行依赖。受限内容不进入公共Git。"
+    }
+  }
 }

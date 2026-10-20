@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "content_role": "交互界面的非数值候选路线与来源元数据，非教学或科学真值",
+  "planning_source": {
+    "source_id": "feasibility-20261015",
+    "source_path": "docs/research/FlavoRetro_FutureHealth_Feasibility_20261015.md",
+    "source_sha256": "27c67394e706409634f8ae3fc3ad9130eb3757faaac97d56af3496f14fc9f073",
+    "source_locator": "§6、§7.2、§8",
+    "quality_status": "规划材料",
+    "review_status": "pending_teacher_review"
+  },
+  "case": {
+    "name": "异槲皮苷",
+    "english_name": "Isoquercitrin",
+    "review_status": "pending_teacher_review",
+    "identity_fields_status": "待交接分子身份与结构证据卡；本轮不填写SMILES/分子量"
+  },
+  "sources": [
+    {
+      "source_id": "Pei2019",
+      "label": "Pei 等 · 2019",
+      "doi": "10.1007/s10600-019-02712-9",
+      "source_path": "data/raw/literature/Synergistic Catalysis of Glycosyltransferase and Sucrose Synthase to Produce Isoquercitrin Through Glycosylation of Quercetin.pdf",
+      "source_sha256": "0820ef04fbf00fd72fa2f9e81c396e0fe8c4afddaa1151947bf500f92db5e67f",
+      "source_locator": null,
+      "quality_status": "逐项摘录与条件核验待交接",
+      "license_status": "出版方权利未核验",
+      "review_status": "pending_teacher_review",
+      "human_reviewed": false
+    },
+    {
+      "source_id": "Zhang2015",
+      "label": "Zhang 等 · 2015",
+      "doi": "10.1007/s10529-015-1792-6",
+      "source_path": "data/raw/literature/Biotransformation of rutin to isoquercitrin using recombinant α-l-rhamnosidase from Bifidobacterium breve.pdf",
+      "source_sha256": "26ef2ba07b43ffe53d18cdc1808b517c26137dfdc07fdb336ea3bf8a5d4e86a5",
+      "source_locator": null,
+      "quality_status": "逐项摘录与条件核验待交接",
+      "license_status": "出版方权利未核验",
+      "review_status": "pending_teacher_review",
+      "human_reviewed": false
+    },
+    {
+      "source_id": "Niu2024",
+      "label": "Niu 等 · 2024",
+      "doi": "10.1186/s12934-024-02390-5",
+      "source_path": "data/raw/literature/Combinatorial metabolic engineering of Bacillus subtilis enables the efficient biosynthesis of isoquercitrin from quercetin.pdf",
+      "source_sha256": "95f63a8c3d8a4d6d96fc9421eaae96297fc3e4c2f00c31f034b66cc7fbd22513",
+      "source_locator": null,
+      "quality_status": "逐项摘录与条件核验待交接",
+      "license_status": "出版方权利未核验",
+      "review_status": "pending_teacher_review",
+      "human_reviewed": false
+    }
+  ],
+  "routes": [
+    {
+      "id": "R1",
+      "name": "酶促糖基化",
+      "source_id": "Pei2019",
+      "substrate": "槲皮素",
+      "product": "异槲皮苷",
+      "system": "UGT 糖基化；蔗糖合酶参与供体再生",
+      "purpose": "酶体系与供体方案的主实验候选",
+      "status": "pending_teacher_review"
+    },
+    {
+      "id": "R2",
+      "name": "选择性水解",
+      "source_id": "Zhang2015",
+      "substrate": "芦丁",
+      "product": "异槲皮苷",
+      "system": "α-L-鼠李糖苷酶选择性水解",
+      "purpose": "比较反应方向与物料要求的候选路线",
+      "status": "pending_teacher_review"
+    },
+    {
+      "id": "R3",
+      "name": "工程菌转化",
+      "source_id": "Niu2024",
+      "substrate": "外加槲皮素",
+      "product": "异槲皮苷",
+      "system": "工程化枯草芽孢杆菌全细胞转化",
+      "purpose": "工程方案与产物积累限制的案例候选",
+      "status": "pending_teacher_review"
+    }
+  ],
+  "observations": [],
+  "quantitative_result": null,
+  "teacher_approved": false
+}

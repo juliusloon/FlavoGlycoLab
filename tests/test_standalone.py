@@ -1,5 +1,6 @@
 """FlavoGlycoLab own data contracts: no external checkout required."""
 import csv
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -17,12 +18,11 @@ class StandaloneCatalogTest(unittest.TestCase):
     def test_local_active_manifest(self):
         m = self.cat.active
         self.assertEqual(m["relative_path_policy"], "workspace_root")
-        for key in ("records", "source_registry"):
+        self.assertEqual(self.cat.profile, "public")
+        self.assertIsNone(m["records"])
+        for key in ("source_registry", "case_registry", "public_sources"):
             self.assertFalse(Path(m[key]).is_absolute())
             self.assertTrue(self.cat.resolve_local(m[key]).exists())
-
-    def test_record_count(self):
-        self.assertEqual(len(self.cat.records()), 3059)
 
     def test_22_cases_are_unreviewed(self):
         rows = self.cat.cases()
@@ -34,10 +34,9 @@ class StandaloneCatalogTest(unittest.TestCase):
     def test_registered_sources_local_hash(self):
         audit = self.cat.verify_sources(hash_check=True)
         self.assertTrue(audit["ok"], audit)
-        self.assertEqual(audit["registered"], 123)
-        self.assertEqual(audit["present"], 122)
-        self.assertEqual(audit["missing_os_metadata"],
-                         ["data/raw/legacy/import_raw/.DS_Store"])
+        self.assertEqual(audit["registered"], 3)
+        self.assertEqual(audit["present"], 3)
+        self.assertEqual(audit["missing_os_metadata"], [])
 
     def test_workspace_escape_blocked(self):
         with self.assertRaises(ValueError):
@@ -48,6 +47,8 @@ class StandaloneCatalogTest(unittest.TestCase):
         self.assertEqual(status["approved_teaching_cases"], 0)
         self.assertTrue(status["research_candidate_only"])
         self.assertFalse(status["public_release"])
+        self.assertIsNone(status["record_count"])
+        self.assertFalse(status["records_available"])
 
     def test_publications_have_no_fabricated_simulation_results(self):
         with (ROOT / "data/registries/publication_sources.csv").open(encoding="utf-8-sig") as fh:
@@ -63,6 +64,24 @@ class StandaloneCatalogTest(unittest.TestCase):
                                capture_output=True, text=True).stdout.split("\0")
         self.assertFalse([p for p in paths if p.startswith(("data/raw/", "data/derived/",
                                                              "data/private/")) and p not in allowed])
+
+
+@unittest.skipUnless(os.environ.get("FLAVOGLYCOLAB_TEST_RESEARCH") == "1",
+                     "可选研究资产检查；使用python scripts/dev.py check --profile research显式启用")
+class ResearchCatalogTest(unittest.TestCase):
+    def test_research_manifest_and_record_count(self):
+        cat = EvidenceCatalog(ROOT, "research")
+        self.assertEqual(cat.profile, "research")
+        self.assertEqual(len(cat.records()), 3059)
+        self.assertEqual(cat.summary()["approved_teaching_cases"], 0)
+
+    def test_required_research_sources(self):
+        audit = EvidenceCatalog(ROOT, "research").verify_sources()
+        self.assertTrue(audit["ok"], audit)
+        self.assertEqual(audit["registered"], 123)
+        # 117现存证据必须齐全，5项旧模型可缺；不跳过存在但损坏的模型。
+        self.assertEqual(audit["present"] + len(audit["optional_absent"]), 122)
+        self.assertEqual(audit["missing_os_metadata"], ["data/raw/legacy/import_raw/.DS_Store"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,21 @@
+# Managed by FlavoGlycoLab scripts/install_lan_service.py
+[Unit]
+Description=FlavoGlycoLab LAN interactive workbench
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=@WORKSPACE@
+ExecStart=/usr/bin/python3 -I -u scripts/serve_lab.py --bind 0.0.0.0 --port 8766
+Restart=always
+RestartSec=3
+TimeoutStopSec=10
+NoNewPrivileges=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

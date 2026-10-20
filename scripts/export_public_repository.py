@@ -19,11 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CASE_PATH = "data/registries/case_admission.csv"
 WITHHELD = "withheld_unlicensed"
 # TASK-008 human_direct：三个精确PDF字节例外；出版方权利核验未代签。
-PUBLIC_PDFS = {
-    "data/raw/literature/Biotransformation of rutin to isoquercitrin using recombinant α-l-rhamnosidase from Bifidobacterium breve.pdf": "26ef2ba07b43ffe53d18cdc1808b517c26137dfdc07fdb336ea3bf8a5d4e86a5",
-    "data/raw/literature/Combinatorial metabolic engineering of Bacillus subtilis enables the efficient biosynthesis of isoquercitrin from quercetin.pdf": "95f63a8c3d8a4d6d96fc9421eaae96297fc3e4c2f00c31f034b66cc7fbd22513",
-    "data/raw/literature/Synergistic Catalysis of Glycosyltransferase and Sucrose Synthase to Produce Isoquercitrin Through Glycosylation of Quercetin.pdf": "0820ef04fbf00fd72fa2f9e81c396e0fe8c4afddaa1151947bf500f92db5e67f"
-}
+PUBLIC_PDFS = json.loads((ROOT / "metadata/public_sources.json").read_text(encoding="utf-8"))["files"]
+# TASK-013：既有原创装置图随完整工作台交付，其它二进制仍拒绝。
+PUBLIC_IMAGES = {"frontend/student/assets/lab-bench.png": "eb86a435e97ce7a734feca9c54416da3603473dbfcac419bf6566b4517cd4a11"}
 # 已核定的本地保留范围；未知文件仍由下方路径/内容守卫拒绝。
 LOCAL_ONLY_PREFIXES = {
     "docs/p10ns/261017/": "本地老师汇报包及其第三方参考资源，不在公开范围",
@@ -135,6 +133,10 @@ def check_path(name: str) -> None:
 
 
 def check_content(name: str, body: bytes) -> None:
+    if name in PUBLIC_IMAGES:
+        if not body.startswith(b"\x89PNG\r\n\x1a\n") or hashlib.sha256(body).hexdigest() != PUBLIC_IMAGES[name]:
+            raise ExportError(f"原创装置图与交付基线不符：{name}")
+        return
     if name in PUBLIC_PDFS:
         if not body.startswith(b"%PDF-") or hashlib.sha256(body).hexdigest() != PUBLIC_PDFS[name]:
             raise ExportError(f"指定PDF字节与批准基线不符：{name}")

@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="以案例、路线和具体操作为核心的黄酮糖苷虚拟实验台。">
+<title>FlavoGlycoLab · 虚拟实验台</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./styles.css"><script type="module" src="./app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">跳至实验操作</a>
+<header class="topbar"><a class="brand" href="#/">Flavo<span>Glyco</span>Lab</a><nav class="top-nav" aria-label="工作空间"><a href="#/" id="nav-bench">实验台</a><a href="#/records" id="nav-records">实验记录</a></nav><span id="save-status" role="status">准备工作台…</span><button class="mobile-tutor text-button" aria-expanded="false" aria-controls="tutor-panel">AI 导师</button></header>
+<div class="workspace"><aside class="workflow" aria-label="实验流程" id="workflow"></aside><main id="main-content" tabindex="-1"><p class="loading">正在准备实验台…</p></main><aside class="tutor" id="tutor-panel" aria-label="AI 实验导师"><div class="tutor-heading"><h2>AI 实验导师</h2><span id="ai-status">连接检查中</span></div><p class="tutor-context" id="tutor-context"></p><div id="chat" role="log" aria-label="辅导对话" aria-live="polite"></div><div class="tutor-bottom"><button id="suggest-question" class="suggestion"></button><p class="ai-error" id="ai-error" role="status"></p><form id="chat-form"><label class="sr-only" for="question">给 AI 导师的问题</label><textarea id="question" placeholder="输入你的问题…" rows="3" maxlength="2000" required></textarea><button type="submit" id="send-question" aria-label="发送问题"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 18-7-7 18-3-8-8-3Zm8 3L21 3"/></svg></button></form><p class="tutor-note">回答用于思考与核对，不作为实验观测。</p></div></aside></div>
+<div id="feedback" role="status" aria-live="polite" hidden></div>
+<dialog id="confirm-dialog"><form method="dialog"><h2>开始新实验？</h2><p id="new-description">当前草稿将被清空；已保存的练习记录仍保留。可以先到“实验记录”导出当前草稿。</p><div class="actions"><button class="button secondary" value="cancel">继续当前实验</button><button class="button primary" value="confirm">开始新实验</button></div></form></dialog>
+<noscript>请启用 JavaScript 使用实验台。案例仍待教师审定。</noscript>
+</body></html>

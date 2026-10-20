@@ -48,4 +48,8 @@
 
 ## TASK-008公开范围例外（2026-10-18）
 
-所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`PUBLIC_PDFS`（`scripts/export_public_repository.py`）登记的精确路径及SHA公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。
+所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`metadata/public_sources.json`登记的精确路径及SHA（导出脚本的`PUBLIC_PDFS`兼容读取）公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。
+
+## TASK-013协作运行规则（2026-10-20）
+
+默认public开发配置随Git提供全部运行资产、真实案例/来源索引和已公开三篇PDF；无需访问所有者服务器或取得私有研究池。全量历史证据显式选择research并按离线包核验，旧模型非依赖。此规则替代旧默认数据依赖，不改变科学/教师审定/许可与公众教学发布边界；现行数据规范见docs/data-governance.md。

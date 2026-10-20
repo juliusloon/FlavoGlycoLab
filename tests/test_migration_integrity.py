@@ -2,6 +2,7 @@
 import csv
 from pathlib import Path
 import hashlib
+import os
 import sqlite3
 import unittest
 
@@ -28,6 +29,8 @@ class MigrationIntegrityTest(unittest.TestCase):
                 self.assertTrue(p.is_file())
                 self.assertEqual(digest(p),row["sha256"])
 
+    @unittest.skipUnless(os.environ.get("FLAVOGLYCOLAB_TEST_RESEARCH") == "1",
+                         "SQLite是可选研究资产；显式启用research检查")
     def test_sqlite_index_local_read_only_integrity(self):
         p=ROOT/"data/derived/v3/index.sqlite"
         self.assertTrue(p.exists())

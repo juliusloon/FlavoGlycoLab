@@ -47,4 +47,8 @@ UNDERSTAND → SPECIFY → APPROVE → EXECUTE → VERIFY → REPORT → UPDATE 
 
 ## TASK-008公开范围例外（2026-10-18）
 
-所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`PUBLIC_PDFS`（`scripts/export_public_repository.py`）登记的精确路径及SHA公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。
+所有者明确指令“三篇PDF也要公开”。`data/raw/literature/`中的三个已提交PDF按`metadata/public_sources.json`登记的精确路径及SHA（导出脚本的`PUBLIC_PDFS`兼容读取）公开；其余raw/derived/private仍不公开。这是human_direct范围决定，出版方rights_verified=false，不追认为教师审定或全数据授权，PDF不适用本项目原创代码/文档许可。原件不改，原案例表仍脱敏。
+
+## TASK-013协作数据规则（2026-10-20）
+
+默认运行/测试使用public配置，不能要求成员访问所有者服务器或以私有数据为日常开发前置。显式research缺失或损坏必须报错；不编造替代实验。三项研究资产测试仅在FLAVOGLYCOLAB_TEST_RESEARCH=1时启用，不能按文件存在与否静默跳过。研究包117项证据＋4项派生只做权限允许的内部离线交接，不入公共Git，不含五项旧模型、private或密钥。操作唯一入口docs/operations/collaboration.md，规范docs/data-governance.md；三个科学/教学/发布门独立。

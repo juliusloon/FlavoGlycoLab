@@ -1,4 +1,4 @@
-name: 治理合同检查（无需私有数据）
+name: 协作运行与工程检查（无需私有数据）
 
 on:
   push:
@@ -9,12 +9,49 @@ permissions:
   contents: read
 
 jobs:
-  governance:
+  public-check:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.10'
+          - os: windows-latest
+            python: '3.12'
+          - os: macos-latest
+            python: '3.12'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 运行公开配置与全部默认工程检查
+        run: python scripts/dev.py check
+  browser:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: 执行公开治理检查
-        run: python3 -m unittest discover -s tests -p test_governance.py -v
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: 启动无私有数据/密钥的本地实验台
+        run: |
+          python scripts/dev.py > /tmp/flavoglycolab.log 2>&1 &
+          python -c "import time, urllib.request; time.sleep(2); urllib.request.urlopen('http://127.0.0.1:8767/api/health', timeout=10).read()"
+      - name: 三路线、三视口与无模型凭据流程
+        run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: temp/qa/browser/

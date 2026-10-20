@@ -2,6 +2,10 @@
 
 本项目采用CondRxnBench式操作闭环，但不迁移其任务历史与科学研究对象。任何实质修改需使用本项目唯一TASK合同，并对应生成REPORT与更新STATE。
 
+## 本地协作
+
+先按[协作说明](docs/operations/collaboration.md)运行`python scripts/dev.py`和`python scripts/dev.py check`。默认public随Git齐全，不需要服务器账户或私有证据池。只做全量研究时导入内部研究包并显式使用research；不提交包或凭据。三篇PDF按metadata/public_sources.json的精确范围例外保留。
+
 ## 操作合同
 先查PROJECT、STATE、ARCHITECTURE，再创建TASK。写明目标、上下文、批准来源、修改预算、允许/禁止项、非目标、精确验收标准、验证、停止条件；未批准不能执行大范围工作。
 

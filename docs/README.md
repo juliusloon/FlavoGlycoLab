@@ -27,3 +27,5 @@
 三篇PDF公开与日常git publish入口见[TASK-008](tasks/TASK-008-pdf-public-sync.md)、[REPORT-008](reports/REPORT-008-pdf-public-sync.md)。候选合同顺延010/011，不自动执行。
 
 当前Git操作以[TASK-009](tasks/TASK-009-normal-git-push.md)/[REPORT-009](reports/REPORT-009-normal-git-push.md)为准：当前main直接普通push，不再依赖独立检出同步。历史报告保留当时两套历史的事实。
+
+- [协作成员本地运行与数据交接](operations/collaboration.md)：无需服务器账号，默认public；仅研究任务需要离线研究包。

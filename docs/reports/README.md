@@ -16,3 +16,11 @@
 - [REPORT-008-pdf-public-sync.md](REPORT-008-pdf-public-sync.md)：三篇PDF范围、SHA和公开同步验收。
 
 - [REPORT-009-normal-git-push.md](REPORT-009-normal-git-push.md)：实际git push原命令、分支保全及原件验证。
+
+- [REPORT-010-website-scaffold.md](REPORT-010-website-scaffold.md)：学生网站骨架的53项浏览器、来源与缺数据/AI边界、响应式与视觉比对、治理及保护字节验收；无实验交互/评分/部署。
+
+- [REPORT-011-lan-deployment.md](REPORT-011-lan-deployment.md)：两个LAN接口、持续用户服务、自动恢复/普通重启及53项浏览器验收；保留跨物理设备/真实开机未测限制。
+
+- [REPORT-012-interactive-workbench.md](REPORT-012-interactive-workbench.md)：交互实验台、实时Qwen、状态/服务/浏览器/部署与视觉验收，明确真实观测及课程验收仍待补。
+
+- [REPORT-013-collaboration-ready.md](REPORT-013-collaboration-ready.md)：团队克隆/运行与分层数据交付的真实验证、同步及限制。

@@ -10,3 +10,5 @@ ADR回答为什么长期采用某项结构或数据语义决策，不替代TASK�
 新增ADR使用TEMPLATE.md，不改写旧ADR中的当时事实。ADR编号从0001递增，不接续其它项目。
 
 - [0005-normal-main-push.md](0005-normal-main-push.md)：当前main普通推送与旧研究归档。
+
+- [0006-collaboration-data-profiles.md](0006-collaboration-data-profiles.md)：默认公开开发配置、显式研究模式及离线研究包。
