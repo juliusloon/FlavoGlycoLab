@@ -29,3 +29,5 @@
 当前Git操作以[TASK-009](tasks/TASK-009-normal-git-push.md)/[REPORT-009](reports/REPORT-009-normal-git-push.md)为准：当前main直接普通push，不再依赖独立检出同步。历史报告保留当时两套历史的事实。
 
 - [协作成员本地运行与数据交接](operations/collaboration.md)：无需服务器账号，默认public；仅研究任务需要离线研究包。
+
+- [LJX技术底稿](p10ns/261019/shenbaoshu_sections_LJX.md)、[交接/接入](p10ns/261019/handoff_acceptance.md)、[站会](p10ns/261019/standup_log.md)、[品牌浏览器验收](operations/browser-acceptance.md)：TASK-014技术准备与真实证据。

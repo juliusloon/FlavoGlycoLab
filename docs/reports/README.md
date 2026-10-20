@@ -24,3 +24,5 @@
 - [REPORT-012-interactive-workbench.md](REPORT-012-interactive-workbench.md)：交互实验台、实时Qwen、状态/服务/浏览器/部署与视觉验收，明确真实观测及课程验收仍待补。
 
 - [REPORT-013-collaboration-ready.md](REPORT-013-collaboration-ready.md)：团队克隆/运行与分层数据交付的真实验证、同步及限制。
+
+- [REPORT-014-ljx-technical-preparation.md](REPORT-014-ljx-technical-preparation.md)：技术准备、双品牌浏览器及交接规则的真实验证与限制。

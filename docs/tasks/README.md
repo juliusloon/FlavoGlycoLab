@@ -12,7 +12,7 @@
 - [proposals/TASK-010-ljx-document-preparation.md](proposals/TASK-010-ljx-document-preparation.md)：Proposed；五项沟通问法、6/7栏底稿、站会模板，估算0.75人日，无同事交接前置。
 - [proposals/TASK-011-ljx-local-demo.md](proposals/TASK-011-ljx-local-demo.md)：Proposed；W-01/W-05及W-02/03/04局部本地演示，估算2.25人日，不部署。
 
-proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式已登记到013（协作交付）；两个旧候选编号只保留历史定位，执行时须重新连续编号；原候选007/010顺延010/011，仍按实际批准次序连续登记并同步文件名/报告名/活跃引用。两份独立准备合同可分别批准，Git同步不自动批准或执行它们。历史TASK/REPORT保留当时编号，当前入口以本索引为准。
+proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式已登记到014（LJX技术准备）；两个旧候选编号只保留历史定位，执行时须重新连续编号；原候选007/010顺延010/011，仍按实际批准次序连续登记并同步文件名/报告名/活跃引用。两份独立准备合同可分别批准，Git同步不自动批准或执行它们。历史TASK/REPORT保留当时编号，当前入口以本索引为准。
 
 命名规范：TASK-NNN-short-title.md；须与docs/reports/REPORT-NNN-short-title.md完全对应编号与短名。状态：Proposed、Approved、In Progress、Completed、Partial、Blocked、Rejected、Reverted。批准后不静默扩项；必要时重新定约。TASK不是REPORT，不包含虚构的事后验收。
 模板见TEMPLATE.md，最新事实见STATE.md。
@@ -28,3 +28,5 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 - [TASK-012-interactive-workbench.md](TASK-012-interactive-workbench.md)：human_direct；案例与路线为核心的六阶段操作、状态/记录、已有Qwen接入与原LAN服务更新；独立于历史候选提案，不提升科学/教师/发布门。
 
 - [TASK-013-collaboration-ready.md](TASK-013-collaboration-ready.md)：human_direct；完整实验台Git交付、默认public/可选research、跨平台启动及离线研究包、干净克隆与CI验收。
+
+- [TASK-014-ljx-technical-preparation.md](TASK-014-ljx-technical-preparation.md)：human_direct；申报6/7栏26字段底稿、实际Chrome/Edge走查录屏、14项交付接入与站会准备；校内事务归两位指导老师。

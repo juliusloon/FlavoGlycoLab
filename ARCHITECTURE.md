@@ -177,3 +177,18 @@ ADR保存跨任务长期选择与复审条件，不能替代执行授权或事�
 | 研究包/验证过程 | temp/task-013/、temp/flavoglycolab-research-v3.tar.gz及SHA旁文件 | no；受限内部交接，不自动发送/上传 |
 
 此前模块表evidence的输入data/derived/v3是可选research输入；默认public的cases/registry/三篇PDF核验是活动接口。原始122项仍完整保全；研究包只要求117现存证据，五项旧模型保留登记并明确可选，不删除原件。source_integrity按实际profile报告分母。三篇PDF与原案例表脱敏/待审状态不变。
+
+## TASK-014技术准备与职责更新（2026-10-20）
+
+所有者human_direct确认：校内推荐/流程、材料与签章、课程负责人与资质/软著等校内事务由两位指导老师负责。LJX负责技术材料、工程验收和内部交接；教师姓名/真实结论不得代填。
+
+| 唯一工件 | 职责 | 边界 |
+| --- | --- | --- |
+| docs/p10ns/261019/shenbaoshu_sections_LJX.md | 申报6/7栏26字段技术准备稿、架构与AI口径 | TASK-014 active preparation；老师/同事/实测待补不冒充已确认 |
+| docs/p10ns/261019/handoff_acceptance.md | 14项交接的接收、缺项、文件/接入映射 | 只登记接收和引用，不复制案例/文献真值 |
+| docs/p10ns/261019/standup_log.md | 站会唯一记录及未开会模板 | 不代填参会或签收 |
+| docs/operations/browser-acceptance.md | 品牌浏览器走查结果与复现 | 代理QA，非真人/Windows/移动实体机或课程验收 |
+| tests/test_workbench_browser.mjs | 可复现品牌、截图、录像及流程守卫 | 不新增产品科学语义 |
+| temp/task-014/ | 原表解析、版本/主机、品牌包及QA影像/验证 | 本地ignored，不提交包/原件/大录像 |
+
+原Artifact Registry中的技术分段/站会planned状态由本节更新；communication_log保留历史规划但本TASK不编制校内问询或代办。旧候选文档准备合同仍是历史Proposed，不整份追认。

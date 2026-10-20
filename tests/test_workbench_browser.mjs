@@ -4,9 +4,12 @@ import assert from 'node:assert/strict';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const url=process.env.FRONTEND_URL||'http://127.0.0.1:8767/';
 const liveAI=process.env.FLAVOGLYCOLAB_LIVE_AI==='1';
+const brand=process.env.BROWSER_LABEL||'Chromium';
+const recording=process.env.QA_RECORD_VIDEO==='1';
 const out=path.resolve(process.env.QA_OUTPUT||'temp/qa/browser');await fs.mkdir(out,{recursive:true});
-const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE?{executablePath:process.env.CHROMIUM_EXECUTABLE}:{})});
-const results=[],errors=[],externals=[];
+const slowMo=Number(process.env.QA_SLOW_MO_MS||(recording?'120':'0'));
+const browser=await chromium.launch({headless:true,slowMo,...(process.env.CHROMIUM_EXECUTABLE?{executablePath:process.env.CHROMIUM_EXECUTABLE}:{})});
+const results=[],errors=[],externals=[],sessions=[];
 function ok(name,value=true){assert.ok(value,name);results.push({name,pass:true});}
 const readState=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('flavoglycolab.workbench.v1')));
 async function noOverflow(page,name){ok(name,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1&&[...document.querySelectorAll('main,.tutor,.workflow')].filter(x=>getComputedStyle(x).display!=='none').every(x=>x.scrollWidth<=x.clientWidth+1)));}
@@ -14,10 +17,14 @@ async function screen(page,name){await page.screenshot({path:path.join(out,name+
 async function fillPlan(page){for(const [k,v] of Object.entries({volume:'2',concentration:'1.5',temperature:'30',ph:'7',duration:'60',samples:'0,30,60',hypothesis:'比较催化体系和对照组，检验产物信号是否有差异'}))await page.locator(`[name="${k}"]`).fill(v);await page.locator('[name="control"]').selectOption('both');}
 try{
  for(const [width,height,route] of [[1536,1024,'R1'],[768,1024,'R3'],[375,812,'R2']]){
-  const context=await browser.newContext({viewport:{width,height},acceptDownloads:true});const page=await context.newPage();
+  const context=await browser.newContext({viewport:{width,height},acceptDownloads:true,...(recording?{recordVideo:{dir:path.join(out,'video'),size:{width,height}}}:{})});const page=await context.newPage();
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   page.on('request',r=>{if(new URL(r.url()).origin!==new URL(url).origin&&!r.url().startsWith('data:'))externals.push(r.url());});
   await page.goto(url);await page.locator('input[name="route"]').first().waitFor();
+  const ua=await page.evaluate(()=>navigator.userAgent);
+  if(brand==='Chrome')ok('official Chrome user agent',ua.includes('Chrome/')&&!ua.includes('Edg/'));
+  if(brand==='Edge')ok('official Edge user agent',ua.includes('Edg/'));
+  sessions.push({route,viewport:{width,height},userAgent:ua,url:page.url(),title:await page.title()});
   await page.waitForFunction(()=>/实时辅导|尚未配置/.test(document.querySelector('#ai-status').textContent));
   if(!liveAI)ok(`${width}: clean clone works without model credentials`,(await page.locator('#ai-status').textContent()).includes('尚未配置'));
   if(!liveAI&&width===1536){
@@ -71,7 +78,8 @@ try{
   if(width<=950){await page.locator('.mobile-tutor').click();ok(`${width}: mobile tutor drawer opens`,await page.locator('#question').isVisible());await page.keyboard.press('Escape');ok(`${width}: Escape closes drawer`,await page.locator('.mobile-tutor').getAttribute('aria-expanded')==='false');}
   // Starting over is only exposed on the workflow rail on desktop; use a visible records action on mobile.
   {await page.locator('main [data-action="new"]').click();await page.getByRole('button',{name:'继续当前实验',exact:true}).click();ok('cancel reset keeps current plan',(await readState(page)).current.plan.temperature==='31');await page.locator('main [data-action="new"]').click();await page.getByRole('button',{name:'开始新实验',exact:true}).last().click();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('flavoglycolab.workbench.v1')).current.routeConfirmed===false);ok('new experiment keeps saved history',(await readState(page)).records.length===1&&(await readState(page)).current.routeConfirmed===false);await page.locator('#nav-records').click();const id=(await readState(page)).records[0].id;await page.locator('#compare-record').selectOption(id);ok('history comparison shows old student plan',(await page.locator('.comparison').textContent()).includes('30 / 7'));}
-  await context.close();
+  const video=page.video();await context.close();
+  if(video)sessions.at(-1).video=await video.path();
  }
  ok('normal user paths have no console/page errors',errors.length===0);ok('browser sends no external requests or credentials',externals.length===0);
  // Explicit failure fixtures are isolated from the normal-console-health denominator.
@@ -85,5 +93,5 @@ try{
  await page.unroute('**/content/demo-content.json');await page.getByRole('button',{name:'重新加载'}).click();await page.locator('input[name="route"]').first().waitFor();ok('content retry recovers');
  await page.evaluate(()=>localStorage.setItem('flavoglycolab.workbench.v1','{corrupt'));await page.reload();await page.locator('input[name="route"]').first().waitFor();ok('corrupt record is retained for backup',await page.evaluate(()=>localStorage.getItem('flavoglycolab.workbench.v1'))==='{corrupt');
  await context.close();
- await fs.writeFile(path.join(out,'results.json'),JSON.stringify({url,browser:browser.version(),checks:results.length,results,errors,externals},null,2));console.log(JSON.stringify({url,browser:browser.version(),checks:results.length,pass:true}));
+ await fs.writeFile(path.join(out,'results.json'),JSON.stringify({url,brand,browser:browser.version(),recording,slow_mo_ms:slowMo,sessions,checks:results.length,results,errors,externals},null,2));console.log(JSON.stringify({url,brand,browser:browser.version(),checks:results.length,pass:true}));
 }finally{await browser.close();}

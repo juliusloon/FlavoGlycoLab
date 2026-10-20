@@ -70,3 +70,5 @@ npm run test:browser
 原创代码[Apache-2.0](LICENSE)，原创文档[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hans)。第三方PDF、原始数据与模型保留各自许可，不被本项目代码/文档许可覆盖；[许可说明](LICENSES/README.md)。三个公开PDF仍是TASK-008 human_direct的精确范围例外，其余受限原件/派生数据/private及旧研究历史不进入公共Git。
 
 [当前状态](STATE.md) · [里程碑](PROGRESS.md) · [本次交付报告](docs/reports/REPORT-013-collaboration-ready.md) · [工作台设计](docs/design/workbench.md) · [路线规划](ROADMAP.md) · [文档索引](docs/README.md) · [问题反馈](https://github.com/juliusloon/FlavoGlycoLab/issues)
+
+LJX的[第6/7栏技术准备稿](docs/p10ns/261019/shenbaoshu_sections_LJX.md)、[交付接收与接入清单](docs/p10ns/261019/handoff_acceptance.md)、[站会记录](docs/p10ns/261019/standup_log.md)及[双浏览器走查](docs/operations/browser-acceptance.md)由TASK-014维护；校内事务由两位指导老师负责。

@@ -1,19 +1,19 @@
 # FlavoGlycoLab 当前状态
 
-截至2026-10-20。TASK-013已完成协作交付并同步GitHub main；Windows/macOS/Linux检查及Linux浏览器CI四个job全部通过，远端结果见REPORT-013。本机已完成的TASK-010/011/012实验台已纳入公开提交，默认public不依赖私有数据或所有者服务器。当前仍是过程演练，真实观测、数值仿真、完整课程评分与公众教学发布未实现。
+截至2026-10-20。TASK-014完成技术准备与品牌浏览器验收；TASK-013已完成协作交付并同步GitHub main；Windows/macOS/Linux检查及Linux浏览器CI四个job全部通过，远端结果见REPORT-013。本机已完成的TASK-010/011/012实验台已纳入公开提交，默认public不依赖私有数据或所有者服务器。当前仍是过程演练，真实观测、数值仿真、完整课程评分与公众教学发布未实现。
 
 ## 运行与协作
 
 | 项 | 当前事实 |
 | --- | --- |
 | 代码仓库 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public；main沿用现有公开父链 |
-| 当前TASK | 最近完成TASK-013：团队克隆/运行与分层数据交付；无在执行TASK |
+| 当前TASK | 最近完成TASK-014：申报6/7栏技术准备、Chrome/Edge走查录屏及交付接入清单；无在执行TASK |
 | 本地入口 | `python scripts/dev.py`，默认127.0.0.1:8767，Python 3.10+标准库，无需Conda/npm/GPU/私有数据/模型密钥 |
 | 默认工程检查 | `python scripts/dev.py check`；46项Python中43通过、3项研究资产明确跳过；Node可用时9项状态测试 |
 | 本地干净克隆验收 | Python 3.12.3；默认46项（43通过/3研究skip），三路线×三视口浏览器84项，11项HTTP资产/私有路径检查通过，未配置AI可操作并保留明确报错 |
 | 可选research | 导入离线包后显式选择；新克隆全量46项Python、9项JS、3059记录及117必需现存原件/SQLite核验通过 |
 | 研究包 | 121文件＝117非模型原件＋4项v3派生；首次导入121、重复导入0/相同121。包约12.3 MB，SHA与本地路径见REPORT-013；未自动发送给成员 |
-| 实时AI | 可选本机private/runtime/tutor.json；无配置不阻断流程；原LAN的Qwen接入历史验收见REPORT-012，当前未复做实时模型测量 |
+| 实时AI | 可选本机private/runtime/tutor.json；无配置不阻断流程；原LAN的Qwen接入历史验收见REPORT-012，TASK-014实际完成两品牌各1次真实上游答复和1次无数据守卫，小量QA不当容量测量 |
 | 练习保存 | 当前浏览器/站点源localStorage；最多12快照，可比较并导出；无账号或跨设备同步 |
 | 原LAN托管 | flavoglycolab-lan.service，8766；本轮只读状态active，未调整常驻配置/模型/网卡/防火墙；唯一说明docs/operations/lan-site.md |
 | 跨平台CI | 功能提交f3826d6，Actions39369460723四个job success；三平台Python/JS/安装CLI与Linux浏览器84项通过 |
@@ -52,9 +52,17 @@
 
 输入条件均为学生方案，动画时间不代表反应速度；样品为计划标签，没有真实测量，observations=[]、quantitative_result=null。来源非数值摘要不是独立全文审定，模型不修改方案/创建批准。
 
+## LJX技术准备与校内职责
+
+- 两位指导老师负责校内沟通、推荐/提交流程、材料/签章、课程负责人、等保/权属/软著等校内事务；LJX提供技术材料、接收实际结论并做内部协调，不代办或代填。
+- 第6/7栏技术准备稿26/26字段、当前/拟建架构、六工具状态及ai_data三字段设计已完成：docs/p10ns/261019/shenbaoshu_sections_LJX.md。未测容量/移动实体设备/资质继续待补，不把准备稿写成正式申报定稿。
+- 14项交接清单及四类接收/接入合同已准备：docs/p10ns/261019/handoff_acceptance.md。站会唯一日志standup_log.md已建模板，未登记实际召开或成员签收。
+- 实际Google Chrome155.0.8059.84、Microsoft Edge155.0.4283.62在Ubuntu各87/87流程与8/8真实AI检查通过；3视口均无横向溢出，正常控制台错误/页面外部请求0。录像/截图/版本与限制见docs/operations/browser-acceptance.md和REPORT-014。
+- 品牌包和录屏编码器仅解压到项目temp；没有系统安装或修改既有服务/模型。代理自动操作不是真人签收，视口模拟不是Windows/macOS/移动实体设备测试。
+
 ## 申报与未解决事项
 
-- 所有者确认推荐资格、拟用化学生物学实验课程、校内2026-10-27截止及内部10-26定版；具体时刻、签章/提交安排和具名负责人待补。
+- 所有者确认推荐资格、拟用化学生物学实验课程、校内2026-10-27截止及内部10-26定版；具体时刻、签章/提交安排和具名负责人由两位指导老师确认后补入。
 - 异槲皮苷主案例身份、21命中的来源/方向/重复，以及Pei2019、Zhang2015、Niu2024条件/定量观测/再分发权限仍待逐条审定。
 - 工程过程演练已可用；真实观测驱动仿真、分析、教师量规、完整24步、公众教学发布尚未完成。
 - 2026-10-18主机/共享资源快照和规划预算仅作历史实施输入，当前未重测容量/带宽/并发或实际跨物理设备/主机开机。唯一基线docs/policy/ilab-2026/readiness-evidence-2026.md。
@@ -64,4 +72,4 @@
 
 ## 事实入口
 
-[TASK-013](docs/tasks/TASK-013-collaboration-ready.md) / [REPORT-013](docs/reports/REPORT-013-collaboration-ready.md)维护本次验收；[REPORT-012](docs/reports/REPORT-012-interactive-workbench.md)保存原LAN/实时AI历史验收；其余历史见docs/reports。STATE仅保存当前事实，里程碑见PROGRESS。
+[TASK-014](docs/tasks/TASK-014-ljx-technical-preparation.md) / [REPORT-014](docs/reports/REPORT-014-ljx-technical-preparation.md)维护技术准备验收；[REPORT-013](docs/reports/REPORT-013-collaboration-ready.md)保存协作交付证据；[REPORT-012](docs/reports/REPORT-012-interactive-workbench.md)保存原LAN/实时AI历史验收；其余历史见docs/reports。STATE仅保存当前事实，里程碑见PROGRESS。
