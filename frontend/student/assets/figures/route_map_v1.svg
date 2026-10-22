@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1240" viewBox="0 0 1800 1240" role="img" aria-labelledby="title desc">
+  <title id="title">图1 三条文献路线：底物、反应途径与共同目标产物</title>
+  <desc id="desc">R1 酶促糖基化、R2 选择性水解、R3 工程菌转化三条路线指向同一产物异槲皮苷。图中数值均为原文报告、非本次实验观测，教学设计示意待教师审定。</desc>
+  <defs>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#b45309"/>
+    </marker>
+    <marker id="arrow-violet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6d28d9"/>
+    </marker>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <g id="flavone-skeleton">
+      <path d="M0,-22 L19,-11 L19,11 L0,22 L-19,11 L-19,-11 Z" fill="none" stroke="#334155" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M19,-11 L38,-22 L57,-11 L57,11 L38,22 L19,11" fill="none" stroke="#334155" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M57,-11 L76,-22 L95,-11 L95,11 L76,22 L57,11" fill="none" stroke="#334155" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M57,-11 L57,-28" fill="none" stroke="#334155" stroke-width="2.2"/>
+      <text x="57" y="-33" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">O</text>
+      <text x="38" y="-15" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">O</text>
+      <path d="M38,22 L38,34" fill="none" stroke="#334155" stroke-width="2.2"/>
+      <text x="38" y="49" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">OH</text>
+      <path d="M76,22 L76,34" fill="none" stroke="#334155" stroke-width="2.2"/>
+      <text x="76" y="49" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">OH</text>
+    </g>
+    <g id="sugar-glucose">
+      <path d="M0,-16 L14,-8 L14,8 L0,16 L-14,8 L-14,-8 Z" fill="#ffffff" stroke="#0f766e" stroke-width="2.2" stroke-linejoin="round"/>
+      <text x="0" y="5" text-anchor="middle" font-size="14" font-weight="700" fill="#0f766e">O</text>
+      <path d="M-14,-8 L-24,-14" fill="none" stroke="#0f766e" stroke-width="2"/>
+      <text x="-32" y="-12" text-anchor="end" font-size="12" fill="#0f766e">HO</text>
+    </g>
+    <g id="sugar-rhamnose">
+      <path d="M0,-16 L14,-8 L14,8 L0,16 L-14,8 L-14,-8 Z" fill="#ffffff" stroke="#b45309" stroke-width="2.2" stroke-linejoin="round"/>
+      <text x="0" y="5" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">O</text>
+      <path d="M-14,-8 L-24,-14" fill="none" stroke="#b45309" stroke-width="2"/>
+      <text x="-32" y="-12" text-anchor="end" font-size="12" fill="#b45309">HO</text>
+      <path d="M14,8 L24,14" fill="none" stroke="#b45309" stroke-width="2"/>
+      <text x="30" y="20" text-anchor="start" font-size="12" fill="#b45309">CH₃</text>
+    </g>
+    <g id="flavone-quercetin">
+      <use href="#flavone-skeleton"/>
+    </g>
+    <g id="flavone-isoquercitrin">
+      <use href="#flavone-skeleton"/>
+      <path d="M57,-28 L57,-48" fill="none" stroke="#0f766e" stroke-width="2.2" stroke-dasharray="4 3"/>
+      <use href="#sugar-glucose" transform="translate(57,-62)"/>
+    </g>
+    <g id="flavone-rutin">
+      <use href="#flavone-skeleton"/>
+      <path d="M57,-28 L57,-48" fill="none" stroke="#b45309" stroke-width="2.2" stroke-dasharray="4 3"/>
+      <use href="#sugar-glucose" transform="translate(57,-62)"/>
+      <path d="M72,-66 L92,-76" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="4 3"/>
+      <use href="#sugar-rhamnose" transform="translate(108,-80) scale(0.9)"/>
+      <text x="82" y="-92" text-anchor="middle" font-size="11" fill="#b45309">α1,6</text>
+    </g>
+  </defs>
+
+  <style>
+    .bg { fill: #fbfcfe; }
+    .lane { rx: 18; }
+    .lane-r1 { fill: #f0fdfa; stroke: #99f6e4; stroke-width: 1.5; }
+    .lane-r2 { fill: #fffbeb; stroke: #fde68a; stroke-width: 1.5; }
+    .lane-r3 { fill: #f5f3ff; stroke: #ddd6fe; stroke-width: 1.5; }
+    .lane-pill text { font-size: 20px; font-weight: 700; }
+    .node { fill: #ffffff; stroke-width: 2; rx: 14; filter: url(#soft); }
+    .node-title { font-size: 20px; font-weight: 700; fill: #0f172a; }
+    .node-sub { font-size: 14px; fill: #475569; }
+    .node-tiny { font-size: 12.5px; fill: #64748b; }
+    .arrow-label { font-size: 15px; font-weight: 600; fill: #0f172a; }
+    .arrow-sub { font-size: 13.5px; fill: #475569; }
+    .tag { fill: #fff7ed; stroke: #fdba74; stroke-width: 1.4; rx: 10; }
+    .tag-title { font-size: 14.5px; font-weight: 700; fill: #7c2d12; }
+    .tag-sub { font-size: 12.5px; fill: #9a3412; }
+    .tag-neutral { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.3; rx: 10; }
+    .tag-neutral-title { font-size: 13.5px; font-weight: 600; fill: #334155; }
+    .tag-neutral-sub { font-size: 12px; fill: #64748b; }
+    .foot { font-size: 13px; fill: #475569; }
+    .foot strong { fill: #0f172a; }
+    .badge { fill: #0f172a; rx: 12; }
+    .badge-title { font-size: 15px; font-weight: 700; fill: #ffffff; }
+    .badge-sub { font-size: 12.5px; fill: #cbd5e1; }
+    .product { fill: #f0fdf4; stroke: #86efac; stroke-width: 2.4; rx: 18; filter: url(#soft); }
+    .product-kicker { font-size: 13px; font-weight: 700; fill: #166534; letter-spacing: 1.5px; }
+    .product-title { font-size: 27px; font-weight: 700; fill: #14532d; }
+    .product-sub { font-size: 15px; fill: #166534; }
+    .product-tiny { font-size: 13px; fill: #3f6212; }
+    .legend { font-size: 12.5px; fill: #475569; }
+    .title { font-size: 33px; font-weight: 700; fill: #0f172a; }
+    .subtitle { font-size: 16.5px; fill: #475569; }
+  </style>
+
+  <rect class="bg" width="1800" height="1240"/>
+
+  <text class="title" x="40" y="48">图1｜三条文献路线：底物、反应途径与共同目标产物</text>
+  <text class="subtitle" x="40" y="78">三条路线指向同一产物异槲皮苷，但反应方向、底物、催化体系与反应步数各不相同（S2）</text>
+
+  <g>
+    <rect class="badge" x="1300" y="24" width="460" height="62"/>
+    <text class="badge-title" x="1322" y="50">教学设计示意 · 待教师审定</text>
+    <text class="badge-sub" x="1322" y="72">所有数值为原文报告，不是本次实验观测</text>
+  </g>
+
+  <!-- Lanes -->
+  <rect class="lane lane-r1" x="30" y="115" width="1740" height="290"/>
+  <rect class="lane lane-r2" x="30" y="425" width="1740" height="290"/>
+  <rect class="lane lane-r3" x="30" y="735" width="1740" height="330"/>
+
+  <g class="lane-pill">
+    <rect x="42" y="130" width="340" height="36" rx="18" fill="#ccfbf1"/>
+    <text x="62" y="155" fill="#0f766e">R1 酶促糖基化（Pei 2019）</text>
+    <rect x="42" y="440" width="340" height="36" rx="18" fill="#fef3c7"/>
+    <text x="62" y="465" fill="#b45309">R2 选择性水解（Zhang 2015）</text>
+    <rect x="42" y="750" width="360" height="36" rx="18" fill="#ede9fe"/>
+    <text x="62" y="775" fill="#6d28d9">R3 工程菌转化（Niu 2024）</text>
+  </g>
+
+  <!-- R1 nodes and arrows -->
+  <g>
+    <rect class="node" x="70" y="195" width="250" height="120" stroke="#0f766e"/>
+    <text class="node-title" x="88" y="226">槲皮素</text>
+    <text class="node-sub" x="88" y="248">quercetin · 苷元</text>
+    <text class="node-tiny" x="88" y="270">C₁₅H₁₀O₇ · CID 5280343</text>
+    <text class="node-tiny" x="88" y="291">R1 起点</text>
+    <use href="#flavone-quercetin" transform="translate(250,262) scale(0.72)"/>
+
+    <path d="M320 255 H1368 Q1398 255 1408 283 L1442 515" fill="none" stroke="#0f766e" stroke-width="3.4" stroke-linejoin="round" marker-end="url(#arrow-teal)"/>
+    <text class="arrow-label" x="380" y="236">AtUGT78D2 催化</text>
+    <text class="arrow-sub" x="380" y="278">UDP-Glc 为糖供体 · 槲皮素 3-O 位加糖</text>
+
+    <rect x="360" y="305" width="900" height="82" rx="14" fill="#ecfdf5" stroke="#5eead4" stroke-width="1.6" stroke-dasharray="7 5"/>
+    <text class="arrow-label" x="380" y="332">旁路：供体再生（GmSUS 催化）</text>
+    <text class="arrow-sub" x="380" y="354">UDP ＋ 蔗糖 ⇌ UDP-Glc ＋ 果糖；UDP-Glc 供糖基转移酶循环使用</text>
+    <text class="node-tiny" x="380" y="375">UDP-Glc CID 8629 · UDP CID 6031 · 蔗糖 CID 5988 · 果糖 CID 5984</text>
+    <path d="M800 305 V264" fill="none" stroke="#0f766e" stroke-width="2.2" stroke-dasharray="6 4" marker-end="url(#arrow-teal)"/>
+    <text class="arrow-sub" x="814" y="290" fill="#0f766e">再生供体</text>
+
+    <rect class="tag" x="820" y="160" width="550" height="78"/>
+    <text class="tag-title" x="838" y="185">补料批次 3830 mg/L · 摩尔转化率 94.3% · RCmax 33</text>
+    <text class="tag-sub" x="838" y="207">Pei 2019 p.4｜原文报告 · 非本次观测 · 条件不可外推</text>
+    <text class="tag-sub" x="838" y="224">标准条件 35 °C、pH 7.5、10% DMSO（p.3–4）；重复数未声明</text>
+  </g>
+
+  <!-- R2 nodes and arrows -->
+  <g>
+    <rect class="node" x="70" y="500" width="280" height="140" stroke="#b45309"/>
+    <text class="node-title" x="88" y="531">芦丁</text>
+    <text class="node-sub" x="88" y="553">rutin · 3-O 芸香糖苷</text>
+    <text class="node-tiny" x="88" y="575">C₂₇H₃₀O₁₆ · CID 5280805</text>
+    <text class="node-tiny" x="88" y="596">比产物多一个鼠李糖（146.1）</text>
+    <text class="node-tiny" x="88" y="617">R2 起点</text>
+    <use href="#flavone-rutin" transform="translate(296,580) scale(0.46)"/>
+
+    <path d="M350 570 H1440" fill="none" stroke="#b45309" stroke-width="3.4" marker-end="url(#arrow-amber)"/>
+    <text class="arrow-label" x="380" y="536">α-L-鼠李糖苷酶（B. breve ATCC 15700 重组）</text>
+    <text class="arrow-sub" x="380" y="558">选择性水解葡萄糖 α-1,6 位鼠李糖 · 剪糖，不是加糖</text>
+
+    <path d="M600 570 V640" fill="none" stroke="#b45309" stroke-width="2.2" stroke-dasharray="6 4" marker-end="url(#arrow-amber)"/>
+    <text class="arrow-sub" x="614" y="612" fill="#b45309">释放末端鼠李糖</text>
+    <rect class="node" x="500" y="642" width="300" height="58" stroke="#b45309"/>
+    <text class="node-sub" x="516" y="666">L-鼠李糖（游离糖）</text>
+    <text class="node-tiny" x="516" y="687">C₆H₁₂O₅ · PubChem CID 439730</text>
+
+    <rect class="tag" x="880" y="470" width="540" height="72"/>
+    <text class="tag-title" x="898" y="495">20 mM 芦丁 → 60 min 91% → 240 min 99%</text>
+    <text class="tag-sub" x="898" y="516">19.87 mM ≈ 9.23 g/L · 报告无槲皮素副产物 · Zhang 2015 p.6</text>
+    <text class="tag-sub" x="898" y="533">原文报告 · 非本次观测；Springer 图表展示待授权</text>
+  </g>
+
+  <!-- R3 nodes and arrows -->
+  <g>
+    <rect class="node" x="70" y="830" width="250" height="120" stroke="#6d28d9"/>
+    <text class="node-title" x="88" y="861">外加槲皮素</text>
+    <text class="node-sub" x="88" y="883">胞外底物 · 非从头合成</text>
+    <text class="node-tiny" x="88" y="905">C₁₅H₁₀O₇ · CID 5280343</text>
+    <text class="node-tiny" x="88" y="926">R3 起点</text>
+    <use href="#flavone-quercetin" transform="translate(250,893) scale(0.72)"/>
+
+    <path d="M320 890 H382" fill="none" stroke="#6d28d9" stroke-width="2.6" stroke-dasharray="7 5" marker-end="url(#arrow-violet)"/>
+    <text class="arrow-sub" x="322" y="875" fill="#6d28d9">胞外 → 胞内</text>
+
+    <rect x="382" y="780" width="570" height="265" rx="20" fill="#faf5ff" stroke="#a78bfa" stroke-width="2"/>
+    <text class="arrow-label" x="404" y="812" fill="#6d28d9">工程化 B. subtilis 168（GRAS）</text>
+    <text class="arrow-sub" x="404" y="838">外加槲皮素进入细胞；摄取机制原文未展开，图内不推断转运方式</text>
+    <text class="arrow-sub" x="404" y="864">UGT78D2 催化 3-O 糖基化；UDP-Glc 由 pgcA/gtaB 过表达供给</text>
+
+    <rect x="404" y="884" width="526" height="142" rx="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <text class="node-sub" x="420" y="910" fill="#6d28d9">六轮工程改造（虚线括注，非化学步骤）</text>
+    <text class="node-tiny" x="420" y="936">底物降解阻断：ΔyxaG、ΔydfO/mhqA/yodE ＋ 7 个氧化还原酶</text>
+    <text class="node-tiny" x="420" y="958">产物水解阻断：ΔbglA / ΔbglH / ΔbglC</text>
+    <text class="node-tiny" x="420" y="980">碳流重定向：Δpgi（胞内 UDP-Glc ×7.44）</text>
+    <text class="node-tiny" x="420" y="1004" fill="#7c3aed">改造逐步叠加；不推断各改造线性叠加增产</text>
+
+    <path d="M952 900 H1365 Q1395 900 1405 872 L1440 665" fill="none" stroke="#6d28d9" stroke-width="3.4" stroke-linejoin="round" marker-end="url(#arrow-violet)"/>
+    <text class="arrow-label" x="978" y="925" fill="#6d28d9">胞内积累 → 释放至培养基</text>
+    <text class="arrow-sub" x="978" y="944" fill="#6d28d9">全细胞转化，非纯酶体系</text>
+
+    <path d="M1365 892 V900" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrow-slate)"/>
+    <rect class="tag-neutral" x="980" y="960" width="430" height="64"/>
+    <text class="tag-neutral-title" x="996" y="984">产物确认（虚线）：HPLC / LC-MS 标准品比对</text>
+    <text class="tag-neutral-sub" x="996" y="1005">槲皮素 301.02；异槲皮苷 463.07 · Niu 2024 p.5–6</text>
+
+    <rect class="tag" x="980" y="790" width="430" height="100"/>
+    <text class="tag-title" x="998" y="815">0.37 → 0.42 → 1.64 → 3.58 g/L（逐级改造）</text>
+    <text class="tag-sub" x="998" y="837">摇瓶最高 10.6 g/L（得率 72%）</text>
+    <text class="tag-sub" x="998" y="855">1.3 L 发酵罐 35.6 g/L（得率 77.2%）</text>
+    <text class="tag-sub" x="998" y="873">Niu 2024 Fig.1B–6｜CC BY 4.0</text>
+    <text class="tag-sub" x="998" y="889">原文报告 · 非本次观测</text>
+  </g>
+
+  <!-- Shared product -->
+  <g>
+    <rect class="product" x="1445" y="445" width="305" height="290"/>
+    <text class="product-kicker" x="1470" y="476">三路线共同终点节点</text>
+    <text class="product-title" x="1470" y="512">异槲皮苷</text>
+    <text class="product-sub" x="1470" y="537">isoquercitrin · 3-O-β-D-葡萄糖苷</text>
+    <text class="product-tiny" x="1470" y="561">C₂₁H₂₀O₁₂ · 相对分子质量 464.4</text>
+    <text class="product-tiny" x="1470" y="582">PubChem CID 5280804</text>
+    <use href="#flavone-isoquercitrin" transform="translate(1597,668) scale(0.84)"/>
+    <text class="product-tiny" x="1470" y="718">唯一产物节点；三路线不共享产率口径</text>
+  </g>
+
+  <!-- Legend and footnotes -->
+  <g>
+    <rect x="30" y="1082" width="1740" height="132" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+    <line x1="50" y1="1108" x2="112" y2="1108" stroke="#0f766e" stroke-width="3.2" marker-end="url(#arrow-teal)"/>
+    <text class="legend" x="122" y="1113">实线：主反应 / 主路径</text>
+    <line x1="330" y1="1108" x2="392" y2="1108" stroke="#64748b" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#arrow-slate)"/>
+    <text class="legend" x="402" y="1113">虚线：旁路、摄取或产物确认</text>
+    <text class="legend" x="690" y="1113">橙色标签：原文报告值，不是本次实验观测</text>
+    <text class="legend" x="1030" y="1113">所有路线条件不可互换、产率不可跨路线换算（S3）</text>
+
+    <text class="foot" x="50" y="1144"><tspan font-weight="700">①</tspan> 各路线条件与产率均属各自文献体系，不可跨路线比较或换算（S3）；图中数值不是本次实验观测。</text>
+    <text class="foot" x="50" y="1167"><tspan font-weight="700">②</tspan> R1/R2 为按 PubChem CID 重绘的示意反应图，原文图表展示待 Springer 授权；R3 引自 Niu 等 2024（CC BY 4.0，已署名）。</text>
+    <text class="foot" x="50" y="1190"><tspan font-weight="700">③</tspan> 位点异构糖苷（5-O、7-O 等）不在三条路线之内，仅作辨析；本图不推断胞内摄取机制。</text>
+    <text class="foot" x="50" y="1213"><tspan font-weight="700">④</tspan> SMILES 取自 PubChem（检索 2026-10-22）；芦丁以 CID 5280805 与分子式交叉核对，图内不印 SMILES。教学状态：待教师审定。</text>
+  </g>
+</svg>

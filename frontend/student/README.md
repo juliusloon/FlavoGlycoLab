@@ -1,49 +1,51 @@
-# 学生虚拟实验台
+# 学生虚拟探究实验
 
-TASK-012已将六页展示骨架重建为连续工作空间。产品结构见[工作台设计](../../docs/design/workbench.md)，当前事实见[STATE](../../STATE.md)，访问和启停见[LAN运行说明](../../docs/operations/lan-site.md)。
+TASK-018将原六阶段表单工作台重构为分子与三案例驱动的探究空间。产品结构见[工作台设计](../../docs/design/workbench.md)，当前事实见[STATE](../../STATE.md)，访问和启停见[LAN运行说明](../../docs/operations/lan-site.md)。
 
 ## 使用流程
-1. 在异槲皮苷案例中比较三条候选路线，独立写选择依据。
-2. 为该路线加入底物、催化体系、供体方案；可纠错、移除和重配。
-3. 录入自己的体积、底物浓度、温度、pH、时长、取样时点、对照和假设。投料换算只作单位算术。
-4. 按检查→混合→启动演练→按计划取样操作，生成样品标签和日志。
-5. 查看样品的缺数据状态，明确哪些结论无法成立。
-6. 写结论、局限和下一步，保存练习；与历史快照比较或导出JSON/Markdown。
+1. 旋转、缩放异槲皮苷结构，突出糖基，展开三种思路。
+2. 查看Pei2019、Zhang2015、Niu2024的方案与证据；比较只改变浏览对象，明确点选才改变规划路线。
+3. 完成左上01—04主线：明确任务、辨识身份、比较路线、留下独立选择理由。错误留关，短答保存为待复核自述；不计正式成绩。
+4. 用第04题的选择理由确认路线，依次配置体系、设计条件、操作取样、审查分析与反思。各阶段主线和必要操作共同控制推进，左下历程可回访。
+5. 每一阶段都能并排查看三篇论文的研究做法、条件语义、假说、证据与局限。
+6. 保存练习，比较历史快照或导出JSON/Markdown。
 
-AI导师位于同一工作台，问题随当前步骤发送给已有Qwen模型。前端展示真实模型回复、系统证据拒绝或真实失败；三者明确区分。模型不操作仪器、不写入学生方案、不产生观测或教师成绩。
+右下AI导师随时可唤出，默认不占主空间。Enter发送，Shift+Enter换行，中文输入法确认不误发；真实模型答复、证据拒绝、失败分别显示。AI只帮助核对，不替学生操作。设置支持减少动态效果、记录入口和重看分子开场。本机配置Qwen时状态显示“实时辅导（本机演示，未接入正式平台）”，固定角标常显“本机演示 · 未接入正式平台”；未配置或连接失败时如实降级，实验台可继续。
+
+顶部“数据查询”进入独立只读页：检索21条已登记文献报告值（R1 9、R2 5、R3 7），可按路线/来源/类别/关键词筛选并支持`?route=`深链；每条显示原指标、条件、原文定位、使用边界与“原文报告 · 非本次观测 · 待教师审定”。无匹配时显示“没有对应实验数据”，不生成0、预测或路线排名；页面不调用AI、不读写学习记录、不请求第三方资源。案例页与“查看分析结果”均有入口。
+
+24项主线答案与理由自动保存草稿，提交后形成自查记录。任务按LYW v5实际矩阵六界面各4步排列（01—04、05—08、09—12、13—16、17—20、21—24），每项显示实际任务标题与“待教师审定”角标；04、09、13—22共12项标为数据依赖（沿用TASK-019代理设计，LYW实际稿未给该角标）。实际稿未给分钟、分值或成绩类型，网页不展示未提交量规，也不计成绩。三篇论文对照新增“结论与反思”页签，展示14字段×3路线、21条历史命中边界与4条明确标注“原文报告、非本次观测”的文献值，不改变已选路线。04/09的首次AI前判断单独保留，换路线不追认新的“未经AI”判断。09假设搭建、17证据分类、20证据链是临时探究工具；09四字段须点击带入，成为可编辑/保存的假设草稿。上游变更清除对应下游当前答案，已保存快照保留。
 
 ## 运行
+从根目录运行`python scripts/dev.py`，浏览器打开[本机实验台](http://127.0.0.1:8767/)。Python3.10+标准库，无需npm、GPU、私有数据或模型凭据；无AI配置仍可完成练习。Windows可用py，macOS/Linux可用python3。不要双击index.html。
 
-从根目录运行`python scripts/dev.py`，浏览器打开[本机实验台](http://127.0.0.1:8767/)。Python 3.10+标准库，无需npm、私有数据或模型凭据；无AI配置显示“模型尚未配置”，流程可继续。Windows可用py，macOS/Linux可用python3。不要双击index.html。
+获取/更新、默认检查、可选研究包及AI配置见[协作说明](../../docs/operations/collaboration.md)。原生HTML/CSS/ES模块，无构建器/CDN；3Dmol2.5.5及结构均随项目离线加载。分子来源、计算方法和许可证见[结构资产说明](assets/molecules/README.md)。WebGL不可用时自动显示同源二维结构与SMILES。
 
-获取/更新、默认检查、可选研究包和实时AI配置见[协作说明](../../docs/operations/collaboration.md)。LAN持续托管另见[运维说明](../../docs/operations/lan-site.md)。原生HTML/CSS/ES模块，无CDN/构建器。assets/lab-bench.png为原创生成装置示意，不是实验照片。
+## 文件职责
+- app.js：事件编排、持久化、分子生命周期、浮窗、同源AI及陈旧回复保护。
+- data.html、data-page.js、data-query.js、data-page.css：独立只读数据查询页、筛选逻辑与样式；`content/demo-content.json.data_query`为唯一内容源。
+- lab-state.js：六阶段约束、校验、上游失效、记录及导出。
+- learning-state.js：学习草稿、自查、独立判断及失效。
+- quest-state.js：基于已存回答计算顺序解锁/进度，无另一份完成状态。
+- views/inquiry.js：分子/路线场景、任务HUD与矩阵元数据、任务视图、三论文对照及结论/反思视图。
+- views/inquiry-tools.js、inquiry-tools.css：证据分类、假设搭建、证据链操作。
+- molecule-viewer.js、assets/molecules/、vendor/3dmol/：本地可视化、计算结构、许可与降级。
+- views/workbench.js：阶段2—6操作与实验记录；views/learning.js：学习记录投影。
+- ui.js：转义与图标；styles.css：空间布局、响应式与动态偏好。
+- content/demo-content.json：路线/来源、24项练习及三案例六阶段原创非数值投影。
 
-## 状态和文件职责
-- app.js：应用编排、事件、持久化、同源AI交互。
-- lab-state.js：流程门槛、校验、上游变化失效、记录与导出。
-- views/workbench.js：六阶段和记录的纯视图。
-- ui.js：转义、图标和来源详情。
-- content/demo-content.json：非数值路线和来源元数据；原始身份/条件/教师真值仍由项目登记负责。
-- styles.css：桌面三栏与手机流程条/导师抽屉。
+原sidebar-resize.js是TASK-017历史辅助模块，新界面不再加载或依赖；旧宽度偏好不影响新浮窗。原资产lab-bench.png为原创生成装置示意，不是实拍数据。
 
-仅在当前浏览器、当前站点源保存；两个网卡地址是不同浏览器存储源，不自动同步。最多12份练习快照；关闭页面保留，清空浏览器数据会删除，请自行导出。新实验需确认；损坏记录不会静默覆盖，JSON导出可包含原始损坏备份。另一标签页写入后暂停本页自动保存并提示刷新，避免互相覆盖。
+仅保存于当前浏览器和站点源，两个LAN地址不共享存储。最多12快照；新实验须确认，损坏存储不静默覆盖，可导出原始备份。其他标签页修改时暂停本页写入并提示，避免覆盖。
 
 ## 验证
-
 ```bash
-node --test tests/test_workbench_state.mjs
-python3 -m unittest discover -s tests -p test_lab_server.py
-```
-
-浏览器QA依赖由仓库根package.json/package-lock.json管理，运行无模型配置的本地8767服务后执行：
-
-```bash
-npm ci
-npx playwright install chromium
+python scripts/dev.py check
+npm test
 npm run test:browser
+npm run test:data-browser
 ```
-
-测试默认不调用真实模型，不依赖某个人home路径。可通过环境变量FRONTEND_URL、QA_OUTPUT、CHROMIUM_EXECUTABLE或FLAVOGLYCOLAB_LIVE_AI覆盖明确的测试选项；详见协作说明。旧test_frontend_scaffold.mjs转入当前工作台验证。
+浏览器QA需先按根package-lock安装可选开发依赖和Playwright浏览器；运行无需它们。默认测试不调用真实模型；FRONTEND_URL、QA_OUTPUT、CHROMIUM_EXECUTABLE和FLAVOGLYCOLAB_LIVE_AI用于明确的测试配置。test_workbench_browser.mjs为test_inquiry_browser.mjs的兼容入口；模型故障/快捷键夹具与真实AI验证分别报告。
 
 ## 科学边界
-这是可操作的过程演练。所有条件均为学生方案输入；暂无真实色谱、标准曲线、产率或动态反应模型，quantitative_result始终null。六阶段不能替代24步课程/教师审核/公众教学发布验收。
+结构是计算可视化；条件是学生方案，论文对照未提供准入的推荐数值。没有本次样品真实色谱、标曲、产率或动力学模型，quantitative_result保持null。主线自查不代替科学校验、正式课程成绩、教师审核或公众教学发布验收。

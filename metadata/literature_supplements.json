@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "artifact_role": "新增SI子来源与可得性查证；历史source_registry及研究包登记保持原样",
+  "decision_origin": "agent_task_audit",
+  "human_reviewed": false,
+  "teacher_approved": false,
+  "papers": [
+    {
+      "parent_source_id": "Zhang2015",
+      "parent_doi": "10.1007/s10529-015-1792-6",
+      "public_si_found": false,
+      "status": "no_public_si_found_in_checked_sources",
+      "checked_date": "2026-10-20",
+      "publisher_url": "https://link.springer.com/article/10.1007/s10529-015-1792-6",
+      "publisher_supplement_link_count": 0,
+      "publisher_check": "已核页面未见SI下载入口；正文未见补充材料声明/编号",
+      "europepmc_query_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1007%2Fs10529-015-1792-6&format=json&resultType=core",
+      "europepmc_record_status": "exact_DOI_match",
+      "europepmc_hasSuppl": "N",
+      "scope_note": "仅对当前已核公开页面、记录与正文作结论；不推断全部原始实验材料已公开或不存在",
+      "supplement_source_id": null
+    },
+    {
+      "parent_source_id": "Niu2024",
+      "parent_doi": "10.1186/s12934-024-02390-5",
+      "public_si_found": true,
+      "status": "received_and_source_checked",
+      "checked_date": "2026-10-20",
+      "publisher_url": "https://link.springer.com/article/10.1186/s12934-024-02390-5",
+      "publisher_supplement_link_count": 1,
+      "publisher_check": "相关条目中见SI下载入口",
+      "europepmc_query_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1186%2Fs12934-024-02390-5&format=json&resultType=core",
+      "europepmc_record_status": "exact_DOI_match",
+      "europepmc_hasSuppl": "Y",
+      "scope_note": "仅对当前已核公开页面、记录与正文作结论；不推断全部原始实验材料已公开或不存在",
+      "supplement_source_id": "Niu2024-SI1"
+    },
+    {
+      "parent_source_id": "Pei2019",
+      "parent_doi": "10.1007/s10600-019-02712-9",
+      "public_si_found": false,
+      "status": "no_public_si_found_in_checked_sources",
+      "checked_date": "2026-10-20",
+      "publisher_url": "https://link.springer.com/article/10.1007/s10600-019-02712-9",
+      "publisher_supplement_link_count": 0,
+      "publisher_check": "已核页面未见SI下载入口；正文未见补充材料声明/编号",
+      "europepmc_query_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1007%2Fs10600-019-02712-9&format=json&resultType=core",
+      "europepmc_record_status": "no_matching_record_found",
+      "europepmc_hasSuppl": null,
+      "scope_note": "仅对当前已核公开页面、记录与正文作结论；不推断全部原始实验材料已公开或不存在",
+      "supplement_source_id": null
+    }
+  ],
+  "supplements": [
+    {
+      "source_id": "Niu2024-SI1",
+      "parent_source_id": "Niu2024",
+      "parent_doi": "10.1186/s12934-024-02390-5",
+      "source_role": "supplementary_information",
+      "original_filename": "12934_2024_2390_MOESM1_ESM.docx",
+      "received_filename": "02_MicrobCellFact2024_Supplementary_Material_1.docx",
+      "local_path": "data/raw/literature/supplementary/02_MicrobCellFact2024_Supplementary_Material_1.docx",
+      "sha256": "01f86b05cbe0cbabb76a607df09c0f186a635f3f598b9661223a9ce431563ed8",
+      "size_bytes": 1915426,
+      "source_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1186%2Fs12934-024-02390-5/MediaObjects/12934_2024_2390_MOESM1_ESM.docx",
+      "receipt_origin": "user_attachment",
+      "received_date": "2026-10-20",
+      "original_bytes_preserved": true,
+      "official_bytes_match": true,
+      "license_status": "parent_article_CC_BY_4_0_statement_seen; specific_credit_lines_not_fully_adjudicated",
+      "public_redistribution_authorized": false,
+      "review_status": "agent_checked_candidate",
+      "human_reviewed": false,
+      "content_items": [
+        {
+          "label": "Fig. S1",
+          "summary": "基因敲入/敲除PCR验证",
+          "kind": "figure",
+          "locator": "word/document.xml: Fig. S1",
+          "paragraph_index_zero_based": 20,
+          "main_text_reference": "正文方法Gene engineering及菌株构建说明",
+          "verification": "caption_and_material_type_checked"
+        },
+        {
+          "label": "Fig. S2",
+          "summary": "降解产物LC-MS及目标/降解物/底物HPLC",
+          "kind": "figure",
+          "locator": "word/document.xml: Fig. S2",
+          "paragraph_index_zero_based": 24,
+          "main_text_reference": "正文结果未知信号及降解产物讨论",
+          "verification": "caption_and_material_type_checked"
+        },
+        {
+          "label": "Fig. S3",
+          "summary": "工程枯草芽孢杆菌代谢产物HPLC",
+          "kind": "figure",
+          "locator": "word/document.xml: Fig. S3",
+          "paragraph_index_zero_based": 27,
+          "main_text_reference": "正文槲皮素降解消除结果",
+          "verification": "caption_and_material_type_checked"
+        },
+        {
+          "label": "Fig. S4",
+          "summary": "各工程菌株生物量",
+          "kind": "figure",
+          "locator": "word/document.xml: Fig. S4",
+          "paragraph_index_zero_based": 31,
+          "main_text_reference": "正文多重敲除后的生长变化讨论",
+          "verification": "caption_and_material_type_checked"
+        },
+        {
+          "label": "Table S1",
+          "summary": "密码子优化UGT78D2基因序列",
+          "kind": "table",
+          "locator": "word/document.xml: Table S1",
+          "paragraph_index_zero_based": 33,
+          "main_text_reference": "正文Strains and reagents",
+          "verification": "caption_and_material_type_checked"
+        },
+        {
+          "label": "Table S2",
+          "summary": "研究所用菌株与质粒",
+          "kind": "table",
+          "locator": "word/document.xml: Table S2",
+          "paragraph_index_zero_based": 42,
+          "main_text_reference": "正文Strains and reagents",
+          "verification": "caption_and_material_type_checked"
+        },
+        {
+          "label": "Table S3",
+          "summary": "研究所用引物",
+          "kind": "table",
+          "locator": "word/document.xml: Table S3",
+          "paragraph_index_zero_based": 270,
+          "main_text_reference": "正文Strains and reagents",
+          "verification": "caption_and_material_type_checked"
+        }
+      ],
+      "limitations": [
+        "图像与表中汇总信息不等于原始信号、逐重复点表、标准曲线或稀释链",
+        "Fig. S4含已报告生物量汇总值，不能声称SI没有定量信息",
+        "Table S2出现两条BS215标签；后一条描述UGT78D2表达，标签歧义保留，未自动改为BS215G",
+        "未进行序列/引物逐碱基核查、完整菌株谱系裁定或图数字化"
+      ]
+    }
+  ]
+}

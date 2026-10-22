@@ -3,7 +3,7 @@
 本文件是当前职责与工件归属规范。当前已实现与计划内容必须分开；不存在的接口不被描述成已运行。
 
 ## 当前基线
-日期：2026-10-20（TASK-013更新）。TASK-001实现自包含历史证据池和标准库读取器，TASK-002建设命名与治理；TASK-003对照进展并建立独立公开代码快照。真实数据驱动的课程仿真、评分、师生身份和公众教学发布未实现；TASK-012在既有LAN托管上重建六阶段交互工作台，并接入服务器端Qwen辅导。所有路径相对于本项目根目录，受限私有原件不进入公开Git。
+日期：2026-10-21（TASK-018/019/020更新）。TASK-001实现自包含历史证据池和标准库读取器，TASK-002建设命名与治理；TASK-003对照进展并建立独立公开代码快照。真实数据驱动的课程仿真、评分、师生身份和公众教学发布未实现；TASK-012在既有LAN托管上重建六阶段交互工作台，并接入服务器端Qwen辅导。所有路径相对于本项目根目录，受限私有原件不进入公开Git。
 
 TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模块或科学/教学审核事实。
 
@@ -44,7 +44,7 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | src/flavoglycolab/experiment/ | 教师审定的条件与数值 | D1仿真状态、取样与结果反馈 | scaffold | 无经准入观测不得合成数值 |
 | src/flavoglycolab/teaching/ | 课程步骤、案例与人工教学决议 | 学习进程、评分依据、教学指导 | scaffold | 24步仍属规划 |
 | src/flavoglycolab/platform/ | 访问鉴权与审定内容 | 学生/教师服务与审计接口 | scaffold | 未实现公开服务 |
-| frontend/student/ | 非数值候选路线、学生方案、明确标识的Qwen回复 | 六阶段过程演练、本地记录与导出 | active LAN prototype，TASK-012 | 不读取私有证据、不生成真实观测/评分；AI不修改学生方案 |
+| frontend/student/ | 公开结构表示、非数值候选路线、学生方案、明确标识的Qwen回复 | 分子/三案例、六阶段主线探究、LYW v5六界面×4步、文献报告值/三路线结论视图、本地记录与导出 | active LAN prototype，TASK-018/019/020 | 不读取私有证据、不生成真实观测/评分；AI不修改学生方案 |
 | scripts/serve_lab.py | student资产、项目内私有模型配置、限定问题/上下文 | 资产服务、health与tutor同源API | active bounded service，TASK-012 | 固定上游/模型；服务端保密；无文件/命令/审批工具 |
 | frontend/teacher/ | 权限控制后的审核界面 | 审核与教学监控 | scaffold | 教师身份真实性另行验证 |
 
@@ -74,6 +74,7 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 候选案例准入 | data/registries/case_admission.csv | yes | 22未审 |
 | 学术参考文献索引 | data/registries/publication_sources.csv | yes | 6参考，不等于全文审查 |
 | 运行资源相对路径 | metadata/active.json | yes | active |
+| 24步导师评价preset | metadata/tutor_presets.json | yes | TASK-026 active；agent_checked_candidate，待教师审定；serve_lab.py加载并对账demo-content步id，fail-closed |
 | 三篇指定文献PDF | data/raw/literature/；路径/SHA唯一登记在metadata/public_sources.json | yes，human_direct例外 | 原字节公开，rights_verified=false，不作为教师批准 |
 | 日常Git推送 | 当前main → public/main；scripts/publish.py兼容入口 | yes | 直接git push，当前main沿用公开父链 |
 | 来源原件/外部模型 | data/raw/legacy/ | no | local restricted |
@@ -91,6 +92,7 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 站会唯一记录 | docs/p10ns/261019/standup_log.md | 按实际内容与授权决定 | planned，历史文档准备候选；真实参会/交接不预填 |
 | 申报实施基线、主机实况、技术目标与F0—F4条件汇总 | docs/policy/ilab-2026/readiness-evidence-2026.md | 原创非数值/脱敏汇总可登记；原凭据按许可决定 | active document，TASK-006；唯一维护活跃目标与替换凭据，引用沟通记录，不替代教师审定。Ubuntu已选，未部署，性能值null；TASK中的目标表只为事前快照 |
 | 学生路线内容 | frontend/student/content/demo-content.json | 原创非数值规划文本可纳入，提交/同步另授权 | TASK-012使用的唯一候选路线摘要与来源指纹；不作案例准入、观测或教学真值副本 |
+| 文献参考分析引擎 | frontend/student/analysis-engine.js | yes | TASK-026 active；确定性白名单计算（8项，输入仅限已登记DQ记录）与条件四态对照；不新造数值、不接受自由输入 |
 | iLab政策 | docs/policy/ilab-2026/ | yes | scaffold |
 | 学生/教师界面 | frontend/ | yes | student交互实验台LAN托管；teacher仍scaffold，无正式教学评分/发布 |
 | 工作台工程守卫 | tests/test_workbench_state.mjs、tests/test_workbench_browser.mjs、tests/test_lab_server.py | yes | 流程/持久化/API/浏览器；旧test_frontend_scaffold.mjs转入当前测试，历史验收保留 |
@@ -192,3 +194,75 @@ ADR保存跨任务长期选择与复审条件，不能替代执行授权或事�
 | temp/task-014/ | 原表解析、版本/主机、品牌包及QA影像/验证 | 本地ignored，不提交包/原件/大录像 |
 
 原Artifact Registry中的技术分段/站会planned状态由本节更新；communication_log保留历史规划但本TASK不编制校内问询或代办。旧候选文档准备合同仍是历史Proposed，不整份追认。
+
+## TASK-015文献交接与候选内容（2026-10-20）
+
+| 唯一工件 | 职责 | 边界 |
+| --- | --- | --- |
+| data/derived/extracted_from_literature/ | HYK署名摘录表、双语整理与15张原文配图 | 本地只读输入，全部不入Git；交接原表不另复制到docs |
+| docs/p10ns/261019/handoff_acceptance.md | H01实际到件、指纹与缺项 | 仍为接收事实唯一表；不代签教师结论 |
+| docs/p10ns/261019/data_gap_list.md | T-H2代理准备稿、最低字段/24步影响与降级 | 由HYK后续确认；非审定数据或完整课程真值 |
+| frontend/student/content/demo-content.json | 三路线原创非数值摘要、来源定位和证据缺口 | 维持原职责，不消费本地derived、不公开其图文/数值 |
+| temp/task-015/ | 输入SHA、PDF文本、逐项检查/冲突和QA证据 | ignored，本地机器核对，不是教师批准 |
+
+来源可得性仅更新publication_sources.csv，不增记来源原件或改case_admission。学生样品继续没有观测；论文图像存在与原始测量/标准曲线可用分别登记。
+
+## TASK-016新增SI原件与查证（2026-10-20）
+
+| 唯一工件 | 职责 | 边界 |
+| --- | --- | --- |
+| data/raw/literature/supplementary/ | 所有者补交Niu2024 SI的原字节本地副本 | Git忽略，不属于三个PDF公开例外，不成为public运行依赖 |
+| metadata/literature_supplements.json | SI子来源与三篇SI可得性、查证/限制唯一登记 | 仅元数据；source_registry的123项历史登记/研究包范围不改 |
+| temp/task-016/ | 附件/官方字节、ZIP/XML/图像和查证/验证 | 本地ignored，机器核对不等于教师批准 |
+
+接收状态继续只在handoff_acceptance维护；现行缺口引用data_gap_list。TASK-015的SI未到是历史事实，TASK-016记录后续收到与核对，不覆盖旧报告/证据。
+
+## TASK-017代理交接与练习内容（2026-10-21）
+
+| 唯一工件 | 职责 | 边界 |
+| --- | --- | --- |
+| docs/p10ns/261019/case_evidence_table.md | 五类身份、21候选逐项复核及路线字段交接 | ZYT范围的代理工作稿；不替代case_admission或教师审定 |
+| docs/p10ns/261019/24step_table_3-6.md | 24步动作、拟议时间/量规与数据缺失降级的设计原稿 | LYW范围代理工作稿；教师未审，正式成绩未实现 |
+| docs/p10ns/261019/shenbaoshu_sections_LYW.md | 24步配套的3-6(2)交互说明 | 仅准备稿，不代交后续申报栏目 |
+| docs/p10ns/261019/b1_script_v1.md、b1_storyboard.md | B1介绍脚本与画面接入需求 | 代理v1，不代表成片/真人互审 |
+| docs/p10ns/261019/b2_script_v1.md、b2_shotlist.md | B2操作脚本及镜头要求 | 代理v1，实际可拍与拟建分列 |
+| frontend/student/content/demo-content.json | 分阶段学习任务和身份/路线证据提示的UI投影 | 不复制准入真值、原始数值或第三方图文 |
+| temp/task-017/ | 本轮保护指纹、交接算术/内容核对与浏览器验证 | ignored，本地工程证据 |
+
+H02—H05接收/接入继续由handoff_acceptance.md唯一维护。学习自述属于现有浏览器练习记录，不是教师成绩；助手宽度属于界面偏好，与实验状态分离。
+
+TASK-017实现责任补充：learning-state.js独立管理学习草稿/核对/独立判断与失效，views/learning.js只渲染探究和学习记录；lab-state.js在既有流程和导出中调用，app.js编排事件。sidebar-resize.js仅管理指针/键盘分隔条与flavoglycolab.tutor-width.v1偏好，styles.css负责可用宽度响应式。scripts/dev.py将三个新增JS纳入运行资产检查；服务API和常驻进程未改。原生ES模块仍无需构建器或私有运行资料。
+
+## TASK-018沉浸式探究工作空间（2026-10-21）
+
+现有student模块内重构，不新增科学活动模块。`views/`负责分子/三案例场景及任务HUD投影，主线状态由独立状态辅助模块管理，`app.js`编排；`content/demo-content.json`继续唯一维护界面非数值路线/来源/学习内容。`assets/`允许本轮请求的公开分子表示及计算几何，附独立来源说明；`vendor/`只收可再分发的本地渲染库及原许可。两者不替代来源/案例准入登记，不访问私有材料。`temp/task-018/`独占本轮概念/验收/保护审计；最终文件归属与实测在REPORT-018闭环。
+
+
+本轮最终职责：
+
+| 工件 | 唯一职责与边界 |
+| --- | --- |
+| frontend/student/views/inquiry.js | 分子/三路线场景、主线HUD与单任务、六阶段论文对照；不存另一份完成状态 |
+| frontend/student/quest-state.js | 从已有学习答案推导自查通过/短答提交、顺序解锁、可访问与进度 |
+| frontend/student/views/inquiry-tools.js、inquiry-tools.css | 17证据分类、09四字段假设、20证据链，操作不产生观测/成绩 |
+| frontend/student/molecule-viewer.js | 本地3Dmol生命周期、旋转/缩放/高亮、WebGL失败的二维降级 |
+| frontend/student/assets/molecules/ | ChEBI:68352结构、RDKit计算几何与二维表示、来源SHA与CC BY 4.0署名说明；PubChem精确CID交叉核对，非实测/教师批准 |
+| frontend/student/vendor/3dmol/ | 固定2.5.5离线渲染库及BSD-3-Clause/组件原许可证，不套用项目原创许可 |
+| frontend/student/app.js、index.html、styles.css | 全局空间/事件/保存、浮动导师、输入法安全发送、设置及响应式；不再加载sidebar-resize.js |
+| frontend/student/lab-state.js、learning-state.js | 既有流程/草稿；上下文修订号与AI请求事实跨路线保留，阻断旧回复及独立判断追认 |
+| frontend/student/views/workbench.js、views/learning.js | 阶段2—6操作与记录、学习记录；旧阶段1/折叠表单渲染移除 |
+| tests/test_quest_state.mjs、test_inquiry_browser.mjs | 主线状态与整页三路线/三视口、无观测和AI键盘/失败守卫；旧browser文件兼容转入 |
+
+此前TASK-017固定侧栏调宽为历史实现，新浮窗不占布局列。三案例的18项分阶段内容继续只在demo-content.json.case_studies维护。分子来源说明与渲染资产属于新可视化职责，不修改123项历史source_registry或22条case_admission。最终本地验收与限制见REPORT-018；科学/教师/发布门未晋级。
+
+## TASK-019教学矩阵与三路线结论（2026-10-21，历史代理假设）
+
+在现有student模块内补充内容投影，不新增科学活动模块或运行时数据源。`demo-content.json`的24个`learning.steps`增加矩阵元数据，并新增`learning.teaching_matrix`与`learning.route_analysis`；两者均来自LYW/ZYT工作副本的原创非数值整理，不复制原始数值或第三方图文。`views/inquiry.js`只渲染任务矩阵条/角标与对照对话框的结论页，不改变任务判定、路线状态或保存逻辑；`styles.css`只负责其响应式布局。`tests/test_quest_state.mjs`守卫180分钟/100分、数据依赖集合与21条命中边界，`test_inquiry_browser.mjs`守卫三视口矩阵标识和结论页。`docs/p10ns/261019/three_route_analysis_LJX.md`为接入整理稿，明确非ZYT docx逐字转录；H02/H03唯一接收状态仍在handoff_acceptance.md。最终本地验收与限制见REPORT-019；教师量规、科学审定与公众发布门未晋级。该节的时间/分值/阶段切分来自代理工作副本，TASK-020已按实际文件校正。
+
+## TASK-020实际交件校正（2026-10-21）
+
+学生端仍只在现有student模块内调整内容投影，不新增科学模块或数据源。`demo-content.json`的24个学习任务按LYW实际“v5 界面简明版”重排为六界面×4步（4/4/4/4/4/4）；任务卡移除分钟/分值/成绩类型，改为实际界面序号与“待教师审定”角标。`learning.teaching_matrix`记录实际来源路径/SHA、阶段计数、数据依赖集合（沿用TASK-019代理设计，LYW实际稿未给该角标）与`proxy_rubric`；180分钟/100分只作`agent_proposal_not_teacher_approved`内部草案，不进入页面或成绩。`learning.route_analysis`新增4组ZYT docx文献报告值（R1补料、R1供体/酶组合、R2时间进程、R3 84 h补料），每行带条件、来源与“原文报告/非本次观测”边界；不新增学生样品值。`views/inquiry.js`、`views/inquiry-tools.js`、`learning-state.js`、`styles.css`只做任务映射、独立判断04/09、旧05/06独立记录只读保留与报告区块样式；`app.js`/`views/learning.js`仅为清除旧任务硬编码和标注旧编号做最小修复。`tests/test_quest_state.mjs`、`test_workbench_state.mjs`、`test_inquiry_browser.mjs`更新为实际阶段/报告值/工具ID守卫。三份实际原件留在Git忽略的`temp/261021-handout/`，不复制进公开前端；H02/H03接收状态仍在handoff_acceptance.md。最终本地验收见REPORT-020；教师、科学与公众发布门未晋级。
+
+## TASK-027 LJX会后整合、两阶段状态、AI结果解析与逆合成评估（2026-10-23）
+
+现有student模块内增量接入，不新增科学活动模块、模型或外部运行服务。新增字段与职责的唯一归属如下：`lab-state.js` 的 `run.stageMode`（guided参照练习/open开放探究，默认guided）与 `run.guidedDone`（参照完成标记）是两阶段流程状态唯一真值，旧存档缺失字段按guided默认值迁移、非法枚举拒绝加载（fail-closed），不另存第二份完成真值；`planBaseline`/`pendingPlanBefore` 仅作开放探究放弃/回滚的已确认方案快照，非学生记录真值；上下文修订继续复用既有 `contextRevision` 使陈旧AI回复按修订失效。`content/demo-content.json` 顶层 `feedback_rules` 是定性反馈规则唯一投影（13条、九字段以上齐全、无来源阈值0条、缺证据显式unknown、不造SHA），不复制到另一份运行配置；`metadata/tutor_presets.json` 的 `roles.result_analyst` 是结果解析角色唯一登记（review_status=agent_checked_candidate，启动校验fail-closed），`scripts/serve_lab.py` 的角色白名单与kind=analyze四分区协议（文献事实/学生自述/机制假设/尚不可判断）是唯一服务端出口，伪造来源/审核/"观测"400、双守卫不放宽。`docs/design/workbench.md` 新增「逆合成融合可行性评估」节是静态回溯示意与三路线分类（R1/R2酶促转化、R3工程菌途径）的唯一设计位置，动态算法本任务只评估不上线。`temp/task-027/` 独占本轮基线快照、保护清单（169文件sha256+size口径）、走查与L04对账证据；H02—H05及成员交付接收状态仍只在handoff_acceptance.md维护。最终验收见REPORT-027；教师、科学与公众发布门未晋级。

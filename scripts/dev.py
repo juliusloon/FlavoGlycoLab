@@ -23,8 +23,10 @@ def doctor(profile='public'):
         summary = EvidenceCatalog(ROOT, profile).summary(verify_sources=True)
         if not summary['source_integrity']['ok']:
             raise ValueError(json.dumps(summary['source_integrity'], ensure_ascii=False))
-        for name in ('index.html', 'app.js', 'lab-state.js', 'ui.js', 'styles.css',
-                     'views/workbench.js', 'content/demo-content.json', 'assets/lab-bench.png'):
+        for name in ('index.html', 'app.js', 'lab-state.js', 'learning-state.js', 'quest-state.js', 'molecule-viewer.js', 'ui.js', 'analysis-engine.js', 'styles.css',
+                     'views/workbench.js', 'views/learning.js', 'views/inquiry.js', 'views/inquiry-tools.js', 'inquiry-tools.css',
+                     'content/demo-content.json', 'assets/lab-bench.png', 'assets/molecules/isoquercitrin.json',
+                     'assets/molecules/isoquercitrin-2d.svg', 'vendor/3dmol/3Dmol-min.js'):
             if not (ROOT / 'frontend/student' / name).is_file():
                 raise ValueError('运行资产缺失：frontend/student/' + name + '；请git pull --ff-only更新完整代码。')
         print(json.dumps({'ok': True, 'python': sys.version.split()[0], 'profile': profile,
@@ -62,7 +64,7 @@ def main():
             return result.returncode
         node = shutil.which('node')
         if node:
-            return subprocess.run([node, '--test', 'tests/test_workbench_state.mjs'], cwd=ROOT).returncode
+            return subprocess.run([node, '--test', 'tests/test_workbench_state.mjs', 'tests/test_quest_state.mjs', 'tests/test_case_page.mjs', 'tests/test_data_query.mjs', 'tests/test_analysis_engine.mjs'], cwd=ROOT).returncode
         print('Python检查已通过；未安装Node，跳过可选JS状态测试。完整CI会执行JS测试。')
         return 0
     spec = importlib.util.spec_from_file_location('lab_server', ROOT / 'scripts/serve_lab.py')

@@ -27,9 +27,10 @@ export function sourceDetails(source) {
   return `<details class="source-details"><summary>来源与交接状态</summary><dl class="source-meta">
     <div><dt>来源标识</dt><dd>${escapeHTML(source.source_id)}</dd></div>
     <div><dt>文献</dt><dd><a href="https://doi.org/${escapeHTML(source.doi)}" target="_blank" rel="noopener noreferrer">${escapeHTML(source.label)} · DOI ${escapeHTML(source.doi)}（新窗口）</a></dd></div>
-    <div><dt>原文定位</dt><dd>页码／图表号待逐项摘录</dd></div>
+    <div><dt>原文定位</dt><dd>${escapeHTML(source.source_locator ?? '页码／图表号待逐项摘录')}</dd></div>
     <div><dt>原件SHA-256</dt><dd class="hash">${escapeHTML(source.source_sha256)}</dd></div>
     <div><dt>核对状态</dt><dd>${escapeHTML(source.quality_status)}</dd></div>
+    <div><dt>摘录交接</dt><dd>${escapeHTML(source.handoff_status ?? '待交接')}</dd></div>
     <div><dt>许可状态</dt><dd>${escapeHTML(source.license_status)}</dd></div>
     <div><dt>审核状态</dt><dd>待教师审定；原件指纹不代表科学核验通过</dd></div>
   </dl></details>`;

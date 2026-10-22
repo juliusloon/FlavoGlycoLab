@@ -26,3 +26,25 @@
 - [REPORT-013-collaboration-ready.md](REPORT-013-collaboration-ready.md)：团队克隆/运行与分层数据交付的真实验证、同步及限制。
 
 - [REPORT-014-ljx-technical-preparation.md](REPORT-014-ljx-technical-preparation.md)：技术准备、双品牌浏览器及交接规则的真实验证与限制。
+
+- [REPORT-015-literature-handoff-integration.md](REPORT-015-literature-handoff-integration.md)：HYK交接、全文定位、重点核对/冲突、数据缺口与候选内容接入的真实结果。
+
+- [REPORT-016-supplement-reconciliation.md](REPORT-016-supplement-reconciliation.md)：SI查证、附件接收/官方字节比对、七项内容及定量缺口核对结果。
+
+- [REPORT-017-delegated-handoffs-lab-enrichment.md](REPORT-017-delegated-handoffs-lab-enrichment.md)：两路代理交接、24项学习记录与无观测守卫、右栏可调宽度、public工程和浏览器验证。
+
+- [REPORT-018-immersive-inquiry-workspace.md](REPORT-018-immersive-inquiry-workspace.md)：分子/主线/三文献空间重构、离线结构许可、浏览器/工具/真实AI与陈旧上下文守卫验收。
+
+- [REPORT-019-teaching-matrix-route-analysis.md](REPORT-019-teaching-matrix-route-analysis.md)：24步矩阵时间/分值/数据依赖接入、三路线结论/反思视图、H02/H03当日转交与浏览器/保护字节验收；原始附件不可读限制保留（历史假设，已被TASK-020校正）。
+
+- [REPORT-020-actual-handout-reconciliation.md](REPORT-020-actual-handout-reconciliation.md)：按实际LYW v5/ZYT案例表/docx校正24步阶段与报告值，移除未提交量规，重跑Node/Python/三视口浏览器与199项保护字节检查。
+
+- [REPORT-021-ui-copy-cleanup.md](REPORT-021-ui-copy-cleanup.md)：删除首页、设置、任务、文献对话框和工作台中的注释性文案，文献卡片改为单箭头；保留任务内容与证据边界，重跑Node/Python/三视口浏览器517项与199项保护字节检查。
+
+- [REPORT-022-intro-narrative-paper-access.md](REPORT-022-intro-narrative-paper-access.md)：四幕导入、论文PDF只读端点（SHA校验/降级/CSP单独覆盖）与导师阅读上下文的真实验证；intro逐条挂源表、551项浏览器分母、199保护字节与8766未重启限制。
+
+- [REPORT-023-guided-intro-steps.md](REPORT-023-guided-intro-steps.md)：双角色评测与采纳清单、分幕交互与任务01引导实现、603项浏览器分母、close重渲染竞态修复、199保护字节与未决项（装配重置/仿真内核/导师术语）。
+
+- [REPORT-024-zyt-handoff-figure-casepage.md](REPORT-024-zyt-handoff-figure-casepage.md)：ZYT三交件接办、图1制图与PubChem核对、只读案例页v1（S1—S6/5分子/3路线/10行对照/5参考文献）、24步16/6/2状态表与11张B1截图；工作台603/603与案例页3/3、199保护字节、AI角标冲突与未决项。
+
+- [REPORT-025-lyw-handoff-data-query.md](REPORT-025-lyw-handoff-data-query.md)：LYW三交件归档与SHA、21条文献报告值只读数据查询页（筛选/深链/空状态）、本机Qwen实况AI标识、v2科学24步13/9/2映射；npm 48/48、工作台603/603、数据页65/65与68/68、199保护字节、3/3 PDF与未决项。

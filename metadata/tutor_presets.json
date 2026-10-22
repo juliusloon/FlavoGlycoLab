@@ -1,0 +1,241 @@
+{
+ "version": 1,
+ "review_status": "agent_checked_candidate",
+ "boundary": "机器反馈preset · 待教师审定 · 不构成成绩",
+ "steps": {
+  "01": {
+   "objective": "写出自己想比较的一个具体方面（如底物、催化剂、供体或反应时间），并说明该比较需要哪类证据。",
+   "rubric": [
+    {"id": "r1", "point": "比较点具体涉及底物、催化剂、供体或时间中的至少一个方面", "required": true},
+    {"id": "r2", "point": "明确指出需要的证据类型（如条件适用范围、产物身份或定量指标）", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的双酶催化体系与另两篇的路线有何本质不同？"}
+  },
+  "02": {
+   "objective": "说明芦丁与异槲皮苷在糖基组成或连接上的差别，并解释一个容易混淆的地方。",
+   "rubric": [
+    {"id": "r1", "point": "指出两者在糖基数目或连接方式上的具体差别", "required": true},
+    {"id": "r2", "point": "解释一个易混淆的例子（如位置异构或酶改性产物）", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015从芦丁去糖的思路与加糖路线有何本质不同？"}
+  },
+  "03": {
+   "objective": "说出三条路线在加糖或去糖方向上的差异，并指出各路线底物来源的不同。",
+   "rubric": [
+    {"id": "r1", "point": "正确区分加糖路线与去糖路线", "required": true},
+    {"id": "r2", "point": "指出至少两条路线的底物来源差异", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的催化体系与另两篇的路线有何本质不同？"}
+  },
+  "04": {
+   "objective": "为一条主张选出能支持它的来源，并说明该来源能支持什么、不能支持什么。",
+   "rubric": [
+    {"id": "r1", "point": "主张与来源形成明确的对应关系", "required": true},
+    {"id": "r2", "point": "说明该来源的支持范围或局限", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的证据能支持哪类主张、不能支持哪类主张？"}
+  },
+  "05": {
+   "objective": "写出所选路线的底物，并说明该底物与路线思路的对应关系。",
+   "rubric": [
+    {"id": "r1", "point": "所选底物与所选路线一致", "required": true},
+    {"id": "r2", "point": "说明底物与加糖或去糖思路的关系", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Niu2024", "question": "Niu2024使用外加底物的思路与另外两条路线有何本质不同？"}
+  },
+  "06": {
+   "objective": "写出所选路线的催化体系，并说明其中每种催化剂或酶的作用。",
+   "rubric": [
+    {"id": "r1", "point": "所写催化体系与所选路线匹配", "required": true},
+    {"id": "r2", "point": "说明至少一种催化剂或酶的具体作用", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的双酶体系中两种酶各自承担什么角色？"}
+  },
+  "07": {
+   "objective": "说明所选路线的糖基来源与供给方式（外加供体、供体再生或胞内供给）。",
+   "rubric": [
+    {"id": "r1", "point": "供体方案与所选路线匹配", "required": true},
+    {"id": "r2", "point": "解释糖基从哪里来", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019如何再生糖基供体？这与另两条路线有何不同？"}
+  },
+  "08": {
+   "objective": "检查所选底物、催化剂与供体是否相互匹配，并写出一条不成立搭配的理由。",
+   "rubric": [
+    {"id": "r1", "point": "对搭配是否匹配作出判断并给出理由", "required": true},
+    {"id": "r2", "point": "判断依据涉及底物形式或供体需求", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的底物形式为什么决定它不需要外加糖基供体？"}
+  },
+  "09": {
+   "objective": "提出一个本路线可检验的小问题，写出自变量、观测指标和保持不变的条件。",
+   "rubric": [
+    {"id": "r1", "point": "问题具体且可检验", "required": true},
+    {"id": "r2", "point": "写出自变量与保持不变的条件", "required": true},
+    {"id": "r3", "point": "写出观测指标", "required": true}
+   ],
+   "min_hits_required": 3,
+   "paper_focus": {"source_id": "Niu2024", "question": "围绕Niu2024的路线，一个可检验的小问题应包含哪些要素？"}
+  },
+  "10": {
+   "objective": "说明投料计算的基准（浓度、体积与物质量的关系），并写出所用单位。",
+   "rubric": [
+    {"id": "r1", "point": "写出计算所依据的基准关系", "required": true},
+    {"id": "r2", "point": "单位使用正确且前后一致", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的投料描述中哪些信息是计算基准所必需的？"}
+  },
+  "11": {
+   "objective": "说明所选反应条件的来源状态（已测、拟议或待核）及其适用范围。",
+   "rubric": [
+    {"id": "r1", "point": "所写条件与所选路线匹配", "required": true},
+    {"id": "r2", "point": "注明条件的来源状态或适用范围", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的条件适用范围有哪些需要核对的边界？"}
+  },
+  "12": {
+   "objective": "写出对照组设置及每种对照要排除的解释，并说明取样时点安排。",
+   "rubric": [
+    {"id": "r1", "point": "写出至少一种对照及其要排除的解释", "required": true},
+    {"id": "r2", "point": "说明取样时点与计时基准", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的比较中哪些组别承担了对照的角色？"}
+  },
+  "13": {
+   "objective": "检查方案是否只改变一个因素，其余条件是否保持不变。",
+   "rubric": [
+    {"id": "r1", "point": "指出方案中的自变量", "required": true},
+    {"id": "r2", "point": "确认其余条件保持固定", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Niu2024", "question": "Niu2024的投料比较中哪些条件需要保持固定？"}
+  },
+  "14": {
+   "objective": "按顺序写出混合与启动步骤，并说明每步操作的目的。",
+   "rubric": [
+    {"id": "r1", "point": "操作顺序合理完整", "required": true},
+    {"id": "r2", "point": "写出操作的目的", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的操作流程中哪些步骤的顺序不能颠倒？"}
+  },
+  "15": {
+   "objective": "说明启动操作的目的，并核对计划样品与组别是否齐全。",
+   "rubric": [
+    {"id": "r1", "point": "说明启动操作的目的", "required": true},
+    {"id": "r2", "point": "核对计划样品或组别", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的启动时刻如何定义计时的起点？"}
+  },
+  "16": {
+   "objective": "说明每个取样时点的目的，并为样品给出可区分的标识。",
+   "rubric": [
+    {"id": "r1", "point": "取样时点与其目的一一对应", "required": true},
+    {"id": "r2", "point": "样品标识清晰可区分", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的取样时点为什么必须与计时基准一起记录？"}
+  },
+  "17": {
+   "objective": "区分计划样品与文献结果，并说明结果的身份标签与来源。",
+   "rubric": [
+    {"id": "r1", "point": "区分本演练的计划样品与文献数据", "required": true},
+    {"id": "r2", "point": "为结果标注来源或身份标签", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Niu2024", "question": "Niu2024的图谱结果在接入教学时应如何标注身份？"}
+  },
+  "18": {
+   "objective": "写出判断目标物生成所需的证据类型，并说明未知信号应如何处理。",
+   "rubric": [
+    {"id": "r1", "point": "写出至少一种身份判断证据（如标准品对照或质谱）", "required": true},
+    {"id": "r2", "point": "未知信号不直接命名、列为待核", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015提供了哪些辨认目标物的证据？还缺什么？"}
+  },
+  "19": {
+   "objective": "说明所用比较指标的分母与前提，并列出当前不可计算的指标。",
+   "rubric": [
+    {"id": "r1", "point": "写出指标的分母或计算前提", "required": true},
+    {"id": "r2", "point": "列出至少一个当前不可算的指标", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019报告的目标物浓度能直接换算成哪些指标、不能换算成哪些？"}
+  },
+  "20": {
+   "objective": "用一个具体因素解释路线间的差异，并说明该解释的证据边界。",
+   "rubric": [
+    {"id": "r1", "point": "解释基于底物或催化剂等具体因素", "required": true},
+    {"id": "r2", "point": "说明证据能支持到什么范围", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Niu2024", "question": "Niu2024中供体水平与产物水平的关系能支持什么解释、不能支持什么？"}
+  },
+  "21": {
+   "objective": "汇总三条路线在一个维度上的异同，并注明比较所依据的证据。",
+   "rubric": [
+    {"id": "r1", "point": "比较覆盖至少两条路线", "required": true},
+    {"id": "r2", "point": "注明比较所依据的来源标识", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Niu2024", "question": "Niu2024的工程菌证据与另两篇的体外证据能放在同一维度比较吗？"}
+  },
+  "22": {
+   "objective": "结合底物或催化剂解释路线差异的原因，并区分观测与推断。",
+   "rubric": [
+    {"id": "r1", "point": "原因解释与已有证据对应", "required": true},
+    {"id": "r2", "point": "区分观测事实与机制推测", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Niu2024", "question": "Niu2024中哪些是观测结果、哪些只是对机制的推测？"}
+  },
+  "23": {
+   "objective": "提出一个只改变单一因素的改进方案，并写出改进判据与待测项。",
+   "rubric": [
+    {"id": "r1", "point": "改进方案只涉及一个因素", "required": true},
+    {"id": "r2", "point": "写出改进判据或待测项", "required": true}
+   ],
+   "min_hits_required": 2,
+   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019中哪些已发表的比较可以作为改进方案的参照？"}
+  },
+  "24": {
+   "objective": "写出三路线结论、至少一条局限和一个可检验的下一步改进。",
+   "rubric": [
+    {"id": "r1", "point": "结论回答总目标（不同底物与催化剂的差异）", "required": true},
+    {"id": "r2", "point": "写出至少一条局限", "required": true},
+    {"id": "r3", "point": "下一步改进可检验", "required": true}
+   ],
+   "min_hits_required": 3,
+   "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的结果放进三路线结论时应注意哪些前提？"}
+  }
+ },
+ "roles": {
+  "result_analyst": {
+   "label": "结果解析",
+   "base_roles": ["coach", "literature_analyst", "evaluator"],
+   "duties": [
+    "在既有导师协议内解析学生自述的结果与现象，不新造模型、不替学生下结论",
+    "输出必须分区：文献事实（附 rule_id/source_id 可核定位）、学生自述（不可信资料）、机制假设（待检验）、尚不可判断",
+    "无失败数据不推断数值损失、不断言失败；无证据偏差只说影响尚无对应证据，可作为待检验假设",
+    "学生索要产率/转化率时回答当前证据不足、无学生观测数据，并指向可检验的对照设计",
+    "上下文只引用服务端按ID查得的文献/规则与学生自述；客户端来源、审核状态、观测字段一律拒绝"
+   ],
+   "section_contract": ["文献事实", "学生自述", "机制假设", "尚不可判断"],
+   "review_status": "agent_checked_candidate",
+   "boundary": "机器解析 · 待教师审定 · 不构成成绩"
+  }
+ }
+}
