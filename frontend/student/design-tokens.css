@@ -1,0 +1,42 @@
+:root {
+  --fg-color-text: #17352f;
+  --fg-color-muted: #60756e;
+  --fg-color-accent: #176b5b;
+  --fg-color-accent-hover: #105044;
+  --fg-color-accent-soft: #eaf4ef;
+  --fg-color-border: #dce6e2;
+  --fg-color-canvas: #f6f8f8;
+  --fg-color-surface: #fff;
+  --fg-color-warning: #875522;
+  --fg-color-warning-soft: #fff6e8;
+  --fg-color-danger: #a33f35;
+  --fg-color-danger-soft: #fff1ef;
+  --fg-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --fg-text-xs: 12px;
+  --fg-text-sm: 13px;
+  --fg-text-base: 14px;
+  --fg-text-lg: 18px;
+  --fg-space-1: 4px;
+  --fg-space-2: 8px;
+  --fg-space-3: 12px;
+  --fg-space-4: 16px;
+  --fg-space-6: 24px;
+  --fg-space-8: 32px;
+  --fg-space-12: 48px;
+  --fg-radius-control: 10px;
+  --fg-radius-panel: 16px;
+  --fg-shadow: 0 8px 30px #24473b07;
+  --fg-page-width: 1180px;
+  --fg-rail-width: 248px;
+  --fg-header-height: 72px;
+  /* Compatibility names for existing teaching views; no second palette. */
+  --ink: var(--fg-color-text); --muted: var(--fg-color-muted);
+  --teal: var(--fg-color-accent); --deep: var(--fg-color-accent-hover);
+  --green: var(--fg-color-accent); --green-dark: var(--fg-color-accent-hover);
+  --mint: var(--fg-color-accent-soft); --green-soft: var(--fg-color-accent-soft);
+  --line: var(--fg-color-border); --pale: var(--fg-color-canvas); --paper: var(--fg-color-canvas);
+  --white: var(--fg-color-surface); --card: var(--fg-color-surface);
+  --amber: var(--fg-color-warning); --amber-soft: var(--fg-color-warning-soft);
+  --violet: #6d28d9; --violet-soft: #f5f3ff; --report: #9a3412;
+  --shadow: var(--fg-shadow);
+}

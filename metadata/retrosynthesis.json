@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "external_computational_handoff_contract",
+  "target": {
+    "smiles": "O=c1c(O[C@@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12",
+    "inchikey": "OVSQVDMCBVZWGM-QSOFNFLRSA-N"
+  },
+  "cases": {
+    "Pei2019": {
+      "route_id": "R1",
+      "source_id": "Pei2019",
+      "role": "main_development",
+      "source_reaction_id": "T029:Pei2019:UGT78D2",
+      "doi": "10.1007/s10600-019-02712-9",
+      "source_sha256": "0820ef04fbf00fd72fa2f9e81c396e0fe8c4afddaa1151947bf500f92db5e67f",
+      "target_smiles": "O=c1c(O[C@@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12",
+      "precursor_smiles": [
+        "O=c1c(O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12",
+        "O=c1ccn([C@@H]2O[C@H](COP(=O)(O)OP(=O)(O)O[C@H]3O[C@H](CO)[C@@H](O)[C@H](O)[C@H]3O)[C@@H](O)[C@H]2O)c(=O)[nH]1"
+      ]
+    },
+    "Zhang2015": {
+      "route_id": "R2",
+      "source_id": "Zhang2015",
+      "role": "alternative_synthesis",
+      "source_reaction_id": "T029:Zhang2015:rutin_hydrolysis",
+      "doi": "10.1007/s10529-015-1792-6",
+      "source_sha256": "26ef2ba07b43ffe53d18cdc1808b517c26137dfdc07fdb336ea3bf8a5d4e86a5",
+      "target_smiles": "O=c1c(O[C@@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12",
+      "precursor_smiles": [
+        "C[C@@H]1O[C@@H](OC[C@H]2O[C@@H](Oc3c(-c4ccc(O)c(O)c4)oc4cc(O)cc(O)c4c3=O)[C@H](O)[C@@H](O)[C@@H]2O)[C@H](O)[C@H](O)[C@H]1O",
+        "O"
+      ]
+    }
+  },
+  "context": {
+    "source_id": "Niu2024",
+    "route_id": "R3",
+    "role": "parallel_development",
+    "mcts_action": false
+  },
+  "teacher_approved": false,
+  "independent_chemical_validation": false
+}

@@ -1,5 +1,7 @@
 # TASK 事前合同索引
 
+[TASK035](TASK-035-isoquercitrin-retro-handoff.md)完成；[TASK036提案](proposals/TASK-036-isoquercitrin-coupled-enzyme-evidence-plan.md)未批准/未执行。
+
 此目录定义做什么、谁批准、修改预算、验收及何时停止。编号仅属于FlavoGlycoLab，从TASK-001连续递增，不能续借其它仓库编号。
 
 - TASK-001-standalone-data-foundation.md：原临时项目名期间完成的本地来源数据独立化，已实现工程合同。
@@ -70,3 +72,7 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 - [TASK-033-lyw-handout-raw-bytes-in-git.md](TASK-033-lyw-handout-raw-bytes-in-git.md)：Completed，human_direct；三份LYW原始交件Git行尾规范化失配修复——`*.md text eol=lf`提交时剥离CRLF致干净检出字节≠demo-content登记原件SHA（test_quest_state test 27必失败，2704edd/1bedaa4两次CI public-check三平台红）；三文件改`-text`原样入库、blob恢复登记SHA对应字节，磁盘原件与登记零改动；干净worktree npm 69/69，见REPORT-033；三状态门不晋级。
 
 - [TASK-034-js-mime-guard-platform-variance.md](TASK-034-js-mime-guard-platform-variance.md)：Completed，human_direct；JS MIME守卫按意图放宽——test_lab_server对4个.js硬断言text/javascript，Windows mimetypes返回application/javascript致CI必红（TASK-024引入、2704edd首暴露）；断言改javascript子串（两种合法值均可），不改serve_lab.py、8766无需重启，见REPORT-034；三状态门不晋级。
+
+- [TASK-037](TASK-037-page-system-components.md)：human_direct，子页面导航、可恢复地址与统一界面组件。
+
+- [TASK-038](TASK-038-normalization-git-sync.md)：human_direct，提交规范化完成的项目并同步public/main，核对远端与CI。

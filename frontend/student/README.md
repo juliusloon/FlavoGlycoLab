@@ -1,5 +1,9 @@
 # 学生虚拟探究实验
 
+TASK-037 已将工作台组织为总览、分幕导入、阶段操作、独立任务、论文对照和记录子页面，并统一案例、数据与组件页的站点导航。默认入口为实验总览；`#/resume` 继续上次可访问的学习页面；`#/intro/1`—`3`、`#/stage/1`—`6`、`#/task/01`—`24` 可直接进入、刷新和前进/后退。地址不能绕过原有门禁。导航不使用面包屑栏。
+
+开发规范唯一入口为[页面与组件规范](../../docs/design/interface-system.md)，运行服务后访问 `components.html` 查看按钮、表单、对话框、分栏、状态和表格的真实示例。`design-tokens.css` 唯一维护视觉变量，`components.js` / `components.css` 提供共享组件，`navigation.js` 管理解析/访问/续接，`views/pages.js` 渲染总览与页面导航。新页面须复用这些文件，不复制页头或新增独立配色表。
+
 TASK-018将原六阶段表单工作台重构为分子与三案例驱动的探究空间。产品结构见[工作台设计](../../docs/design/workbench.md)，当前事实见[STATE](../../STATE.md)，访问和启停见[LAN运行说明](../../docs/operations/lan-site.md)。
 
 ## 使用流程
@@ -44,6 +48,7 @@ python scripts/dev.py check
 npm test
 npm run test:browser
 npm run test:data-browser
+npm run test:pages-browser
 ```
 浏览器QA需先按根package-lock安装可选开发依赖和Playwright浏览器；运行无需它们。默认测试不调用真实模型；FRONTEND_URL、QA_OUTPUT、CHROMIUM_EXECUTABLE和FLAVOGLYCOLAB_LIVE_AI用于明确的测试配置。test_workbench_browser.mjs为test_inquiry_browser.mjs的兼容入口；模型故障/快捷键夹具与真实AI验证分别报告。
 

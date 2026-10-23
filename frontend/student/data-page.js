@@ -1,3 +1,6 @@
+import {mountSiteHeader,returnControl,bindReturnNavigation} from './components.js';
+mountSiteHeader('data');
+bindReturnNavigation();
 import { escapeHTML as e } from './ui.js';
 import { queryRecords, countByRoute, validRoute, summarize, ROUTE_ORDER } from './data-query.js';
 
@@ -32,7 +35,7 @@ try {
   if (!data.categories.includes(filters.category)) filters.category = '';
   if (!usedSourceIds.includes(filters.source)) filters.source = '';
 
-  main.innerHTML = `
+  main.innerHTML = `${returnControl()}
     <header class="data-hero">
       <p class="hero-kicker">${e(data.kicker)} · 截至 ${e(data.as_of)}</p>
       <h1>${e(data.title)}</h1>

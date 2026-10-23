@@ -1,3 +1,4 @@
+import {validImportRecord} from './retro-import.js';
 import { freshLearning, resetLearning, hydrateLearning, learningMarkdown, hasTutorInteraction } from './learning-state.js';
 import { routeLearningGate } from './quest-state.js';
 export const STORAGE_KEY = 'flavoglycolab.workbench.v1';
@@ -202,6 +203,7 @@ export function hydrate(text){
     if(r.planConfirmed && validatePlan(r.plan))throw Error('方案无效');
     if(!canVisit(r,r.stage))throw Error('步骤顺序无效');
     if(r.operation==='running'){r.operation='mixed';log(r,'刷新中断演练','请重新启动，不推断已完成。');}
+    if(r.retroImport!==undefined&&!validImportRecord(r.retroImport))throw Error('逆合成来源记录无效');
     r.chat=r.chat.slice(-30);
     r.learning=hydrateLearning(r.learning);
     if(!r.analysis||typeof r.analysis!=='object'||Array.isArray(r.analysis))r.analysis=freshAnalysis(); // TASK-026: 旧存档补默认分析状态。
@@ -229,5 +231,5 @@ export function hydrate(text){
 }
 export function exportPayload(state){return {schema:'flavoglycolab.practice.v1',exportedAt:new Date().toISOString(),kind:'student_process_practice',observations:[],quantitative_result:null,teacher_approved:false,current:copy(state.current),records:copy(state.records)};}
 export function markdownRecord(run){
-  return `# 异槲皮苷实验练习记录\n\n记录：${run.id}\n\n路线：${run.route}\n\n独立依据：${run.reason}\n\n## 学生设计条件（非已测/推荐值）\n\n${Object.entries(run.plan).map(([k,v])=>`- ${k}: ${v}`).join('\n')}\n\n## 操作\n\n${run.events.map(e=>`- ${e.at} ${e.action} ${e.detail}`).join('\n')}\n\n## 分析结果\n\n无对应实验数据。observations=[]；quantitative_result=null；teacher_approved=false。\n\n${learningMarkdown(run)}\n## 学生结论\n\n${run.reflection.conclusion}\n\n证据局限：${run.reflection.limitation}\n\n下一步：${run.reflection.next}\n\n## AI 辅导记录\n\n${run.chat.map(m=>`${m.role==='user'?'学生':m.mode==='model'?'模型':'系统'}：${m.content}`).join('\n\n')}\n`;
+  return `# 异槲皮苷实验练习记录\n\n记录：${run.id}\n\n路线：${run.route}\n\n独立依据：${run.reason}\n\n## 学生设计条件（非已测/推荐值）\n\n${Object.entries(run.plan).map(([k,v])=>`- ${k}: ${v}`).join('\n')}\n\n## 操作\n\n${run.events.map(e=>`- ${e.at} ${e.action} ${e.detail}`).join('\n')}\n\n## 分析结果\n\n无对应实验数据。observations=[]；quantitative_result=null；teacher_approved=false。\n\n${run.retroImport?`## 逆合成计算来源\n\n${run.retroImport.packet.selection.source_id} · ${run.retroImport.packet.selection.doi}\n\n计算候选，未独立复算；无实验观测。\n\n运行索引：${run.retroImport.packet.run.id}\n\n`:""}${learningMarkdown(run)}\n## 学生结论\n\n${run.reflection.conclusion}\n\n证据局限：${run.reflection.limitation}\n\n下一步：${run.reflection.next}\n\n## AI 辅导记录\n\n${run.chat.map(m=>`${m.role==='user'?'学生':m.mode==='model'?'模型':'系统'}：${m.content}`).join('\n\n')}\n`;
 }

@@ -3,7 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 
 const {chromium} = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const url = process.env.FRONTEND_URL || 'http://127.0.0.1:8767/';
+const url = (process.env.FRONTEND_URL || 'http://127.0.0.1:8767/').replace(/#.*$/, '') + '#/resume';
 const liveAI = process.env.FLAVOGLYCOLAB_LIVE_AI === '1';
 const brand = process.env.BROWSER_LABEL || 'Chromium';
 const recording = process.env.QA_RECORD_VIDEO === '1';

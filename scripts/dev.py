@@ -23,7 +23,8 @@ def doctor(profile='public'):
         summary = EvidenceCatalog(ROOT, profile).summary(verify_sources=True)
         if not summary['source_integrity']['ok']:
             raise ValueError(json.dumps(summary['source_integrity'], ensure_ascii=False))
-        for name in ('index.html', 'app.js', 'lab-state.js', 'learning-state.js', 'quest-state.js', 'molecule-viewer.js', 'ui.js', 'analysis-engine.js', 'styles.css',
+        for name in ('index.html', 'app.js', 'retro-import.js', 'lab-state.js', 'learning-state.js', 'quest-state.js', 'molecule-viewer.js', 'ui.js', 'analysis-engine.js', 'styles.css', 'navigation.js', 'components.js', 'components.css', 'design-tokens.css',
+                     'components.html', 'components-page.js', 'views/pages.js', 'case.html', 'case-page.js', 'case-page.css', 'data.html', 'data-page.js', 'data-page.css', 'data-query.js',
                      'views/workbench.js', 'views/learning.js', 'views/inquiry.js', 'views/inquiry-tools.js', 'inquiry-tools.css',
                      'content/demo-content.json', 'assets/lab-bench.png', 'assets/molecules/isoquercitrin.json',
                      'assets/molecules/isoquercitrin-2d.svg', 'vendor/3dmol/3Dmol-min.js'):
@@ -64,7 +65,7 @@ def main():
             return result.returncode
         node = shutil.which('node')
         if node:
-            return subprocess.run([node, '--test', 'tests/test_workbench_state.mjs', 'tests/test_quest_state.mjs', 'tests/test_case_page.mjs', 'tests/test_data_query.mjs', 'tests/test_analysis_engine.mjs'], cwd=ROOT).returncode
+            return subprocess.run([node, '--test', 'tests/test_workbench_state.mjs', 'tests/test_quest_state.mjs', 'tests/test_case_page.mjs', 'tests/test_data_query.mjs', 'tests/test_analysis_engine.mjs', 'tests/test_navigation.mjs'], cwd=ROOT).returncode
         print('Python检查已通过；未安装Node，跳过可选JS状态测试。完整CI会执行JS测试。')
         return 0
     spec = importlib.util.spec_from_file_location('lab_server', ROOT / 'scripts/serve_lab.py')

@@ -1,3 +1,4 @@
+import {mountRetroImport,importedSourceCard} from './retro-import.js';
 import {escapeHTML as e} from './ui.js';
 import {STORAGE_KEY,STAGES,freshState,freshRun,hydrate,log,clearDownstream,selectRoute,confirmRoute,addMaterial,confirmAssembly,confirmPlan,operate,canVisit,completeRun,exportPayload,markdownRecord,introProgress,answerIntroAct,recordIntroPaper,enterGuided,enterOpen,completeGuided,openWarnings,guidedPlanIssues,redoStageMode,copy} from './lab-state.js';
 import {workflow,renderWorkbench,recordsView,amountPreview} from './views/workbench.js';
@@ -7,6 +8,12 @@ import {explorationScene,questPanel,taskView,routeConfirmation,stageEvidenceBann
 import {compute,comparePlanToRecord} from './analysis-engine.js';
 import {bindInquiryTools} from './views/inquiry-tools.js';
 import {mountMolecule} from './molecule-viewer.js';
+import {mountSiteHeader,updateSiteNavigation,returnControl,bindReturnNavigation,pageHeader} from './components.js';
+import {parsePage,pageAccess,resumePage,LAST_PAGE_KEY} from './navigation.js';
+import {overviewPage,unavailablePage,pageNavigation} from './views/pages.js';
+
+mountSiteHeader('home',{workbench:true});
+bindReturnNavigation();
 
 const main=document.querySelector('#main-content'),rail=document.querySelector('#workflow'),quests=document.querySelector('#quest-panel'),feedback=document.querySelector('#feedback');
 const chat=document.querySelector('#chat'),question=document.querySelector('#question'),aiError=document.querySelector('#ai-error');
@@ -19,6 +26,11 @@ let pendingOpenPlan=null; // TASK-027 L02: 开放探究提交前存在偏差警�
 let pendingPlanBefore=null; // L06-fix: 打开警告对话框前的 plan 快照，放弃时回滚。
 let planBaseline=null; // L06-fix: 最近一次确认方案的基线；首次编辑时惰性捕获，continue 成功后重置。
 let analyzeMode=false; // TASK-027 L03: 下一轮提问以 kind=analyze 发送（结果解析角色，服务端白名单）。
+let page= parsePage(location.hash),routing=false,blockedReason='';
+let lastPage='';
+try{lastPage=localStorage.getItem(LAST_PAGE_KEY)||'';}catch{}
+const incomingRetro=location.hash.startsWith('#retro=')?location.hash.slice(7):null;
+if(incomingRetro)history.replaceState(null,'',location.pathname+location.search+'#/');
 const PREFERENCES_KEY='flavoglycolab.experience.v1';
 let reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 try{const stored=localStorage.getItem(STORAGE_KEY);if(stored)state=hydrate(stored);}catch{loadWarning='本机记录无法读取，已打开新的草稿；原存储未覆盖。请先导出备份或确认开始新实验。';saveError=true;}
@@ -62,15 +74,32 @@ function render(moveFocus=false){
  if(activeTask&&(!canOpenTask(run,content,activeTask)||!content.learning.steps.some(t=>t.id===activeTask&&t.stage===run.stage)))activeTask=null;
  molecule?.destroy();molecule=null;highlighted=false;const version=++renderVersion;
  refreshDocks();
- if(view==='records')main.innerHTML=recordsView(state,compareId,content);
+ if(view==='home')main.innerHTML=overviewPage(run,content,resumePage(lastPage,run,content));
+ else if(view==='locked'||view==='unknown')main.innerHTML=unavailablePage(blockedReason,resumePage(lastPage,run,content),view==='unknown');
+ else if(view==='papers')main.innerHTML=pageHeader({title:'论文对照',description:'按六个阶段阅读研究做法；比较不会改变当前规划路线。'})+`<nav class="fg-local-nav" aria-label="论文对照阶段">${STAGES.map((title,i)=>`<a href="#/papers?stage=${i}${page.tab==='analysis'?'&tab=analysis':''}"${page.stage===i?' aria-current="page"':''}>${i+1} ${e(title)}</a>`).join('')}</nav><div class="fg-paper-page">${caseComparison({...run,stage:page.stage},content,page.tab==='analysis'?'analysis':null,{standalone:true})}</div>`;
+ else if(view==='records')main.innerHTML=recordsView(state,compareId,content);
  else if(activeTask)main.innerHTML=taskView(run,content,activeTask,run.learning.entries[activeTask]?.eval??null); // TASK-026: 第4参 evalInfo，旧渲染函数忽略不影响兼容。
- else if(run.stage===0)main.innerHTML=!replayIntro&&questProgress(run,content).allComplete?routeConfirmation(run,content):explorationScene(run,content,introRetry,introShowAct);
+ else if(run.stage===0)main.innerHTML=page.kind!=='intro'&&!replayIntro&&questProgress(run,content).allComplete?routeConfirmation(run,content):explorationScene(run,content,introRetry,introShowAct??(page.kind==='intro'?page.act:null));
  else{main.innerHTML=stageEvidenceBanner(run,content)+renderWorkbench(run,content,selectedSample);}
+ if(view==='workbench'){
+  const path=activeTask?`/task/${activeTask}`:run.stage===0&&main.querySelector('.exploration-scene')?`/intro/${introShowAct??(page.kind==='intro'?page.act:Math.min(introProgress(run).step,3))}`:`/stage/${run.stage+1}`;
+  if(location.hash!==`#${path}`){
+   if(routing)history.replaceState(history.state,'',`#${path}`);
+   else history.pushState({fgNavigation:true},'',`#${path}`);
+  }
+  page=parsePage(`#${path}`);lastPage=path;
+  try{localStorage.setItem(LAST_PAGE_KEY,path);}catch{}
+ }
+ const learning=view==='workbench';
+ document.querySelector('.workspace').classList.toggle('fg-wide-page',!learning);
+ document.querySelector('.left-dock').hidden=!learning;
+ main.dataset.page=page.kind;
+ if(view!=='home')main.insertAdjacentHTML('afterbegin',returnControl('#/home')+pageNavigation(page,run,content));
+ if(run.retroImport&&learning)main.insertAdjacentHTML('afterbegin',importedSourceCard(run,content));
  // TASK-026: 评价在途时禁用该任务提交按钮，防止双击重复评价。
  if(pendingEval&&pendingEval.taskId===activeTask){const submit=main.querySelector('.learning-form button[type="submit"]');if(submit)submit.disabled=true;}
- document.querySelector('#nav-bench').setAttribute('aria-current',view==='workbench'?'page':'false');
- const recordLink=document.querySelector('#nav-records');if(view==='records')recordLink.setAttribute('aria-current','page');else recordLink.removeAttribute('aria-current');
- document.title=`FlavoGlycoLab · ${view==='records'?'实验记录':STAGES[run.stage]}`;
+ updateSiteNavigation(view==='workbench'?'bench':view);
+ document.title=`FlavoGlycoLab · ${{home:'实验总览',records:'实验记录',papers:'论文对照',locked:'尚未解锁',unknown:'页面未找到'}[view]||`${STAGES[run.stage]}${activeTask?` · 任务 ${activeTask}`:''}`}`;
  renderTutor();attachMolecule(version);
  bindInquiryTools(main,{onDraftNote(note){
   if(!activeTask)return;
@@ -110,18 +139,36 @@ function renderTutor(){
  chat.scrollTop=chat.scrollHeight;
 }
 function route(moveFocus=true){
- const path=location.hash.slice(1)||'/';
- if(path==='/records'){view='records';activeTask=null;render(moveFocus);return;}
- if(['/', '/case','/steps','/ai','/data','/about'].includes(path)){view='workbench';render(moveFocus);return;}
- view='unknown';main.innerHTML='<div class="load-error"><h1>页面未找到</h1><p>返回实验台继续当前操作。</p><a class="button primary" href="#/">返回实验台</a></div>';
+ if(!content)return;
+ for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close('cancel');
+ page=parsePage(location.hash);
+ if(page.kind==='redirect'){
+  if(page.target.startsWith('./')){location.replace(page.target);return;}
+  history.replaceState(history.state,'',`#${page.target}`);route(moveFocus);return;
+ }
+ if(page.kind==='resume'){history.replaceState(history.state,'',`#${resumePage(lastPage,state.current,content)}`);route(moveFocus);return;}
+ const access=pageAccess(page,state.current,content);
+ activeTask=null;introShowAct=null;replayIntro=false;
+ if(!access.allowed){view=page.kind==='unknown'?'unknown':'locked';blockedReason=access.reason;}
+ else if(['home','records','papers'].includes(page.kind))view=page.kind;
+ else {
+  view='workbench';
+  const stage=page.kind==='intro'?0:access.stage;
+  if(stage<3&&state.current.operation==='running'){clearTimeout(runTimer);state.current.operation='mixed';log(state.current,'中断流程演练','返回上游步骤');}
+  const changed=state.current.stage!==stage;state.current.stage=stage;
+  activeTask=page.kind==='task'?page.id:null;
+  if(page.kind==='intro')introShowAct=page.act;
+  if(changed)save();
+ }
+ routing=true;render(moveFocus);routing=false;
 }
 function goStage(stage){
  if(!canVisit(state.current,stage))throw Error('请先完成前面的必要操作。');
  if(stage>state.current.stage&&Array.from({length:stage},(_,i)=>i).some(i=>!questProgress(state.current,content,i).allComplete))throw Error('请先完成前面阶段的主线探究。');
  if(stage<3&&state.current.operation==='running'){clearTimeout(runTimer);state.current.operation='mixed';log(state.current,'中断流程演练','返回上游步骤');}
- state.current.stage=stage;replayIntro=false;activeTask=null;introShowAct=null;view='workbench';if(location.hash==='#/records')location.hash='/';save();render(true);
+ state.current.stage=stage;replayIntro=false;activeTask=null;introShowAct=null;view='workbench';page={kind:'stage',stage};save();render(true);
 }
-function openTask(id){if(state.current.stage===0&&!introProgress(state.current).complete)throw Error('先完成导入三步，再开始主线探究。');if(!canOpenTask(state.current,content,id))throw Error('先完成当前任务，再继续下一项。');activeTask=id;view='workbench';introShowAct=null;if(location.hash==='#/records')location.hash='/';render(true);}
+function openTask(id){if(!introProgress(state.current).complete)throw Error('先完成导入三步，再开始主线探究。');if(!canOpenTask(state.current,content,id))throw Error('先完成当前任务，再继续下一项。');activeTask=id;view='workbench';introShowAct=null;page={kind:'task',id};render(true);}
 function beginQuest(){replayIntro=false;const progress=questProgress(state.current,content),active=progress.tasks.find(t=>t.id===activeTask);openTask(active&&!taskPassed(state.current,active)?active.id:progress.currentId||progress.tasks[0]?.id);}
 function requireQuests(){
  const current=state.current.stage;
@@ -169,7 +216,7 @@ main.addEventListener('submit',event=>{
   if(form.classList.contains('material-form'))addMaterial(run,form.dataset.kind,form.elements.material.value);
   if(form.id==='plan-form')confirmPlan(run,collect(form),content);
   if(form.id==='analysis-form'){if(!form.elements.reviewed.checked)throw Error('请确认已区分操作记录和实验观测。');run.analysisReviewed=true;run.stage=5;log(run,'核对分析证据','没有对应观测，定量结果保持未知。');if((run.stageMode??'guided')==='guided')completeGuided(run);} // L02: 走完参照流程即解锁开放探究。
-  if(form.id==='reflection-form'){completeRun(state,collect(form));view='records';location.hash='/records';toast('练习记录已保存，可导出或开始新实验。');}
+  if(form.id==='reflection-form'){completeRun(state,collect(form));view='records';page=parsePage('#/records');history.pushState({fgNavigation:true},'','#/records');toast('练习记录已保存，可导出或开始新实验。');}
  });
 });
 main.addEventListener('change',event=>{if(event.target.id==='compare-record'){compareId=event.target.value;render();}});
@@ -240,14 +287,14 @@ function click(event){
   return;
  }
  if(el.dataset.task){try{openTask(el.dataset.task);}catch(error){toast(error.message,true);}return;}
- if(el.dataset.case){if(state.current.stage===0&&!activeTask){recordIntroPaper(state.current,el.dataset.case);save();}showEvidence(el.dataset.case);return;}
+ if(el.dataset.case){if(view==='workbench'&&state.current.stage===0&&!activeTask){recordIntroPaper(state.current,el.dataset.case);save();}showEvidence(el.dataset.case);return;}
  if(el.dataset.openPaper){togglePaper(el);return;}
  if(el.dataset.paperAsk){ // TASK-026 P3：带论文上下文问文献导师。
   openPaper=el.dataset.paperAsk;tutorRole='literature_analyst';
   question.value='请结合这篇论文解读本步任务';
   toggleTutor(true);renderTutor();return;
  }
- if(el.dataset.compareRoute){showEvidence(el.dataset.compareRoute==='all'?null:el.dataset.compareRoute);return;}
+ if(el.dataset.compareRoute){if(view==='papers'&&!el.closest('dialog')){history.pushState({fgNavigation:true},'',`#/papers?stage=${page.stage}${el.dataset.compareRoute==='analysis'?'&tab=analysis':''}`);route(true);}else showEvidence(el.dataset.compareRoute==='all'?null:el.dataset.compareRoute);return;}
  if(el.dataset.chooseRoute){chooseRoute(el.dataset.chooseRoute);return;}
  if(el.dataset.molecule){if(!molecule)return;if(el.dataset.molecule==='reset'){molecule.reset();highlighted=false;}else{highlighted=!highlighted;molecule.highlight(highlighted?'sugar':null);}main.querySelector('[data-molecule="highlight"]')?.setAttribute('aria-pressed',String(highlighted));return;}
  if(el.dataset.identity!=null){const i=Number(el.dataset.identity);main.querySelectorAll('[data-identity]').forEach(b=>{b.classList.toggle('active',b===el);b.setAttribute('aria-pressed',String(b===el));});document.querySelector('#identity-detail').textContent=content.learning.identities[i].detail;return;}
@@ -316,11 +363,11 @@ function click(event){
   return;
  }
  if(action==='compare'){showEvidence();return;}
- if(action==='intro-advance'){introShowAct=null;render(true);return;} // TASK-031: 回到默认当前幕（progress.step）。
+ if(action==='intro-advance'){introShowAct=Math.min(introProgress(state.current).step,3);page={kind:'intro',act:introShowAct};render(true);return;}
   if(action==='begin-quest'){try{beginQuest();}catch(error){toast(error.message,true);}return;}
- if(action==='stage-workspace'){replayIntro=false;activeTask=null;view='workbench';render(true);return;}
+ if(action==='stage-workspace'){replayIntro=false;activeTask=null;view='workbench';introShowAct=null;page={kind:'stage',stage:state.current.stage};render(true);return;}
  if(action==='replay-intro'){
-  document.querySelector('#settings-dialog').close();if(state.current.stage!==0){goStage(0);}state.current.exploration={step:1,papers:[]};introRetry={};introShowAct=null;replayIntro=true;activeTask=null;view='workbench';save();
+  document.querySelector('#settings-dialog').close();if(state.current.stage!==0){goStage(0);}state.current.exploration={step:1,papers:[]};introRetry={};introShowAct=1;replayIntro=true;activeTask=null;view='workbench';page={kind:'intro',act:1};save();
   // Replay is a view preference and must not clear completed answers.
   render(true);return;
  }
@@ -332,7 +379,7 @@ function click(event){
   if(action==='assembly')confirmAssembly(state.current);
   if(action==='back')goStage(Math.max(0,state.current.stage-1));
   if(action==='analysis'){goStage(4);selectedSample=state.current.samples[0]?.id??'';}
-  if(action==='workbench'){view='workbench';activeTask=null;location.hash='/';}
+  if(action==='workbench'){view='workbench';activeTask=null;page={kind:'stage',stage:state.current.stage};}
   if(action==='export-json'){const payload=exportPayload(state);if(loadWarning){try{payload.unreadableLocalBackup=localStorage.getItem(STORAGE_KEY);}catch{}}download('FlavoGlycoLab-实验记录.json',JSON.stringify(payload,null,2),'application/json');}
   if(action==='export-md')download('FlavoGlycoLab-实验记录.md',markdownRecord(state.current),'text/markdown;charset=utf-8');
   if(action==='reload')location.reload();
@@ -340,7 +387,7 @@ function click(event){
  });
 }
 document.addEventListener('click',click);
-document.querySelector('#confirm-dialog').addEventListener('close',event=>{if(event.target.returnValue!=='confirm')return;clearTimeout(runTimer);loadWarning='';state.current=freshRun();selectedSample='';activeTask=null;openPaper=null;introRetry={};introShowAct=null;view='workbench';location.hash='/';aiError.textContent='';save();render(true);toast('新实验已就绪，历史练习仍保留。');});
+document.querySelector('#confirm-dialog').addEventListener('close',event=>{if(event.target.returnValue!=='confirm')return;clearTimeout(runTimer);loadWarning='';state.current=freshRun();selectedSample='';activeTask=null;openPaper=null;introRetry={};introShowAct=1;view='workbench';page={kind:'intro',act:1};aiError.textContent='';save();render(true);toast('新实验已就绪，历史练习仍保留。');});
 evidenceDialog.addEventListener('close',()=>{
  renderTutor();
  // Only the intro gate needs a refresh after closing a paper dialog; never rebuild forms mid-edit.
@@ -460,11 +507,23 @@ document.querySelector('#chat-form').addEventListener('submit',event=>{askTutor(
 question.addEventListener('compositionstart',()=>composing=true);question.addEventListener('compositionend',()=>composing=false);
 question.addEventListener('keydown',event=>{if(event.key!=='Enter'||event.shiftKey||event.isComposing||composing||event.keyCode===229)return;event.preventDefault();document.querySelector('#chat-form').requestSubmit();});
 window.addEventListener('hashchange',()=>route(true));
+document.addEventListener('click',event=>{
+ const skip=event.target.closest('.skip-link');
+ if(skip){event.preventDefault();main.focus();main.scrollTo(0,0);return;}
+ const link=event.target.closest('a[href^="#/"]');
+ if(!link||event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+ event.preventDefault();const hash=link.getAttribute('href');
+ if(link.hasAttribute('data-close-dialog'))link.closest('dialog')?.close('cancel');
+ if(hash!==location.hash)history.pushState({fgNavigation:true},'',hash);
+ route(true);
+});
 window.addEventListener('storage',event=>{if(event.key===STORAGE_KEY){toast('另一个标签页修改了记录。请导出当前草稿后刷新，避免覆盖。',true);loadWarning='检测到其他标签页更新，暂停自动保存。';document.querySelector('#save-status').textContent='其他标签页已更新';}});
 async function init(){
  try{const response=await fetch('./content/demo-content.json');if(!response.ok)throw Error();content=await response.json();if(!Array.isArray(content.routes)||content.routes.length!==3)throw Error();route(false);save();if(loadWarning)toast(loadWarning,true);if(saveError&&!loadWarning)toast('浏览器未能保存记录，请使用导出功能保留本次操作。',true);}
  catch{main.innerHTML='<div class="load-error"><h1>实验内容暂时无法加载</h1><p>检查网络连接后重试，本机记录不会被清空。</p><button class="button primary" data-action="reload">重新加载</button></div>';return;}
- try{const response=await fetch('./api/health',{signal:AbortSignal.timeout(6000)});if(!response.ok)throw Error();const data=await response.json();modelConfigured=data.configured===true;document.querySelector('#ai-status').textContent=modelConfigured?'Qwen · 实时辅导（本机演示，未接入正式平台）':'模型尚未配置 · 本机练习可继续';}
+ const retro=mountRetroImport({content,getRun:()=>state.current,attach(value){state.current.retroImport=value;log(state.current,'接收逆合成来源',value.packet.selection.source_id);save();render();toast('计算来源已附到当前练习。');},onPapers:()=>{showEvidence();if(!introProgress(state.current).complete)for(const button of evidenceDialog.querySelectorAll('[data-choose-route]')){button.disabled=true;button.textContent='完成分子导入后选择路线';}},onExport:packet=>download('FlavoRetro-handoff.json',JSON.stringify(packet,null,2),'application/json'),onError:message=>toast(message,true)});
+ if(incomingRetro){try{if(incomingRetro.length>72000)throw Error();await retro.receive(JSON.parse(decodeURIComponent(incomingRetro)));}catch{toast('交接链接无效，请使用导出的 JSON 文件。',true);}}
+ try{const response=await fetch('./api/health' ,{signal:AbortSignal.timeout(6000)});if(!response.ok)throw Error();const data=await response.json();modelConfigured=data.configured===true;document.querySelector('#ai-status').textContent=modelConfigured?'Qwen · 实时辅导（本机演示，未接入正式平台）':'模型尚未配置 · 本机练习可继续';}
  catch{document.querySelector('#ai-status').textContent='模型连接不可用 · 实验台可继续';aiError.textContent='辅导服务不可用，实验操作仍可继续。';}
 }
 init();

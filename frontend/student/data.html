@@ -8,21 +8,11 @@
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./case-page.css">
   <link rel="stylesheet" href="./data-page.css">
+  <link rel="stylesheet" href="./components.css">
 </head>
 <body>
   <a class="skip-link" href="#data-main">跳到数据查询</a>
-  <header class="case-topbar">
-    <a class="case-brand" href="./index.html" aria-label="返回 FlavoGlycoLab 实验台">
-      <svg viewBox="0 0 36 36" aria-hidden="true"><path d="m18 3 13 7v16l-13 7L5 26V10Z"/><path d="m18 10 7 4v8l-7 4-7-4v-8Z"/></svg>
-      Flavo<span>Glyco</span>Lab
-    </a>
-    <nav aria-label="站点导航">
-      <a href="./index.html">虚拟探究实验</a>
-      <a href="./case.html">案例页</a>
-      <a href="./data.html" aria-current="page">数据查询</a>
-      <a href="./index.html#/records">实验记录</a>
-    </nav>
-  </header>
+  <header data-site-header></header>
 
   <main id="data-main" class="data-main">
     <p class="case-loading" role="status">正在读取已登记文献报告值…</p>

@@ -22,11 +22,14 @@ class GovernanceContractTest(unittest.TestCase):
         r={p.name.replace("REPORT-","",1) for p in (ROOT/"docs/reports").glob("REPORT-[0-9][0-9][0-9]-*.md")}
         self.assertEqual(t,r)
         numbers=sorted(int(name.split("-",1)[0]) for name in t)
-        self.assertEqual(numbers,list(range(1,len(t)+1)))
+        # A proposed contract reserves its number without claiming execution/reporting.
+        reserved={int(p.name.split('-')[1]) for p in (ROOT/"docs/tasks/proposals").glob("TASK-[0-9][0-9][0-9]-*.md")}
+        allocated=set(numbers)|reserved
+        self.assertEqual(sorted(allocated),list(range(1,max(allocated)+1)))
 
     def test_adrs_are_independent_and_sequential(self):
         numbers=sorted(int(p.name[:4]) for p in (ROOT/"docs/adr").glob("[0-9][0-9][0-9][0-9]-*.md"))
-        self.assertEqual(numbers,[1,2,3,4,5,6])
+        self.assertEqual(numbers,[1,2,3,4,5,6,7,8])
 
     def test_active_project_identity(self):
         expected=("FlavoGlycoLab","flavoglycolab")

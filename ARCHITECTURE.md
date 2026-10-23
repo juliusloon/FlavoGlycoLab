@@ -97,6 +97,12 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 学生/教师界面 | frontend/ | yes | student交互实验台LAN托管；teacher仍scaffold，无正式教学评分/发布 |
 | 工作台工程守卫 | tests/test_workbench_state.mjs、tests/test_workbench_browser.mjs、tests/test_lab_server.py | yes | 流程/持久化/API/浏览器；旧test_frontend_scaffold.mjs转入当前测试，历史验收保留 |
 | 工作台产品设计 | docs/design/workbench.md | yes | 六阶段交互、24步需求映射、实时AI职责与真实仿真后续依赖 |
+| 页面/界面规范 | docs/design/interface-system.md | yes | TASK-037；页面矩阵、访问/续接、token、组件调用与验收唯一规范 |
+| 页面路由/续接 | frontend/student/navigation.js | yes | TASK-037；解析独立地址、调用既有门禁；last-page仅为界面偏好，不复制完成状态 |
+| 共享界面组件 | frontend/student/components.js、components.css、design-tokens.css | yes | TASK-037；页头、标题、按钮、字段、面板、状态、空状态、返回与分栏的唯一维护位置 |
+| 总览与局部页面导航 | frontend/student/views/pages.js | yes | TASK-037；已有内容/学习状态的只读投影 |
+| 可操作组件展示 | frontend/student/components.html、components-page.js | yes | TASK-037；生产组件示例，演示数据只在页面内存中使用 |
+| 页面导航工程守卫 | tests/test_navigation.mjs、tests/test_pages_browser.mjs | yes | TASK-037；直达/返回/刷新/续接、锁定页、共享外观、案例/数据/组件跨页验收 |
 | 原创装置示意 | frontend/student/assets/lab-bench.png | yes | imagegen生成装置场景，非实验原件/数据 |
 | 浏览器练习记录 | localStorage键flavoglycolab.workbench.v1 | no | 当前源的用户方案/操作/AI对话；最多12快照；不是教师记录真值 |
 | 模型服务私有配置 | data/private/runtime/tutor.json | no | 0600；服务器端读取，不暴露给student或导出Git |
@@ -266,3 +272,7 @@ TASK-017实现责任补充：learning-state.js独立管理学习草稿/核对/�
 ## TASK-027 LJX会后整合、两阶段状态、AI结果解析与逆合成评估（2026-10-23）
 
 现有student模块内增量接入，不新增科学活动模块、模型或外部运行服务。新增字段与职责的唯一归属如下：`lab-state.js` 的 `run.stageMode`（guided参照练习/open开放探究，默认guided）与 `run.guidedDone`（参照完成标记）是两阶段流程状态唯一真值，旧存档缺失字段按guided默认值迁移、非法枚举拒绝加载（fail-closed），不另存第二份完成真值；`planBaseline`/`pendingPlanBefore` 仅作开放探究放弃/回滚的已确认方案快照，非学生记录真值；上下文修订继续复用既有 `contextRevision` 使陈旧AI回复按修订失效。`content/demo-content.json` 顶层 `feedback_rules` 是定性反馈规则唯一投影（13条、九字段以上齐全、无来源阈值0条、缺证据显式unknown、不造SHA），不复制到另一份运行配置；`metadata/tutor_presets.json` 的 `roles.result_analyst` 是结果解析角色唯一登记（review_status=agent_checked_candidate，启动校验fail-closed），`scripts/serve_lab.py` 的角色白名单与kind=analyze四分区协议（文献事实/学生自述/机制假设/尚不可判断）是唯一服务端出口，伪造来源/审核/"观测"400、双守卫不放宽。`docs/design/workbench.md` 新增「逆合成融合可行性评估」节是静态回溯示意与三路线分类（R1/R2酶促转化、R3工程菌途径）的唯一设计位置，动态算法本任务只评估不上线。`temp/task-027/` 独占本轮基线快照、保护清单（169文件sha256+size口径）、走查与L04对账证据；H02—H05及成员交付接收状态仍只在handoff_acceptance.md维护。最终验收见REPORT-027；教师、科学与公众发布门未晋级。
+
+## TASK-035 逆合成来源接收
+
+`metadata/retrosynthesis.json`唯一登记外部交接的本地目标/前体/论文角色合同；不是新反应数据池或第二份教学准入表。`scripts/retro_handoff.py`只读本地公开三篇原件与内容登记，校验包的身份/来源/角色/校验和；`serve_lab.py /api/retro-import/validate`是同源有界出口，固定本地加载兼容python -I。`frontend/student/retro-import.js`唯一编排接收/文件/来源卡与退回原始运行；`app.js`将校验记录附到当前草稿，`lab-state.js.run.retroImport`随现有保存/导出，不改变任何学习完成真值。`temp/task-035`仅本地实际交接包/校验与浏览器证据，Git忽略；不新增模型或另一仓库文件依赖。ADR0007解释长期边界。TASK-027的动态化受限评估保持历史事实；本次只接收计算来源，未将动态搜索或数值仿真部署到Lab。

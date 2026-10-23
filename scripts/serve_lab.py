@@ -656,6 +656,26 @@ class LabHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         self._paper_frame = False
+        if urlsplit(self.path).path == '/api/retro-import/validate':
+            origin = self.headers.get('Origin')
+            if origin and origin not in {'http://'+self.headers.get('Host',''), 'https://'+self.headers.get('Host','')}:
+                self.reply(403, {'error':'仅接受本站发起的交接请求。'}); return
+            try:
+                length=int(self.headers.get('Content-Length','0'))
+                if not 0 < length <= 24000:
+                    self.reply(413, {'error':'交接包过大。'}); return
+                if self.headers.get_content_type() != 'application/json':
+                    self.reply(415, {'error':'需要JSON交接包。'}); return
+                # Fixed local path also works under the existing python -I service.
+                from importlib.util import spec_from_file_location, module_from_spec
+                spec=spec_from_file_location('flavoglycolab_retro_handoff', ROOT/'scripts/retro_handoff.py')
+                module=module_from_spec(spec)
+                spec.loader.exec_module(module)
+                result=module.validate_packet(json.loads(self.rfile.read(length)), ROOT)
+                self.reply(200,result)
+            except (ValueError,TypeError,KeyError,UnicodeError,OSError):
+                self.reply(400, {'error':'交接校验失败：请核对目标结构、论文来源与完整文件；原草稿未更改。'})
+            return
         if urlsplit(self.path).path != '/api/tutor':
             self.reply(404, {'error':'接口不存在。'}); return
         origin = self.headers.get('Origin')

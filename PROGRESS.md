@@ -1,5 +1,7 @@
 # FlavoGlycoLab 项目进度总览
 
+2026-10-23：TASK035 Completed（agent_delegated，human_reviewed=false）；接收Retro计算来源并保留三篇角色，独立本地校验、保存/导出/返查。实际跨站46检查、public977/65、Python78（3skip）与Node70全过；三状态门不晋级，TASK036仅提案。
+
 最后核对：2026-10-23。此文是按阶段的看板，工程当前事实以STATE.md为准，历史过程看对应REPORT。
 
 | 阶段 | 目标 | 状态 | 证据/阻断 |
@@ -92,3 +94,5 @@
 - TASK-033：human_direct修复三份LYW原始交件的Git行尾规范化失配——`.gitattributes`的`*.md text eol=lf`在提交时剥离CRLF，干净检出的24step_teaching_matrix_LYW_v2.md字节≠demo-content.json登记的原件SHA，test_quest_state test 27在任何干净检出失败（2704edd/1bedaa4两次CI public-check三平台红，run 39838205559/39934879636）；三文件（v2教学矩阵、b2_shotlist_LYW_v1、evaluation_rubric_LYW_v1）改`-text`原样入库、blob恢复登记SHA对应字节，磁盘原件与登记零改动；干净worktree npm test 69/69复核。详见REPORT-033。
 
 - TASK-034：human_direct修复Windows CI红的另一处既有缺陷——test_lab_server对4个`.js`路径硬断言`text/javascript`，Windows上Python mimetypes按注册表返回`application/javascript`（TASK-024引入case-page.js、2704edd首次CI接触即红）；断言按守卫意图放宽为`javascript`子串（两种合法值均可），不改serve_lab.py、8766无需重启；dev.py check全绿、冻结根0差异。详见REPORT-034。
+
+- 2026-10-24 TASK-037（human_direct）：完成9类页面的导航与工程化，导入/阶段/任务可独立寻址、回退/刷新/续接；共享token与组件、真实组件展示及中文规范已交付，无面包屑。Python78（75通过/3显式research跳过）、Node75、工作台977、public数据65、跨页167通过；214保护文件零差异、8766资产8/8匹配；无真实AI调用，不改变科学/教师/公众发布门，未提交/push。详见REPORT-037。

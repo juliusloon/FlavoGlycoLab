@@ -1,5 +1,7 @@
 # ADR 长期决策索引
 
+[0007](0007-retrosynthesis-computational-handoff.md)：接收外部计算来源，不推进实验/教师状态。
+
 ADR回答为什么长期采用某项结构或数据语义决策，不替代TASK授权、REPORT事实和STATE实时状态。仅对跨任务重要选择登记；状态为proposed/accepted/superseded/rejected。
 
 - 0001-initial-rebuild.md：早期独立仓库/受控迁移策略；原临时项目名保留为历史事实，命名部分已被ADR0003替代。
@@ -12,3 +14,5 @@ ADR回答为什么长期采用某项结构或数据语义决策，不替代TASK�
 - [0005-normal-main-push.md](0005-normal-main-push.md)：当前main普通推送与旧研究归档。
 
 - [0006-collaboration-data-profiles.md](0006-collaboration-data-profiles.md)：默认公开开发配置、显式研究模式及离线研究包。
+
+- [ADR0008：独立页面地址与共享界面组件](0008-page-navigation-component-system.md)：原生hash子页面、访问/续接、统一token与组件唯一责任。

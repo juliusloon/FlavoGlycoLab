@@ -1,3 +1,6 @@
+import {mountSiteHeader,returnControl,bindReturnNavigation} from './components.js';
+mountSiteHeader('case');
+bindReturnNavigation();
 const main = document.querySelector('#case-main');
 const e = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const list = (items, className = '') => `<ul class="${className}">${items.map(item => `<li>${e(item)}</li>`).join('')}</ul>`;
@@ -112,7 +115,7 @@ try {
     <ol class="reference-list">${page.references.map(reference => `<li>${e(reference.replace(/^\[\d+\]\s*/, ''))}</li>`).join('')}</ol>
     <p class="note">${e(page.reference_note)}</p>`;
 
-  main.innerHTML = `
+  main.innerHTML = `${returnControl()}
     <header class="case-hero">
       <p class="hero-kicker">案例页 · 文案 v1 · 2026-10-22</p>
       <h1>${e(page.title)}</h1>

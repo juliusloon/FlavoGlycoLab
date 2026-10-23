@@ -1,5 +1,7 @@
 # REPORT 事后事实索引
 
+最新[REPORT035](REPORT-035-isoquercitrin-retro-handoff.md)：接收外部逆合成计算来源、三篇实验开发角色与边界。
+
 每个执行中的TASK都应有匹配REPORT。REPORT记实际diff、验证、偏差、阻断和局限，不能授权新的范围。失败/阻断/部分完成也须诚实报告。
 
 - REPORT-001-standalone-data-foundation.md：为既有TASK-001补齐当时已完成的事实归档（工程验证，不追认教师审核）。
@@ -62,3 +64,7 @@
 - [REPORT-033-lyw-handout-raw-bytes-in-git.md](REPORT-033-lyw-handout-raw-bytes-in-git.md)：CI失败根因实测链（run 39838205559/39934879636、干净worktree 68/69复现、`i/lf w/crlf`定位）、三文件blob恢复原件字节与磁盘SHA前后一致证明、干净worktree 69/69与冻结根0差异；Node 20弃用警告与全交件SHA断言扩面登记为未做项。
 
 - [REPORT-034-js-mime-guard-platform-variance.md](REPORT-034-js-mime-guard-platform-variance.md)：Windows CI红根因（mimetypes注册表差异）与修复（JS MIME断言放宽为javascript子串、服务端零改动）、dev.py全绿与冻结根0差异、CI四job复核见同日修复提交run。
+
+- [REPORT-037](REPORT-037-page-system-components.md)：子页面/共享组件实际改动、恢复与门禁验收、视觉和冻结原件核对。
+
+- [REPORT-038](REPORT-038-normalization-git-sync.md)：035/037提交同步、公开载荷检查、干净检出、远端和CI事实。

@@ -3,9 +3,10 @@ import { STAGES, MATERIALS, RECIPES, canVisit, canEnterOpen, routeRules } from '
 import { learningRecords } from './learning.js';
 import { questProgress } from '../quest-state.js';
 import { comparePlanToRecord, CALC_WHITELIST, compute, GAP_OPTIONS } from '../analysis-engine.js';
-export const heading=(title,description)=>`<div class="page-heading"><h1>${e(title)}</h1>${description?`<p>${e(description)}</p>`:''}</div>`;
-const button=(text,action,primary=true)=>`<button class="button ${primary?'primary':'secondary'}" data-action="${action}">${e(text)} ${primary?icon('arrow'):''}</button>`;
-const field=(label,name,value,unit='',type='number',extra='')=>`<label class="field"><span>${e(label)}${unit?` <small>${e(unit)}</small>`:''}</span><input name="${name}" type="${type}" value="${e(value)}" ${type==='number'?'step="any"':''} ${extra}></label>`;
+import {pageHeader,button as sharedButton,field as sharedField} from '../components.js';
+export const heading=(title,description)=>pageHeader({title,description});
+const button=(label,action,primary=true)=>sharedButton({label,action,variant:primary?'primary':'secondary',iconName:primary?'arrow':''});
+const field=(label,name,value,unit='',type='number',attributes='')=>sharedField({label,name,value,unit,type,attributes});
 export function routeEvidence(run,c){
   const route=c.routes.find(r=>r.id===run.route), evidence=route?.evidence;
   if(!evidence)return '';

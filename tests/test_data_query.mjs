@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {siteHeader} from '../frontend/student/components.js';
 import { queryRecords, countByRoute, summarize, validRoute, ROUTE_ORDER } from '../frontend/student/data-query.js';
 
 const root = new URL('../', import.meta.url);
@@ -74,7 +75,8 @@ test('data page is same-origin, read-only and does not touch learning state or A
   assert.match(html, /href="\.\/case-page\.css"/);
   assert.match(html, /href="\.\/data-page\.css"/);
   assert.match(html, /src="\.\/data-page\.js"/);
-  assert.match(html, /href="\.\/data\.html" aria-current="page"/);
+  assert.match(html, /data-site-header/);
+  assert.match(siteHeader('data'), /href="\.\/data\.html" aria-current="page"/);
   assert.match(html, /href="\.\/index\.html"/);
 });
 
@@ -84,5 +86,6 @@ test('case page and analysis view link to the independent query page', () => {
   const caseHtml = read('frontend/student/case.html');
   assert.match(caseScript, /href="\.\/data\.html"/);
   assert.match(workbench, /href="\.\/data\.html\?route=/);
-  assert.match(caseHtml, /href="\.\/data\.html"/);
+  assert.match(caseHtml, /data-site-header/);
+  assert.match(siteHeader('case'), /href="\.\/data\.html"/);
 });

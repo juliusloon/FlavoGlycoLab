@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as L from '../frontend/student/lab-state.js';
@@ -352,4 +353,20 @@ test('L06-fix: open mode renders real plan inputs and never leaks arrow-function
   assert.ok(!gh.includes('=>field'));
   assert.match(gh,/name="concentration"[^>]*readonly/); // 参照练习的锁定字段仍只读预填。
   assert.match(gh,/locked-input/);
+});
+
+
+test('TASK-035: imported computation survives export and reload without advancing learning or creating observations',()=>{
+ const contract=JSON.parse(readFileSync(new URL('../metadata/retrosynthesis.json',import.meta.url),'utf8'));
+ const r=contract.cases.Pei2019,hash='0'.repeat(64);
+ const packet={schema:'flavoretro.lab-handoff.v1',run:{id:'20000101T000000-'+ '0'.repeat(32),execution_source:'live_aizynthfinder_mcts',result_sha256:hash,manifest_sha256:hash},route:{id:hash,tree_sha256:hash,steps:1,closure:'partial'},target:contract.target,selection:r,witness:{product_smiles:r.target_smiles,precursor_smiles:r.precursor_smiles},literature:[],packet_sha256:hash,teacher_approved:false,independent_chemical_validation:false,observations:[],quantitative_result:null};
+ const state=L.freshState(),before=JSON.stringify(state.current.learning);
+ state.current.retroImport={packet,validation:'local_identity_source_and_checksum_match',upstream_run_independently_verified:false,teacher_approved:false,observations:[],quantitative_result:null};
+ const restored=L.hydrate(JSON.stringify(state));
+ assert.equal(JSON.stringify(restored.current.learning),before);
+ assert.equal(restored.current.routeConfirmed,false);assert.deepEqual(restored.current.samples,[]);
+ assert.equal(restored.current.stage,0);assert.deepEqual(restored.current.guidedDone,{});
+ assert.equal(L.exportPayload(restored).current.retroImport.packet.selection.source_id,'Pei2019');
+ restored.current.retroImport.packet.teacher_approved=true;
+ assert.throws(()=>L.hydrate(JSON.stringify(restored)),/逆合成来源记录无效/);
 });
