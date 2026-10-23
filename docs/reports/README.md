@@ -58,3 +58,5 @@
 - [REPORT-031-intro-single-act-two-zone.md](REPORT-031-intro-single-act-two-zone.md)：原会话自验收口（Completed）——单幕两区实际改动、975/68/69/全绿自验分母、保护 170/170、temp 目录丢失与 chromium 路径两次试错等过程偏差如实登记；TASK-029 会话 17:05 代登记历史保留为 §2。
 
 - [REPORT-030-number-transition-registry.md](REPORT-030-number-transition-registry.md)：030 空号补齐的过渡登记报告——编号让位与回归事实、dev.py check 恢复全绿；030 永久保留为登记用途。
+
+- [REPORT-033-lyw-handout-raw-bytes-in-git.md](REPORT-033-lyw-handout-raw-bytes-in-git.md)：CI失败根因实测链（run 39838205559/39934879636、干净worktree 68/69复现、`i/lf w/crlf`定位）、三文件blob恢复原件字节与磁盘SHA前后一致证明、干净worktree 69/69与冻结根0差异；Node 20弃用警告与全交件SHA断言扩面登记为未做项。

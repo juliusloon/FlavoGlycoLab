@@ -7,7 +7,7 @@
 | 项 | 当前事实 |
 | --- | --- |
 | 代码仓库 | [juliusloon/FlavoGlycoLab](https://github.com/juliusloon/FlavoGlycoLab)，public；main沿用现有公开父链 |
-| 当前TASK | 最近完成TASK-029（对照弹窗页签收敛＋并排对齐矩阵，human_direct，见[REPORT-029](docs/reports/REPORT-029-compare-tabs-side-by-side-only.md)）；TASK-015—027已随2704edd提交入库，TASK-028—032已按所有者2026-10-23 human_direct指示随当日同步提交入库；TASK-030 为编号过渡登记对（对照弹窗任务曾临时占用 030 后回归 029，见[REPORT-030](docs/reports/REPORT-030-number-transition-registry.md)）；TASK-031（导入单幕两区）Completed 自验收口（[REPORT-031](docs/reports/REPORT-031-intro-single-act-two-zone.md)，代登记历史保留于其 §2）；TASK-032（论文PDF在线阅读＋两句文案删除＋8766重启）Completed（2026-10-23联合验收补跑通过）。三状态门：research_evaluation仍为候选、teaching_case_review不晋级（22/22待审）、public_teaching_release=not_started |
+| 当前TASK | 最近完成TASK-029（对照弹窗页签收敛＋并排对齐矩阵，human_direct，见[REPORT-029](docs/reports/REPORT-029-compare-tabs-side-by-side-only.md)）；TASK-015—027已随2704edd提交入库，TASK-028—032已按所有者2026-10-23 human_direct指示随当日同步提交入库；TASK-030 为编号过渡登记对（对照弹窗任务曾临时占用 030 后回归 029，见[REPORT-030](docs/reports/REPORT-030-number-transition-registry.md)）；TASK-031（导入单幕两区）Completed 自验收口（[REPORT-031](docs/reports/REPORT-031-intro-single-act-two-zone.md)，代登记历史保留于其 §2）；TASK-032（论文PDF在线阅读＋两句文案删除＋8766重启）Completed（2026-10-23联合验收补跑通过）。TASK-033（human_direct）修复三份LYW交件的Git行尾规范化失配（`*.md text eol=lf`提交时剥离CRLF，干净检出字节≠demo-content登记的原件SHA，致2704edd/1bedaa4两次CI public-check三平台失败）：三文件改`-text`原样入库、blob恢复为登记SHA对应字节，磁盘原件与登记零改动，见[REPORT-033](docs/reports/REPORT-033-lyw-handout-raw-bytes-in-git.md)。三状态门：research_evaluation仍为候选、teaching_case_review不晋级（22/22待审）、public_teaching_release=not_started |
 | 本地入口 | `python scripts/dev.py`，默认127.0.0.1:8767，Python 3.10+标准库，无需Conda/npm/GPU/私有数据/模型密钥 |
 | 默认工程检查 | `python scripts/dev.py check`；Python 74项中71通过、3项研究资产明确跳过；Node可用时 `npm test` 69/69（2026-10-23远程实测） |
 | 本地干净克隆验收 | TASK-013历史干净克隆84项见REPORT-013；TASK-018三路线/三视口403项、工具51项、真实AI10项、状态专项6项通过；TASK-019为484项、TASK-020为487项、TASK-021为517项、TASK-022为551项、TASK-023为603项（均Chromium153三视口/三路线，console错误/外部请求0）；TASK-024为工作台603项＋案例页3视口；TASK-025为工作台603/603、数据页65/65（隔离public）与68/68（本机Qwen）、案例页3/3；TASK-027为test:browser 644＋数据页68＋三路线走查73（含1次真实AI analyze），均非新的干净克隆或CI |
@@ -16,7 +16,7 @@
 | 实时AI | 可选本机private/runtime/tutor.json；无配置不阻断流程。配置时前端显示“Qwen · 实时辅导（本机演示，未接入正式平台）”，固定角标“本机演示 · 未接入正式平台”；未配置/失败如实降级。原LAN的Qwen接入历史验收见REPORT-012，TASK-014实际完成两品牌各1次真实上游答复和1次无数据守卫；TASK-025只验收状态标识，不做容量测量或正式平台联调 |
 | 练习保存 | 当前浏览器/站点源localStorage；最多12快照，可比较并导出；含学习草稿/自查、首次AI请求前判断；助手宽度偏好独立保存；无账号或跨设备同步 |
 | 原LAN托管 | flavoglycolab-lan.service，8766；TASK-018只读核对13/13静态资产与当前源码逐字节相同，未调整/重启服务、模型、网卡或防火墙；2026-10-23 15:35 CST经所有者指示重启（TASK-032），当前进程为已提交TASK-027版serve_lab.py，`/api/paper`三份HEAD 200（见[REPORT-032](docs/reports/REPORT-032-paper-pdf-online-reading.md)）；唯一说明docs/operations/lan-site.md |
-| 跨平台CI | 最近技术准备提交204b232，Actions39378915182四个job success；三平台Python/JS/安装CLI与Linux浏览器84项通过 |
+| 跨平台CI | 2704edd与1bedaa4两次推送public-check三平台失败（test 27干净检出SHA失配，根因见REPORT-033），TASK-033修复后随当日后继提交推送复核；browser job持续通过；历史成功run见TASK-014（39379185252）与204b232（39378915182） |
 | 数据/来源保护 | TASK-018/019/020/021/022/023保护分母均199/199字节不变，含raw/derived/private/迁移/参考及冻结登记；TASK-027启动口径改为169文件逐路径sha256+size快照（mode跨宿主不可比剔除，见temp/task-027/protected-note.md），收尾0差异；TASK-016的196项历史检查仍见旧报告；SI独立登记未改变 |
 | 日常Git | 当前main可普通提交/push；所有者远端public，成员克隆通常origin；不要推送旧研究归档分支 |
 

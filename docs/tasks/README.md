@@ -66,3 +66,5 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 - [TASK-031-intro-single-act-two-zone.md](TASK-031-intro-single-act-two-zone.md)：Completed，human_direct；导入三幕改单幕两区顺序呈现（任一时刻仅当前幕：左叙事/分子/论文卡 + 右问题或门禁，答对显示反馈＋intro-advance 显式推进，删除 act-locked 占位，lab-state 状态机零改动）；原会话暂停期间由 TASK-029 会话代登记，恢复后自验收口：dev.py check 全绿、npm 69/69、test:browser 975/975、test:data-browser 68/68、保护 170/170，见 REPORT-031。
 
 - [TASK-030-number-transition-registry.md](TASK-030-number-transition-registry.md)：Completed（过渡登记），human_direct；对照弹窗任务临时占用 030 后回归 029，按治理编号连续性要求以本登记对补齐空号；无任何代码/内容改动，见 REPORT-030。
+
+- [TASK-033-lyw-handout-raw-bytes-in-git.md](TASK-033-lyw-handout-raw-bytes-in-git.md)：Completed，human_direct；三份LYW原始交件Git行尾规范化失配修复——`*.md text eol=lf`提交时剥离CRLF致干净检出字节≠demo-content登记原件SHA（test_quest_state test 27必失败，2704edd/1bedaa4两次CI public-check三平台红）；三文件改`-text`原样入库、blob恢复登记SHA对应字节，磁盘原件与登记零改动；干净worktree npm 69/69，见REPORT-033；三状态门不晋级。

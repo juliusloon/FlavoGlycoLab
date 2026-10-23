@@ -88,3 +88,5 @@
 - TASK-032：human_direct完成论文卡在线阅读PDF可用性落地——根因定位8766旧进程无/api/paper（404）并于2026-10-23 15:35 CST重启（health 200、三份论文HEAD 200 application/pdf、GET %PDF-）；研究对话框删除所有者点名两句（“新标签页打开 PDF”链接与TASK-008提醒句）、app.js三条消息中性化＋test_inquiry_browser四处守卫同步；npm 69/69、保护170/170零差异；联合全量验收于当日由独立验证会话补跑通过（dev.py check exit=0全绿、npm 69/69、test:browser 975/975、test:data-browser 68/68）后由Partial转Completed（仅改状态与验收表，未改代码）；三状态门不晋级。详见REPORT-032。
 
 - 同步提交（2026-10-23）：TASK-028—032全部改动（合同/报告、双索引、STATE/PROGRESS、前端与测试代码）按所有者human_direct指示随当日同步提交入库。
+
+- TASK-033：human_direct修复三份LYW原始交件的Git行尾规范化失配——`.gitattributes`的`*.md text eol=lf`在提交时剥离CRLF，干净检出的24step_teaching_matrix_LYW_v2.md字节≠demo-content.json登记的原件SHA，test_quest_state test 27在任何干净检出失败（2704edd/1bedaa4两次CI public-check三平台红，run 39838205559/39934879636）；三文件（v2教学矩阵、b2_shotlist_LYW_v1、evaluation_rubric_LYW_v1）改`-text`原样入库、blob恢复登记SHA对应字节，磁盘原件与登记零改动；干净worktree npm test 69/69复核。详见REPORT-033。
