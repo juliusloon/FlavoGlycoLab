@@ -96,3 +96,5 @@
 - TASK-034：human_direct修复Windows CI红的另一处既有缺陷——test_lab_server对4个`.js`路径硬断言`text/javascript`，Windows上Python mimetypes按注册表返回`application/javascript`（TASK-024引入case-page.js、2704edd首次CI接触即红）；断言按守卫意图放宽为`javascript`子串（两种合法值均可），不改serve_lab.py、8766无需重启；dev.py check全绿、冻结根0差异。详见REPORT-034。
 
 - 2026-10-24 TASK-037（human_direct）：完成9类页面的导航与工程化，导入/阶段/任务可独立寻址、回退/刷新/续接；共享token与组件、真实组件展示及中文规范已交付，无面包屑。Python78（75通过/3显式research跳过）、Node75、工作台977、public数据65、跨页167通过；214保护文件零差异、8766资产8/8匹配；无真实AI调用，不改变科学/教师/公众发布门，未提交/push。详见REPORT-037。
+
+- 2026-10-24 TASK-038（human_direct）：已将TASK-035/037的48项源码/测试/规范改动提交为976dfdd并普通push至public/main，远端SHA一致。工作树和干净检出Python78（75通过/3显式research跳过）＋Node75均通过；路径/内容守卫48/48，保护214/214及PDF3/3不变。CI40006168116三平台通过，浏览器仍在依赖安装，状态待结论；本次不改工作流、不推进科学/教学/公众发布门。

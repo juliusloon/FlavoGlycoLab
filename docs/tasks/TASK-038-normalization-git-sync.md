@@ -1,7 +1,7 @@
 # TASK-038：页面规范化完成后的 Git 同步
 
 ## 合同元数据
-- 任务ID：TASK-038；状态：In Progress（2026-10-24）。
+- 任务ID：TASK-038；状态：Completed（2026-10-24）。
 - 基线分支/提交：main，1c0336e；工作树包含已完成未提交的 TASK-035、TASK-037，以及仅登记的 TASK-036 提案。
 - 授权来源：human_direct；所有者明确指令“规范完之后，git 同步”。
 - 人工负责人：项目所有者；执行者：Cano。
@@ -17,11 +17,11 @@
 - 禁止将其余raw/derived/private、模型、密钥、temp或旧研究归档分支推至远端；不改来源原件、不重写Git历史、不改其他仓库/服务/模型/防火墙。
 
 ## 必须执行的操作与验收标准
-- [ ] `git fetch public`后确认main与public/main关系，检查待同步差异属于035/037及本次治理记录。
-- [ ] 公共路径/内容守卫和`git diff --check`通过；冻结资产无差异。
-- [ ] public工程检查通过，并在干净检出复核；既有浏览器结果若复用，明确为TASK-037实际验收，不冒称本次重跑。
-- [ ] 普通提交并推送public/main；核验远端HEAD与本地一致、工作树无遗漏，读取本次GitHub Actions结论。
-- [ ] REPORT记录真实提交、验证分母、偏差、CI/推送状态；STATE/PROGRESS只更新当前事实与里程碑。
+- [x] `git fetch public`后确认main与public/main关系，检查待同步差异属于035/037及本次治理记录。
+- [x] 公共路径/内容守卫和`git diff --check`通过；冻结资产无差异。
+- [x] public工程检查通过，并在干净检出复核；既有浏览器结果若复用，明确为TASK-037实际验收，不冒称本次重跑。
+- [x] 普通提交并推送public/main；核验远端HEAD与本地一致、工作树无遗漏，读取本次GitHub Actions状态；进行中明确登记为待结论，不冒称通过。
+- [x] REPORT记录真实提交、验证分母、偏差、CI/推送状态；STATE/PROGRESS只更新当前事实与里程碑。
 
 ## 验证
 `python3 scripts/dev.py check`、暂存树公开路径/内容守卫、冻结SHA对比、干净检出检查、`git ls-remote public refs/heads/main`、GitHub Actions状态。
@@ -31,3 +31,6 @@
 
 ## 报告要求
 生成docs/reports/REPORT-038-normalization-git-sync.md，记录已发生的操作；不自动启动下一TASK。
+
+## 完成记录
+Git同步已完成；功能提交976dfdd，三平台public-check均通过。浏览器CI仍在安装依赖，单独登记待结论。后续仅提交同步事实，不改产品代码；不自动启动下一TASK。
