@@ -90,3 +90,5 @@
 - 同步提交（2026-10-23）：TASK-028—032全部改动（合同/报告、双索引、STATE/PROGRESS、前端与测试代码）按所有者human_direct指示随当日同步提交入库。
 
 - TASK-033：human_direct修复三份LYW原始交件的Git行尾规范化失配——`.gitattributes`的`*.md text eol=lf`在提交时剥离CRLF，干净检出的24step_teaching_matrix_LYW_v2.md字节≠demo-content.json登记的原件SHA，test_quest_state test 27在任何干净检出失败（2704edd/1bedaa4两次CI public-check三平台红，run 39838205559/39934879636）；三文件（v2教学矩阵、b2_shotlist_LYW_v1、evaluation_rubric_LYW_v1）改`-text`原样入库、blob恢复登记SHA对应字节，磁盘原件与登记零改动；干净worktree npm test 69/69复核。详见REPORT-033。
+
+- TASK-034：human_direct修复Windows CI红的另一处既有缺陷——test_lab_server对4个`.js`路径硬断言`text/javascript`，Windows上Python mimetypes按注册表返回`application/javascript`（TASK-024引入case-page.js、2704edd首次CI接触即红）；断言按守卫意图放宽为`javascript`子串（两种合法值均可），不改serve_lab.py、8766无需重启；dev.py check全绿、冻结根0差异。详见REPORT-034。

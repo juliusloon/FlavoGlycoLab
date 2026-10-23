@@ -126,10 +126,12 @@ class LabTests(unittest.TestCase):
         _,_,h=self.request('GET','/')
         self.assertIn("frame-ancestors 'none'",h['Content-Security-Policy'])
     def test_case_page_and_route_figure_are_served_same_origin(self):
-        for path,content_type in [('/case.html','text/html'),('/case-page.js','text/javascript'),
+        # JS MIME 存在合法平台差异：text/javascript（RFC 9239，Linux/macOS）与
+        # application/javascript（Windows 注册表）均可；按守卫意图断言 javascript 子串（TASK-034）。
+        for path,content_type in [('/case.html','text/html'),('/case-page.js','javascript'),
                                   ('/case-page.css','text/css'),('/assets/figures/route_map_v1.svg','image/svg+xml'),
-                                  ('/data.html','text/html'),('/data-page.js','text/javascript'),
-                                  ('/data-page.css','text/css'),('/data-query.js','text/javascript')]:
+                                  ('/data.html','text/html'),('/data-page.js','javascript'),
+                                  ('/data-page.css','text/css'),('/data-query.js','javascript')]:
             status,body,raw=self.request('GET',path);h={k.lower():v for k,v in raw.items()}
             self.assertEqual(status,200,path)
             self.assertIn(content_type,h.get('content-type',''),path)

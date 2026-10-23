@@ -60,3 +60,5 @@
 - [REPORT-030-number-transition-registry.md](REPORT-030-number-transition-registry.md)：030 空号补齐的过渡登记报告——编号让位与回归事实、dev.py check 恢复全绿；030 永久保留为登记用途。
 
 - [REPORT-033-lyw-handout-raw-bytes-in-git.md](REPORT-033-lyw-handout-raw-bytes-in-git.md)：CI失败根因实测链（run 39838205559/39934879636、干净worktree 68/69复现、`i/lf w/crlf`定位）、三文件blob恢复原件字节与磁盘SHA前后一致证明、干净worktree 69/69与冻结根0差异；Node 20弃用警告与全交件SHA断言扩面登记为未做项。
+
+- [REPORT-034-js-mime-guard-platform-variance.md](REPORT-034-js-mime-guard-platform-variance.md)：Windows CI红根因（mimetypes注册表差异）与修复（JS MIME断言放宽为javascript子串、服务端零改动）、dev.py全绿与冻结根0差异、CI四job复核见同日修复提交run。

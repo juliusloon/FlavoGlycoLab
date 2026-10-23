@@ -68,3 +68,5 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 - [TASK-030-number-transition-registry.md](TASK-030-number-transition-registry.md)：Completed（过渡登记），human_direct；对照弹窗任务临时占用 030 后回归 029，按治理编号连续性要求以本登记对补齐空号；无任何代码/内容改动，见 REPORT-030。
 
 - [TASK-033-lyw-handout-raw-bytes-in-git.md](TASK-033-lyw-handout-raw-bytes-in-git.md)：Completed，human_direct；三份LYW原始交件Git行尾规范化失配修复——`*.md text eol=lf`提交时剥离CRLF致干净检出字节≠demo-content登记原件SHA（test_quest_state test 27必失败，2704edd/1bedaa4两次CI public-check三平台红）；三文件改`-text`原样入库、blob恢复登记SHA对应字节，磁盘原件与登记零改动；干净worktree npm 69/69，见REPORT-033；三状态门不晋级。
+
+- [TASK-034-js-mime-guard-platform-variance.md](TASK-034-js-mime-guard-platform-variance.md)：Completed，human_direct；JS MIME守卫按意图放宽——test_lab_server对4个.js硬断言text/javascript，Windows mimetypes返回application/javascript致CI必红（TASK-024引入、2704edd首暴露）；断言改javascript子串（两种合法值均可），不改serve_lab.py、8766无需重启，见REPORT-034；三状态门不晋级。

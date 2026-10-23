@@ -29,7 +29,7 @@
 - 干净 worktree@修复后 HEAD：`npm test` **69/69**（test 27 通过，Node v22.23.1）。
 - `python3 scripts/dev.py check`：exit=0 全绿（治理配对含 033 对）。
 - 冻结根快照 170 文件前后 0 差异。
-- 推送后 CI 复核：见同日修复提交的 Actions run。
+- 推送后 CI 复核（run 39936328472）：browser/ubuntu/macos 转绿，windows 仍红——为与 TASK-033 无关的既有缺陷（test_lab_server 对 `.js` 硬断言 `text/javascript`，Windows `mimetypes` 返回 `application/javascript`），由 TASK-034 闭合。
 
 ## 偏差与登记
 
