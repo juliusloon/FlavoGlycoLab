@@ -267,3 +267,62 @@ progress.quest-progress{display:block;width:100%;height:3px;border:0;appearance:
 
 /* L06-fix: 学习区前置学习门禁提示（与论文门 gate-hint 区分，避免 strict mode 选择器冲突） */
 .learning-gate-hint{font-size:11px;color:var(--muted);margin-top:8px}
+
+/* TASK-028：绿色文字可点元素 → 可点击 bar（展开/收起箭头）与链接持久提示。仅视觉层，无行为改动。 */
+.task-goal>summary,.task-sources>summary,.task-example>summary,.route-evidence>summary,.analysis-fields>summary{display:flex;align-items:baseline;gap:9px;width:100%;list-style:none;cursor:pointer;background:#f3f8f4;border:1px solid var(--line);border-radius:9px;padding:10px 14px;margin:2px 0 0;font-weight:600;transition:background .15s ease,border-color .15s ease}
+.task-goal>summary::-webkit-details-marker,.task-sources>summary::-webkit-details-marker,.task-example>summary::-webkit-details-marker,.route-evidence>summary::-webkit-details-marker,.analysis-fields>summary::-webkit-details-marker{display:none}
+.task-goal>summary::before,.task-sources>summary::before,.task-example>summary::before,.route-evidence>summary::before,.analysis-fields>summary::before{content:"▸";flex:none;width:1em;color:var(--teal);transition:transform .18s ease;transform-origin:50% 55%}
+.task-goal>summary:hover,.task-sources>summary:hover,.task-example>summary:hover,.route-evidence>summary:hover,.analysis-fields>summary:hover{background:#e8f2ea;border-color:#c7dcd1}
+.task-goal[open]>summary,.task-sources[open]>summary,.task-example[open]>summary,.route-evidence[open]>summary,.analysis-fields[open]>summary{margin-bottom:10px}
+.task-goal[open]>summary::before,.task-sources[open]>summary::before,.task-example[open]>summary::before,.route-evidence[open]>summary::before,.analysis-fields[open]>summary::before{transform:rotate(90deg)}
+:is(main,dialog) a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;text-decoration-color:#a9c8ba}
+:is(main,dialog) a.button,:is(main,dialog) a.text-button{text-decoration:none}
+.source-meta dd>a,.structure-source a{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;text-decoration:none;transition:background .15s ease,border-color .15s ease}
+.source-meta dd>a::after,.structure-source a::after{content:"↗";font-size:.85em;color:var(--teal)}
+.source-meta dd>a:hover,.structure-source a:hover{border-color:var(--teal);background:#f0f6f2}
+.topbar>a,.top-nav a{text-decoration:underline;text-underline-offset:4px;text-decoration-color:#bcd4c9}
+
+/* TASK-031：导入三幕单幕两区呈现——任一时刻只显示当前幕，右侧 rail 放问题/门禁；幕三论文卡在窄列改单列横排。 */
+.intro-view{margin-top:2px}
+.intro-view .intro-act{max-width:none;margin:0}
+.intro-rail .act-question{margin-top:0}
+.intro-advance{width:100%;margin-top:14px}
+.intro-act[data-act="3"] .case-cards{grid-template-columns:1fr}
+.intro-act[data-act="3"] .case-card{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:2px 15px}
+.intro-act[data-act="3"] .case-card-top{grid-column:1;font-size:10px}
+.intro-act[data-act="3"] .case-card .route-diagram{grid-column:2;grid-row:1/5;margin:0;max-height:120px}
+.intro-act[data-act="3"] .case-card h3{grid-column:1;margin-top:8px}
+.intro-act[data-act="3"] .case-card p{grid-column:1}
+.intro-act[data-act="3"] .case-card .case-open{grid-column:1;padding:8px 0 0;margin-top:6px;border:0}
+.intro-rail .gate-row{margin-top:0;border-top:0;padding-top:0;text-align:left}
+.intro-rail .gate-row .reading-note{margin:12px 0 0;text-align:left;max-width:none}
+.intro-rail .gate-row .scene-bottom{justify-content:stretch;margin-top:16px}
+.intro-rail .gate-row .scene-bottom .button{width:100%}
+@media(max-width:620px){.intro-act[data-act="3"] .case-card{grid-template-columns:1fr}.intro-act[data-act="3"] .case-card .route-diagram{grid-column:1;grid-row:auto;max-height:120px;margin:8px 0}}
+
+/* ===== TASK-029：并排对照对齐矩阵（最左字段标签列 + 三篇对应行；要点/按钮/面板/选择路线各成行对齐） ===== */
+.study-matrix{--matrix-label-w:118px;margin-top:2px;overflow-x:auto;scrollbar-gutter:stable}
+.matrix-inner{min-width:660px}
+.matrix-head,.matrix-row{display:grid;grid-template-columns:var(--matrix-label-w) repeat(3,minmax(0,1fr));align-items:stretch}
+.matrix-head>.study{padding:0 14px 12px 0;min-width:0}
+.matrix-head>.study+.study{border-left:1px solid var(--line);padding-left:14px}
+.matrix-head h4{border-bottom:0;padding-bottom:2px}
+.matrix-row{border-top:1px solid var(--line)}
+.matrix-label{font-size:11px;font-weight:650;color:var(--deep);padding:13px 12px 13px 0}
+.matrix-cell{font-size:12px;color:#5b7268;line-height:1.85;padding:13px 14px 13px 0;min-width:0;overflow-wrap:anywhere}
+.matrix-cell+.matrix-cell{border-left:1px solid var(--line);padding-left:14px}
+.matrix-row[data-field="locator"] .matrix-cell{padding-top:4px;padding-bottom:4px}
+.matrix-row[data-field="locator"] .study-locator{margin:0}
+.matrix-paper{row-gap:0}
+.matrix-paper>.matrix-label{grid-row:1/4}
+.matrix-paper>.paper-view{display:contents;--col:2}
+.matrix-paper>.paper-view:nth-of-type(2){--col:3}
+.matrix-paper>.paper-view:nth-of-type(3){--col:4}
+.matrix-paper>.paper-view>*{grid-column:var(--col);min-width:0}
+.matrix-paper>.paper-view>:nth-child(1){grid-row:1;padding:13px 14px 0 14px}
+.matrix-paper>.paper-view>:nth-child(2){grid-row:2;padding:10px 14px 6px 14px}
+.matrix-paper>.paper-view>:nth-child(3){grid-row:3;padding:0 14px 13px 14px}
+.matrix-paper>.paper-view>.paper-actions{margin-top:0}
+.matrix-paper>.paper-view>.paper-panel{margin-top:0}
+.matrix-choose .matrix-cell{display:flex;align-items:flex-start}
+@media(max-width:620px){.study-matrix{--matrix-label-w:96px}.matrix-inner{min-width:620px}.matrix-cell{font-size:11.5px}.matrix-label{font-size:10.5px;padding-right:8px}}

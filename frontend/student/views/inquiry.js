@@ -26,18 +26,29 @@ function actQuestion(c,act,block,progress,retry){
  const done=progress[`act${act}`]===q.answer;
  return `<div class="act-question" data-act-question="${act}"><p class="act-question-prompt">${e(q.prompt)}</p><div class="act-choices">${q.choices.map((choice,i)=>`<button class="intro-choice ${done&&choice.id===q.answer?'correct':''}" data-act="${act}" data-choice="${choice.id}" ${done?'disabled':''}><span class="answer-letter">${String.fromCharCode(65+i)}</span><span>${e(choice.text)}</span></button>`).join('')}</div>${done?`<p class="intro-feedback success" role="status">${e(q.feedback)}</p>`:retry?`<p class="intro-feedback retry" role="status">${e(q.retry)}</p>`:''}<div class="point-sources">${(q.source_ids||[]).map(id=>sourceTag(c,id)).join('')}</div></div>`;
 }
-function introAct(c,block,act,progress,retry,extra=''){
- if(progress.step<act)return `<section class="intro-act locked" data-act="${act}"><div class="act-locked">完成上一步后解锁</div></section>`;
- const refIds=[...new Set(block.points.flatMap(p=>p.source_ids))];
- return `<section class="intro-act" data-act="${act}"><p class="act-kicker">${e(block.kicker)}</p><h2>${e(block.title)}</h2><div class="act-prose">${block.points.map(p=>`<p>${e(p.text)}</p>`).join('')}</div><p class="para-refs"><span class="refs-label">来源</span>${refIds.map(id=>sourceTag(c,id)).join('')}</p><p class="act-review">导入内容 · 待教师审定</p>${extra}${actQuestion(c,act,block,progress,retry)}</section>`;
+/* TASK-031：导入三幕单幕两区呈现——左侧当前幕叙事，右侧该幕问题/门禁；答对停在本幕显示反馈，由「进入下一幕」显式推进。 */
+function introNarrative(c,block,act,extra=''){
+  const refIds=[...new Set(block.points.flatMap(p=>p.source_ids))];
+  return `<section class="intro-act" data-act="${act}"><p class="act-kicker">${e(block.kicker)}</p><h2>${e(block.title)}</h2><div class="act-prose">${block.points.map(p=>`<p>${e(p.text)}</p>`).join('')}</div><p class="para-refs"><span class="refs-label">来源</span>${refIds.map(id=>sourceTag(c,id)).join('')}</p><p class="act-review">导入内容 · 待教师审定</p>${extra}</section>`;
 }
-export function explorationScene(run,c,retry={}){
- const progress=introProgress(run),intro=c.intro;
- const steps=[['01','认识分子'],['02','合成的难处'],['03','三篇论文']];
- const stepper=`<ol class="intro-steps" aria-label="导入进度">${steps.map(([n,label],i)=>{const s=i+1,state=progress.step>s?'done':progress.step===s?'current':'';return `<li${state?` class="${state}"`:''}><span class="intro-step-number">${progress.step>s?'✓':n}</span><span>${label}</span></li>`;}).join('')}</ol>`;
- const gate=routeLearningGate(run,c,run.route);
- const act3=progress.step>=3?`<section class="intro-act" data-act="3"><p class="act-kicker">导入 · 第三幕</p><h2>三篇论文，三种思路</h2>${caseCards(run,c)}<div class="gate-row"><button class="text-button" data-action="intro-tutor">让导师带我读论文</button><p class="reading-note">${e(intro.reading_note.text)}</p><p class="gate-hint">${e(intro.papers_gate.text)}（已打开 ${progress.papers.length}/3）</p><p class="learning-gate-hint">当前路线 ${run.route} 前置学习：${gate.completed}/${gate.total} ${gate.complete?'· 已完成，可进入参照练习':'· 完成主线 01—04 后进入参照练习'}（机器判断 · agent_checked_candidate）</p><div class="scene-bottom"><button class="button secondary" data-action="begin-quest" ${progress.complete?'':'disabled'}>开始主线探究 ${icon('arrow')}</button></div></div></section>`:`<section class="intro-act locked" data-act="3"><div class="act-locked">完成上一步后解锁</div></section>`;
- return `<section class="exploration-scene stepped"><div class="scene-title"><h1>异槲皮苷</h1><p>同一个目标，三种制备思路。<br class="mobile-only">你会如何设计这次实验？</p><p class="orientation">${e(intro.orientation)}</p></div>${stepper}${introAct(c,intro.case,1,progress,retry[1],moleculeStage())}${introAct(c,intro.chemical_limit,2,progress,retry[2])}${act3}</section>`;
+function introRail(run,c,act,block,progress,retry){
+  if(act===3){
+    const gate=routeLearningGate(run,c,run.route);
+    return `<aside class="task-rail intro-rail"><div class="gate-row"><button class="text-button" data-action="intro-tutor">让导师带我读论文</button><p class="reading-note">${e(c.intro.reading_note.text)}</p><p class="gate-hint">${e(c.intro.papers_gate.text)}（已打开 ${progress.papers.length}/3）</p><p class="learning-gate-hint">当前路线 ${run.route} 前置学习：${gate.completed}/${gate.total} ${gate.complete?'· 已完成，可进入参照练习':'· 完成主线 01—04 后进入参照练习'}（机器判断 · agent_checked_candidate）</p><div class="scene-bottom"><button class="button secondary" data-action="begin-quest" ${progress.complete?'':'disabled'}>开始主线探究 ${icon('arrow')}</button></div></div></aside>`;
+  }
+  const advance=progress.step>act?`<button class="button primary intro-advance" data-action="intro-advance">进入第${act===1?'二':'三'}幕 ${icon('arrow')}</button>`:'';
+  return `<aside class="task-rail intro-rail">${actQuestion(c,act,block,progress,retry)}${advance}</aside>`;
+}
+export function explorationScene(run,c,retry={},showAct=null){
+  const progress=introProgress(run),intro=c.intro;
+  const steps=[['01','认识分子'],['02','合成的难处'],['03','三篇论文']];
+  const stepper=`<ol class="intro-steps" aria-label="导入进度">${steps.map(([n,label],i)=>{const s=i+1,state=progress.step>s?'done':progress.step===s?'current':'';return `<li${state?` class="${state}"`:''}><span class="intro-step-number">${progress.step>s?'✓':n}</span><span>${label}</span></li>`;}).join('')}</ol>`;
+  const act=Math.min(Math.max(Number(showAct)||progress.step,1),progress.step,3);
+  const block=act===1?intro.case:act===2?intro.chemical_limit:null;
+  const narrative=act===3
+    ?`<section class="intro-act" data-act="3"><p class="act-kicker">导入 · 第三幕</p><h2>三篇论文，三种思路</h2>${caseCards(run,c)}</section>`
+    :introNarrative(c,block,act,act===1?moleculeStage():'');
+  return `<section class="exploration-scene stepped"><div class="scene-title"><h1>异槲皮苷</h1><p>同一个目标，三种制备思路。<br class="mobile-only">你会如何设计这次实验？</p><p class="orientation">${e(intro.orientation)}</p></div>${stepper}<div class="task-view intro-view">${narrative}${introRail(run,c,act,block,progress,retry)}</div></section>`;
 }
 const shortTitles={'01':'明确实验任务','02':'认识底物和产物','03':'比较三条路线','04':'选择路线并说明理由','05':'选择底物','06':'选择催化剂','07':'选择供体方案','08':'确认体系是否合理'};
 export function questPanel(run,c,activeId){
@@ -126,7 +137,7 @@ export function stageEvidenceBanner(run,c){
  return `${stageModeBadge(run)}<div class="stage-evidence-banner"><div>${c.routes.map(r=>`<button data-case="${r.id}" class="${r.id===run.route?'selected':''}">${r.id} ${e(r.name)}</button>`).join('')}</div><button class="text-button" data-action="compare">并排对照 ${icon('arrow')}</button></div>`;
 }
 function studyTabs(c,routeId){
- return `<div class="study-tabs" role="group" aria-label="选择研究"><button data-compare-route="all" class="${routeId?'':'active'}">并排对照</button>${c.routes.map(r=>`<button data-compare-route="${r.id}" class="${routeId===r.id?'active':''}">${r.id} ${e(r.name)}</button>`).join('')}<button data-compare-route="analysis" class="${routeId==='analysis'?'active':''}">结论与反思</button></div>`;
+ return `<div class="study-tabs" role="group" aria-label="选择研究"><button data-compare-route="all" class="${routeId?'':'active'}">并排对照</button><button data-compare-route="analysis" class="${routeId==='analysis'?'active':''}">结论与反思</button></div>`;
 }
 function analysisList(items){return `<ul>${items.map(item=>`<li>${e(item)}</li>`).join('')}</ul>`;}
 function reportedResults(items=[]){
@@ -140,10 +151,13 @@ function routeAnalysis(c){
 }
 function paperView(run,c,r,source){
  const summary=c.learning.route_analysis.route_summary[r.id];
- return `<section class="paper-view" data-paper-view="${source.source_id}"><div class="paper-head"><h4>论文 PDF 与要点</h4><span class="review-flag soft">待教师审定</span></div><ul class="paper-points"><li><strong>方向</strong><p>${e(r.evidence.direction)}</p></li><li><strong>催化</strong><p>${e(r.evidence.catalyst)}</p></li><li><strong>供体</strong><p>${e(r.evidence.donor)}</p></li><li><strong>小结</strong><p>${e(summary)}</p></li></ul><div class="paper-actions"><button class="button secondary" data-open-paper="${source.source_id}" aria-expanded="false">在线阅读论文 PDF</button><a class="text-button" href="./api/paper/${source.source_id}" target="_blank" rel="noopener noreferrer">新标签页打开 PDF</a></div><p class="paper-scope">PDF 按所有者指定公开（TASK-008 例外），出版方再利用权利未核验，请勿二次分发。</p><div class="paper-panel" hidden><p class="paper-status" role="status"></p><iframe title="${e(source.label)} 论文 PDF"></iframe></div></section>`;
+ return `<section class="paper-view" data-paper-view="${source.source_id}"><div class="paper-points-wrap"><span class="review-flag soft">待教师审定</span><ul class="paper-points"><li><strong>方向</strong><p>${e(r.evidence.direction)}</p></li><li><strong>催化</strong><p>${e(r.evidence.catalyst)}</p></li><li><strong>供体</strong><p>${e(r.evidence.donor)}</p></li><li><strong>小结</strong><p>${e(summary)}</p></li></ul></div><div class="paper-actions"><button class="button secondary" data-open-paper="${source.source_id}" aria-expanded="false">在线阅读论文 PDF</button></div><div class="paper-panel" hidden><p class="paper-status" role="status"></p><iframe title="${e(source.label)} 论文 PDF"></iframe></div></section>`;
 }
 export function caseComparison(run,c,routeId){
  if(routeId==='analysis')return routeAnalysis(c);
- const routes=routeId?c.routes.filter(r=>r.id===routeId):c.routes;
- return `<header class="dialog-heading"><div><h2 id="evidence-title">${routeId?'探索这项研究':'三篇论文 · 当前阶段对照'}</h2></div><button class="close-button" data-close-dialog aria-label="关闭论文对照">×</button></header>${studyTabs(c,routeId)}<div class="study-grid ${routeId?'single':''}">${routes.map(r=>{const study=c.case_studies?.find(x=>x.route_id===r.id),s=study?.stages.find(x=>x.stage===run.stage),source=c.sources.find(x=>x.source_id===r.source_id);return `<article class="study ${r.id}"><div class="study-title"><span>${r.id}</span><div><h3>${e(r.name)}</h3><a href="https://doi.org/${e(source.doi)}" target="_blank" rel="noopener noreferrer">${e(source.label)} ${icon('arrow')}</a></div></div>${routeDiagram(r.id)}<h4>${e(s?.title||study?.title||r.name)}</h4><dl>${[['研究怎么做',s?.solution||r.system],['条件与对照',s?.conditions||r.evidence.donor],['待检验假说',s?.hypothesis||study?.hypothesis||'待提出'],['证据在哪里',s?.evidence||r.evidence.reported_evidence],['仍需核对',s?.limitation||r.evidence.boundary]].map(([title,value])=>`<div><dt>${title}</dt><dd>${e(value)}</dd></div>`).join('')}</dl><p class="study-locator">${e(s?.source_locator||source.source_locator)}</p>${paperView(run,c,r,source)}${run.stage===0?`<button class="button ${run.route===r.id?'secondary':'primary'}" data-choose-route="${r.id}">${run.route===r.id&&run.exploration?.routeChosen?'当前规划路线':'选择这条路线'} ${run.route===r.id?'✓':icon('arrow')}</button>`:''}</article>`;}).join('')}</div>`;
+ const stageOf=r=>c.case_studies?.find(x=>x.route_id===r.id)?.stages.find(x=>x.stage===run.stage);
+ const studyOf=r=>c.case_studies?.find(x=>x.route_id===r.id);
+ const sourceOf=r=>c.sources.find(x=>x.source_id===r.source_id);
+ const fields=[['研究怎么做','solution',r=>stageOf(r)?.solution||r.system],['条件与对照','conditions',r=>stageOf(r)?.conditions||r.evidence.donor],['待检验假说','hypothesis',r=>stageOf(r)?.hypothesis||studyOf(r)?.hypothesis||'待提出'],['证据在哪里','evidence',r=>stageOf(r)?.evidence||r.evidence.reported_evidence],['仍需核对','boundary',r=>stageOf(r)?.limitation||r.evidence.boundary]];
+ return `<header class="dialog-heading"><div><h2 id="evidence-title">三篇论文 · 当前阶段对照</h2></div><button class="close-button" data-close-dialog aria-label="关闭论文对照">×</button></header>${studyTabs(c,routeId)}<div class="study-matrix"><div class="matrix-inner"><div class="matrix-head"><div class="matrix-corner" aria-hidden="true"></div>${c.routes.map(r=>{const s=stageOf(r),study=studyOf(r),source=sourceOf(r);return `<article class="study ${r.id}"><div class="study-title"><span>${r.id}</span><div><h3>${e(r.name)}</h3><a href="https://doi.org/${e(source.doi)}" target="_blank" rel="noopener noreferrer">${e(source.label)} ${icon('arrow')}</a></div></div>${routeDiagram(r.id)}<h4>${e(s?.title||study?.title||r.name)}</h4></article>`;}).join('')}</div>${fields.map(([label,key,get])=>`<div class="matrix-row" data-field="${key}"><div class="matrix-label">${label}</div>${c.routes.map(r=>`<div class="matrix-cell">${e(get(r))}</div>`).join('')}</div>`).join('')}<div class="matrix-row" data-field="locator"><div class="matrix-label">原文位置</div>${c.routes.map(r=>`<div class="matrix-cell"><p class="study-locator">${e(stageOf(r)?.source_locator||sourceOf(r).source_locator)}</p></div>`).join('')}</div><div class="matrix-row matrix-paper"><div class="matrix-label">论文 PDF 与要点</div>${c.routes.map(r=>paperView(run,c,r,sourceOf(r))).join('')}</div>${run.stage===0?`<div class="matrix-row matrix-choose"><div class="matrix-label" aria-hidden="true"></div>${c.routes.map(r=>`<div class="matrix-cell"><button class="button ${run.route===r.id?'secondary':'primary'}" data-choose-route="${r.id}">${run.route===r.id&&run.exploration?.routeChosen?'当前规划路线':'选择这条路线'} ${run.route===r.id?'✓':icon('arrow')}</button></div>`).join('')}</div>`:''}</div></div>`;
 }

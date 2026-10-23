@@ -48,3 +48,13 @@
 - [REPORT-024-zyt-handoff-figure-casepage.md](REPORT-024-zyt-handoff-figure-casepage.md)：ZYT三交件接办、图1制图与PubChem核对、只读案例页v1（S1—S6/5分子/3路线/10行对照/5参考文献）、24步16/6/2状态表与11张B1截图；工作台603/603与案例页3/3、199保护字节、AI角标冲突与未决项。
 
 - [REPORT-025-lyw-handoff-data-query.md](REPORT-025-lyw-handoff-data-query.md)：LYW三交件归档与SHA、21条文献报告值只读数据查询页（筛选/深链/空状态）、本机Qwen实况AI标识、v2科学24步13/9/2映射；npm 48/48、工作台603/603、数据页65/65与68/68、199保护字节、3/3 PDF与未决项。
+
+- [REPORT-028-green-text-clickable-bars.md](REPORT-028-green-text-clickable-bars.md)：站内绿色文字可点元素bar化的实际diff、专项探针与浏览器/保护验收分母、SMB追加写损坏事故与远程重建修复、FLAVOGLYCOLAB_LIVE_AI=1等环境口径；非绿色无提示元素与026/027索引缺口登记为未改问题。
+
+- [REPORT-032-paper-pdf-online-reading.md](REPORT-032-paper-pdf-online-reading.md)：8766旧进程404根因、8769同款解释器预检与15:35重启后验证（health/3×HEAD 200/%PDF-）、两句点名文案删除与消息中性化实测、npm 69/69与保护170/170；解读卡保留文案、lan-site.md过时句、iframe-PDF浏览器兼容与多会话撞号登记为未改问题；联合全量验收已于2026-10-23补跑通过后收口（dev.py check全绿、npm 69/69、975/975、68/68）。
+
+- [REPORT-029-compare-tabs-side-by-side-only.md](REPORT-029-compare-tabs-side-by-side-only.md)：对照弹窗页签收敛与并排视图对齐矩阵化（label 列＋contents 子网格）的实际 diff、975+68 验收分母、DOM 几何探针对齐证据、多会话编号让位与回归 029 过程、死规则与解读卡文案待决项登记。
+
+- [REPORT-031-intro-single-act-two-zone.md](REPORT-031-intro-single-act-two-zone.md)：原会话自验收口（Completed）——单幕两区实际改动、975/68/69/全绿自验分母、保护 170/170、temp 目录丢失与 chromium 路径两次试错等过程偏差如实登记；TASK-029 会话 17:05 代登记历史保留为 §2。
+
+- [REPORT-030-number-transition-registry.md](REPORT-030-number-transition-registry.md)：030 空号补齐的过渡登记报告——编号让位与回归事实、dev.py check 恢复全绿；030 永久保留为登记用途。

@@ -81,9 +81,12 @@ async function practiceStage(page, stage, route, width) {
   }
 }
 async function completeIntro(page, route, width) {
-  ok(`${route}/${width}: act two stays locked before act one is answered`,
+  ok(`${route}/${width}: before answering, only act one renders in the two-zone layout and no locked placeholder remains`,
+    await page.locator('main [data-act-question="1"]').isVisible() &&
     await page.locator('main [data-act-question="2"]').count() === 0 &&
-    await page.locator('main .act-locked').count() === 2);
+    await page.locator('main .act-locked').count() === 0 &&
+    await page.locator('main .intro-act[data-act="2"]').count() === 0 &&
+    await page.locator('main .intro-act[data-act="3"]').count() === 0);
   const wrongActOne = content.intro.case.question.choices.map(choice => choice.id).find(id => id !== content.intro.case.question.answer);
   await page.locator(`main .intro-choice[data-act="1"][data-choice="${wrongActOne}"]`).click();
   ok(`${route}/${width}: a wrong act-one answer shows retry guidance and stays on step one`,
@@ -91,10 +94,17 @@ async function completeIntro(page, route, width) {
     await page.locator('main [data-act-question="2"]').count() === 0 &&
     ((await page.locator('main .intro-steps li').first().getAttribute('class')) || '').includes('current'));
   await page.locator(`main .intro-choice[data-act="1"][data-choice="${content.intro.case.question.answer}"]`).click();
-  ok(`${route}/${width}: the correct act-one answer shows success feedback and unlocks act two`,
+  ok(`${route}/${width}: the correct act-one answer shows success feedback and an explicit advance instead of stacking act two`,
     await page.locator('main [data-act-question="1"] .intro-feedback.success').isVisible() &&
+    await page.locator('main [data-action="intro-advance"]').isVisible() &&
+    await page.locator('main [data-act-question="2"]').count() === 0);
+  await page.locator('main [data-action="intro-advance"]').click();
+  ok(`${route}/${width}: advancing swaps to act two alone with its question in the side rail`,
+    await page.locator('main .intro-act[data-act="2"]').isVisible() &&
+    await page.locator('main .intro-act[data-act="1"]').count() === 0 &&
     await page.locator('main [data-act-question="2"]').isVisible());
   await page.locator(`main .intro-choice[data-act="2"][data-choice="${content.intro.chemical_limit.question.answer}"]`).click();
+  await page.locator('main [data-action="intro-advance"]').click();
   ok(`${route}/${width}: completing act two reveals three study cards behind the paper gate`,
     await page.locator('main .case-card').count() === 3 &&
     await page.locator('main [data-action="begin-quest"]').isDisabled() &&
@@ -114,21 +124,22 @@ async function paperPanel(page, route, width) {
   await page.locator(`main [data-case="${route}"]`).first().click();
   const dialog = page.locator('#evidence-dialog');
   await dialog.waitFor();
-  ok(`${route}/${width}: study dialog offers a bounded paper view with four key points`,
-    await dialog.locator('.paper-view').count() === 1 &&
-    await dialog.locator('.paper-points li').count() === 4 &&
-    (await dialog.locator('.paper-view').textContent()).includes('待教师审定') &&
-    (await dialog.locator('.paper-scope').textContent()).includes('TASK-008'));
+  const pv = dialog.locator(`.paper-view[data-paper-view="${sourceId}"]`);
+  ok(`${route}/${width}: paper entry opens the side-by-side dialog with the route's bounded paper view`,
+    await dialog.locator('.study').count() === 3 &&
+    await pv.locator('.paper-points li').count() === 4 &&
+    (await pv.textContent()).includes('待教师审定') &&
+    await dialog.locator('.paper-scope').count() === 0);
   const head = await page.evaluate(async id => {const r = await fetch(`./api/paper/${id}`, {method:'HEAD'}); return {status:r.status, type:r.headers.get('Content-Type')};}, sourceId);
   ok(`${route}/${width}: paper endpoint answers HEAD as a same-origin PDF`, head.status === 200 && head.type === 'application/pdf');
   const magic = await page.evaluate(async id => {const r = await fetch(`./api/paper/${id}`); const b = new Uint8Array(await r.arrayBuffer()); return r.status === 200 && String.fromCharCode(...b.slice(0, 5)) === '%PDF-';}, sourceId);
   ok(`${route}/${width}: paper endpoint streams the registered PDF bytes`, magic);
-  await dialog.locator('[data-open-paper]').click();
-  await dialog.locator('.paper-panel').waitFor({state:'visible'});
-  await page.waitForFunction(id => document.querySelector('#evidence-dialog .paper-panel iframe')?.getAttribute('src') === `./api/paper/${id}`, sourceId);
-  ok(`${route}/${width}: paper iframe points at the same-origin endpoint with a new-tab fallback`,
-    (await dialog.locator('.paper-panel iframe').getAttribute('src')) === `./api/paper/${sourceId}` &&
-    await dialog.locator(`.paper-actions a[href="./api/paper/${sourceId}"]`).count() === 1);
+  await pv.locator('[data-open-paper]').click();
+  await pv.locator('.paper-panel').waitFor({state:'visible'});
+  await page.waitForFunction(([sel, id]) => document.querySelector(sel)?.getAttribute('src') === `./api/paper/${id}`, [`#evidence-dialog .paper-view[data-paper-view="${sourceId}"] .paper-panel iframe`, sourceId]);
+  ok(`${route}/${width}: paper iframe points at the same-origin endpoint without a new-tab fallback`,
+    (await pv.locator('.paper-panel iframe').getAttribute('src')) === `./api/paper/${sourceId}` &&
+    await pv.locator(`.paper-actions a[href="./api/paper/${sourceId}"]`).count() === 0);
   ok(`${route}/${width}: opening the paper puts it in the mentor context`,
     (await page.locator('#tutor-context').textContent()).includes(label));
   ok(`${route}/${width}: reading the paper does not change the planned route`, (await readState(page)).current.route === routeBefore);
@@ -152,10 +163,18 @@ async function compareStudies(page, stage, route, width) {
   ok(`${route}/${width}: stage ${stage + 1} compares all three source-specific studies`,
     await dialog.locator('.study').count() === 3 &&
     (await dialog.textContent()).includes('Pei') && (await dialog.textContent()).includes('Zhang') && (await dialog.textContent()).includes('Niu'));
-  for (const study of await dialog.locator('.study').all()) {
-    ok(`${route}/${width}: stage ${stage + 1} study has solution, conditions, hypothesis and evidence`,
-      await study.locator('dl>div').count() === 5 && Boolean((await study.locator('.study-locator').textContent()).trim()));
+  ok(`${route}/${width}: stage ${stage + 1} field rows share one leftmost label column`,
+    await dialog.locator('.matrix-row[data-field]').count() === 6 &&
+    await dialog.locator('.matrix-row[data-field] .matrix-label').count() === 6 &&
+    await dialog.locator('.matrix-row[data-field] .matrix-cell').count() === 18);
+  for (const cell of await dialog.locator('.matrix-row[data-field] .matrix-cell').all()) {
+    ok(`${route}/${width}: stage ${stage + 1} matrix cell has source-anchored content`, Boolean((await cell.textContent()).trim()));
   }
+  ok(`${route}/${width}: stage ${stage + 1} keeps per-route source locators`, await dialog.locator('.study-locator').count() === 3);
+  ok(`${route}/${width}: stage ${stage + 1} paper and action rows align across three routes`,
+    await dialog.locator('.matrix-paper .paper-view').count() === 3 &&
+    await dialog.locator('.matrix-paper [data-open-paper]').count() === 3 &&
+    await dialog.locator('.matrix-choose [data-choose-route]').count() === (stage === 0 ? 3 : 0));
   ok(`${route}/${width}: reading papers does not change the planned route`, (await readState(page)).current.route === before);
   await noOverflow(page, `${route}/${width}: stage ${stage + 1} paper dialog does not overflow`);
   if (stage === 0) await screen(page, `${width}-three-studies`);
@@ -333,10 +352,11 @@ async function normalFlow(width, height, route) {
     !(await page.locator('#tutor-panel').isVisible()) && await page.locator('#tutor-launcher').getAttribute('aria-expanded') === 'false');
   ok(`${route}/${width}: first mission and two upcoming tasks remain visible`,
     await page.locator('#quest-panel .quest-list [data-task]').count() === 3 && await page.locator('#quest-panel').isVisible());
-  ok(`${route}/${width}: intro opens with act one interactive, two locked acts and a three-step progress list`,
+  ok(`${route}/${width}: intro opens with act one alone, no locked placeholders and a three-step progress list`,
     await page.locator('main [data-act-question="1"]').isVisible() &&
     await page.locator('main [data-act-question="2"]').count() === 0 &&
-    await page.locator('main .act-locked').count() === 2 &&
+    await page.locator('main .act-locked').count() === 0 &&
+    await page.locator('main .intro-act[data-act="2"]').count() === 0 &&
     await page.locator('main .intro-steps li').count() === 3 &&
     ((await page.locator('main .intro-steps li').first().getAttribute('class')) || '').includes('current'));
   ok(`${route}/${width}: act one keeps its sourced points and review flag`,
@@ -370,7 +390,8 @@ async function normalFlow(width, height, route) {
   }
   await completeIntro(page, route, width);
   ok(`${route}/${width}: act three shows the papers with a reading note`,
-    await page.locator('main .intro-act').count() === 3 &&
+    await page.locator('main .intro-act').count() === 1 &&
+    await page.locator('main .intro-act[data-act="3"]').isVisible() &&
     (await page.locator('main .reading-note').textContent()).includes('导师'));
   const revealedText = await page.locator('main').textContent();
   ok(`${route}/${width}: completed intro omits redundant helper copy`, !revealedText.includes('先探索论文中的做法'));
@@ -572,8 +593,8 @@ async function keyboardFixtures() {
   await page.locator('#close-tutor').click();
   await completeIntro(page, 'R1', 'keyboard');
   await page.locator('main [data-case="R1"]').first().click();
-  await page.locator('#evidence-dialog [data-open-paper]').click();
-  await page.locator('#evidence-dialog .paper-panel').waitFor({state:'visible'});
+  await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] [data-open-paper]').click();
+  await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-panel').waitFor({state:'visible'});
   await closeEvidence(page);
   await page.locator('#tutor-launcher').click();
   await input.fill('这段我该重点读哪里');
@@ -626,12 +647,12 @@ async function failureFixtures() {
   await page.route('**/api/paper/*', route => route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'degraded'})}));
   await completeIntro(page, 'R1', 'failure');
   await page.locator('main [data-case="R1"]').first().click();
-  await page.locator('#evidence-dialog [data-open-paper]').click();
-  await page.waitForFunction(() => document.querySelector('#evidence-dialog .paper-status')?.classList.contains('error'));
-  ok('failure fixture: degraded paper endpoint shows an honest state, streams no bytes and keeps the fallback link',
-    (await page.locator('#evidence-dialog .paper-status').textContent()).includes('暂未提供') &&
-    !(await page.locator('#evidence-dialog .paper-panel iframe').getAttribute('src')) &&
-    await page.locator('#evidence-dialog .paper-actions a[href="./api/paper/Pei2019"]').count() === 1);
+  await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] [data-open-paper]').click();
+  await page.waitForFunction(() => document.querySelector('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-status')?.classList.contains('error'));
+  ok('failure fixture: degraded paper endpoint shows an honest state and streams no bytes without a fallback link',
+    (await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-status').textContent()).includes('暂未提供') &&
+    !(await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-panel iframe').getAttribute('src')) &&
+    await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-actions a[href="./api/paper/Pei2019"]').count() === 0);
   await closeEvidence(page);
   fixtures.push({name:'explicit-failure-paths',upstream:'mocked error responses; excluded from normal console-health denominator'});
   await context.close();
@@ -665,11 +686,11 @@ async function slowPaperFixture() {
   await page.locator('.exploration-scene').waitFor();
   await completeIntro(page, 'R1', 'slow-paper');
   await page.locator('main [data-case="R1"]').first().click();
-  await page.locator('#evidence-dialog [data-open-paper]').click();
-  await page.waitForFunction(() => document.querySelector('#evidence-dialog .paper-status')?.textContent.includes('加载较慢'), {timeout:15000});
-  ok('failure fixture: a stalled PDF shows the slow-loading hint and keeps the new-tab fallback',
-    (await page.locator('#evidence-dialog .paper-status').textContent()).includes('新标签页') &&
-    await page.locator('#evidence-dialog .paper-actions a[href="./api/paper/Pei2019"]').count() === 1);
+  await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] [data-open-paper]').click();
+  await page.waitForFunction(() => document.querySelector('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-status')?.textContent.includes('加载较慢'), {timeout:15000});
+  ok('failure fixture: a stalled PDF shows the slow-loading hint without a new-tab fallback',
+    (await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-status').textContent()).includes('稍后重试') &&
+    await page.locator('#evidence-dialog .paper-view[data-paper-view="Pei2019"] .paper-actions a[href="./api/paper/Pei2019"]').count() === 0);
   fixtures.push({name:'slow-paper-hint',upstream:'stalled route handler; excluded from normal console-health denominator'});
   await context.close();
 }

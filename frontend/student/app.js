@@ -13,7 +13,7 @@ const chat=document.querySelector('#chat'),question=document.querySelector('#que
 const evidenceDialog=document.querySelector('#evidence-dialog'),tutor=document.querySelector('#tutor-panel'),tutorLauncher=document.querySelector('#tutor-launcher');
 const openWarningDialog=document.querySelector('#open-warning-dialog'),redoDialog=document.querySelector('#redo-dialog'); // TASK-027 L02
 let state=freshState(),content,view='workbench',activeTask=null,selectedSample='',compareId='',toastTimer,runTimer,busy=false,modelConfigured=false,saveError=false,loadWarning='',pendingRoute=null;
-let molecule=null,renderVersion=0,highlighted=false,composing=false,replayIntro=false,activeRequest=null,openPaper=null,introRetry={};
+let molecule=null,renderVersion=0,highlighted=false,composing=false,replayIntro=false,activeRequest=null,openPaper=null,introRetry={},introShowAct=null; // TASK-031: 导入完成幕的视图记忆（答对停在本幕显示反馈），不入 localStorage。
 let pendingEval=null; // TASK-026: 内存态评价在途信息 {evalId,taskId,sentRoute,sentRevision,noteHash,checkedAtSnapshot}。
 let pendingOpenPlan=null; // TASK-027 L02: 开放探究提交前存在偏差警告时暂存的表单内容。
 let pendingPlanBefore=null; // L06-fix: 打开警告对话框前的 plan 快照，放弃时回滚。
@@ -64,7 +64,7 @@ function render(moveFocus=false){
  refreshDocks();
  if(view==='records')main.innerHTML=recordsView(state,compareId,content);
  else if(activeTask)main.innerHTML=taskView(run,content,activeTask,run.learning.entries[activeTask]?.eval??null); // TASK-026: 第4参 evalInfo，旧渲染函数忽略不影响兼容。
- else if(run.stage===0)main.innerHTML=!replayIntro&&questProgress(run,content).allComplete?routeConfirmation(run,content):explorationScene(run,content,introRetry);
+ else if(run.stage===0)main.innerHTML=!replayIntro&&questProgress(run,content).allComplete?routeConfirmation(run,content):explorationScene(run,content,introRetry,introShowAct);
  else{main.innerHTML=stageEvidenceBanner(run,content)+renderWorkbench(run,content,selectedSample);}
  // TASK-026: 评价在途时禁用该任务提交按钮，防止双击重复评价。
  if(pendingEval&&pendingEval.taskId===activeTask){const submit=main.querySelector('.learning-form button[type="submit"]');if(submit)submit.disabled=true;}
@@ -119,9 +119,9 @@ function goStage(stage){
  if(!canVisit(state.current,stage))throw Error('请先完成前面的必要操作。');
  if(stage>state.current.stage&&Array.from({length:stage},(_,i)=>i).some(i=>!questProgress(state.current,content,i).allComplete))throw Error('请先完成前面阶段的主线探究。');
  if(stage<3&&state.current.operation==='running'){clearTimeout(runTimer);state.current.operation='mixed';log(state.current,'中断流程演练','返回上游步骤');}
- state.current.stage=stage;replayIntro=false;activeTask=null;view='workbench';if(location.hash==='#/records')location.hash='/';save();render(true);
+ state.current.stage=stage;replayIntro=false;activeTask=null;introShowAct=null;view='workbench';if(location.hash==='#/records')location.hash='/';save();render(true);
 }
-function openTask(id){if(state.current.stage===0&&!introProgress(state.current).complete)throw Error('先完成导入三步，再开始主线探究。');if(!canOpenTask(state.current,content,id))throw Error('先完成当前任务，再继续下一项。');activeTask=id;view='workbench';if(location.hash==='#/records')location.hash='/';render(true);}
+function openTask(id){if(state.current.stage===0&&!introProgress(state.current).complete)throw Error('先完成导入三步，再开始主线探究。');if(!canOpenTask(state.current,content,id))throw Error('先完成当前任务，再继续下一项。');activeTask=id;view='workbench';introShowAct=null;if(location.hash==='#/records')location.hash='/';render(true);}
 function beginQuest(){replayIntro=false;const progress=questProgress(state.current,content),active=progress.tasks.find(t=>t.id===activeTask);openTask(active&&!taskPassed(state.current,active)?active.id:progress.currentId||progress.tasks[0]?.id);}
 function requireQuests(){
  const current=state.current.stage;
@@ -196,20 +196,20 @@ main.addEventListener('input',event=>{
 function showEvidence(id=null){evidenceDialog.innerHTML=caseComparison(state.current,content,id);if(!evidenceDialog.open)evidenceDialog.showModal();}
 async function togglePaper(button){
  const sourceId=button.dataset.openPaper,panel=button.closest('.paper-view, .paper-digest')?.querySelector('.paper-panel');
- if(!panel){toast('此入口暂未提供论文 PDF 在线阅读，可尝试新标签页链接。',true);return;}
+ if(!panel){toast('此入口暂未提供论文 PDF 在线阅读。',true);return;}
  if(!panel.hidden){panel.hidden=true;button.setAttribute('aria-expanded','false');button.textContent='在线阅读论文 PDF';openPaper=null;renderTutor();return;}
  panel.hidden=false;button.setAttribute('aria-expanded','true');button.textContent='收起论文 PDF';openPaper=sourceId;renderTutor();
  const status=panel.querySelector('.paper-status'),frame=panel.querySelector('iframe');
  if(frame.src)return;
  status.hidden=false;status.className='paper-status';status.textContent='正在加载论文 PDF…';
- const slowTimer=setTimeout(()=>{status.hidden=false;status.className='paper-status';status.textContent='加载较慢；若持续无显示，请用新标签页打开 PDF。';},8000);
+ const slowTimer=setTimeout(()=>{status.hidden=false;status.className='paper-status';status.textContent='加载较慢；若持续无显示，请稍后重试。';},8000);
  try{
   const head=await fetch(`./api/paper/${sourceId}`,{method:'HEAD'});
   if(!head.ok||!(head.headers.get('Content-Type')||'').includes('application/pdf'))throw Error('unavailable');
   frame.addEventListener('load',()=>{clearTimeout(slowTimer);status.hidden=true;},{once:true});
   frame.src=`./api/paper/${sourceId}`;
  }catch{
-  clearTimeout(slowTimer);status.className='paper-status error';status.textContent='此入口暂未提供论文 PDF 在线阅读，可尝试上方新标签页链接。';
+  clearTimeout(slowTimer);status.className='paper-status error';status.textContent='此入口暂未提供论文 PDF 在线阅读。';
  }
 }
 function applyRoute(id){clearTimeout(runTimer);selectRoute(state.current,id);state.current.exploration={...(state.current.exploration||{}),revealed:true,routeChosen:true};activeTask=null;view='workbench';evidenceDialog.close();save();render(true);toast('已选择新的规划路线，请重新核对主线判断。');}
@@ -233,7 +233,7 @@ function click(event){
   const step=Number(el.dataset.act),block=step===1?content.intro.case:content.intro.chemical_limit,q=block?.question;
   if(!q)return;
   try{
-   if(el.dataset.choice===q.answer){answerIntroAct(state.current,step,el.dataset.choice,true);delete introRetry[step];}
+   if(el.dataset.choice===q.answer){answerIntroAct(state.current,step,el.dataset.choice,true);delete introRetry[step];introShowAct=step;} // TASK-031: 停在本幕显示成功反馈，进入下一幕由 intro-advance 显式推进。
    else introRetry[step]=true;
    save();render();
   }catch(error){toast(error.message,true);}
@@ -316,10 +316,11 @@ function click(event){
   return;
  }
  if(action==='compare'){showEvidence();return;}
- if(action==='begin-quest'){try{beginQuest();}catch(error){toast(error.message,true);}return;}
+ if(action==='intro-advance'){introShowAct=null;render(true);return;} // TASK-031: 回到默认当前幕（progress.step）。
+  if(action==='begin-quest'){try{beginQuest();}catch(error){toast(error.message,true);}return;}
  if(action==='stage-workspace'){replayIntro=false;activeTask=null;view='workbench';render(true);return;}
  if(action==='replay-intro'){
-  document.querySelector('#settings-dialog').close();if(state.current.stage!==0){goStage(0);}state.current.exploration={step:1,papers:[]};introRetry={};replayIntro=true;activeTask=null;view='workbench';save();
+  document.querySelector('#settings-dialog').close();if(state.current.stage!==0){goStage(0);}state.current.exploration={step:1,papers:[]};introRetry={};introShowAct=null;replayIntro=true;activeTask=null;view='workbench';save();
   // Replay is a view preference and must not clear completed answers.
   render(true);return;
  }
@@ -339,7 +340,7 @@ function click(event){
  });
 }
 document.addEventListener('click',click);
-document.querySelector('#confirm-dialog').addEventListener('close',event=>{if(event.target.returnValue!=='confirm')return;clearTimeout(runTimer);loadWarning='';state.current=freshRun();selectedSample='';activeTask=null;openPaper=null;introRetry={};view='workbench';location.hash='/';aiError.textContent='';save();render(true);toast('新实验已就绪，历史练习仍保留。');});
+document.querySelector('#confirm-dialog').addEventListener('close',event=>{if(event.target.returnValue!=='confirm')return;clearTimeout(runTimer);loadWarning='';state.current=freshRun();selectedSample='';activeTask=null;openPaper=null;introRetry={};introShowAct=null;view='workbench';location.hash='/';aiError.textContent='';save();render(true);toast('新实验已就绪，历史练习仍保留。');});
 evidenceDialog.addEventListener('close',()=>{
  renderTutor();
  // Only the intro gate needs a refresh after closing a paper dialog; never rebuild forms mid-edit.

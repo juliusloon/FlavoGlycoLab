@@ -12,7 +12,7 @@
 - [proposals/TASK-010-ljx-document-preparation.md](proposals/TASK-010-ljx-document-preparation.md)：Proposed；五项沟通问法、6/7栏底稿、站会模板，估算0.75人日，无同事交接前置。
 - [proposals/TASK-011-ljx-local-demo.md](proposals/TASK-011-ljx-local-demo.md)：Proposed；W-01/W-05及W-02/03/04局部本地演示，估算2.25人日，不部署。
 
-proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式已登记到027（LJX会后整合与逆合成评估，已完成实施）；新候选为010/011两旧候选，仍Proposed。两个旧候选编号只保留历史定位，执行时须重新连续编号；原候选007/010顺延010/011，仍按实际批准次序连续登记并同步文件名/报告名/活跃引用。候选合同可分别批准，Git同步不自动批准或执行它们。历史TASK/REPORT保留当时编号，当前入口以本索引为准。
+proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式已登记到028（绿色文字可点元素bar化，已完成实施）；新候选为010/011两旧候选，仍Proposed。两个旧候选编号只保留历史定位，执行时须重新连续编号；原候选007/010顺延010/011，仍按实际批准次序连续登记并同步文件名/报告名/活跃引用。候选合同可分别批准，Git同步不自动批准或执行它们。历史TASK/REPORT保留当时编号，当前入口以本索引为准。
 
 命名规范：TASK-NNN-short-title.md；须与docs/reports/REPORT-NNN-short-title.md完全对应编号与短名。状态：Proposed、Approved、In Progress、Completed、Partial、Blocked、Rejected、Reverted。批准后不静默扩项；必要时重新定约。TASK不是REPORT，不包含虚构的事后验收。
 模板见TEMPLATE.md，最新事实见STATE.md。
@@ -53,6 +53,16 @@ proposals是未批准候选合同，不进入已执行TASK/REPORT配对。正式
 
 - [TASK-025-lyw-handoff-data-query.md](TASK-025-lyw-handoff-data-query.md)：Completed，human_direct；接办LYW 10-22三交件（v2科学24步、评价说明、B2执行版），新增只读数据查询页（21条文献报告值）、按本机Qwen实况更新AI标识，并按v2重算24步13/9/2状态；三状态门不晋级。
 
-- [TASK-026-tutor-swarms-loop-ui-reset-fix.md](TASK-026-tutor-swarms-loop-ui-reset-fix.md)：实施与验收事实见REPORT-026/STATE；导师多角色评价、文献参考分析台、两区布局/论文解读及同阶段重置修复；本地改动未提交同步。
+- [TASK-026-tutor-swarms-loop-ui-reset-fix.md](TASK-026-tutor-swarms-loop-ui-reset-fix.md)：实施与验收事实见REPORT-026/STATE；导师多角色评价、文献参考分析台、两区布局/论文解读及同阶段重置修复；本地改动已随2026-10-23同步提交入库。
 
-- [TASK-027-ljx-meeting-integration.md](TASK-027-ljx-meeting-integration.md)：Completed，human_direct；依据10-22会议提炼完成LJX系统整合、先学后做/两阶段状态、AI定性结果解析与逆合成可行性评估（结论=受限，仅静态教学引入）；171格走查、L06修复四缺陷、21条数据对账✓17/⚠4、保护169/169，工程验收见REPORT-027；三状态门不晋级，未提交同步。
+- [TASK-027-ljx-meeting-integration.md](TASK-027-ljx-meeting-integration.md)：Completed，human_direct；依据10-22会议提炼完成LJX系统整合、先学后做/两阶段状态、AI定性结果解析与逆合成可行性评估（结论=受限，仅静态教学引入）；171格走查、L06修复四缺陷、21条数据对账✓17/⚠4、保护169/169，工程验收见REPORT-027；三状态门不晋级，已随2026-10-23同步提交入库。
+
+- [TASK-028-green-text-clickable-bars.md](TASK-028-green-text-clickable-bars.md)：Completed，human_direct；站内绿色系文字可点元素获得非颜色持久提示——5处绿色/深绿summary折叠行改整行可点击bar（▸展开/收起旋转）、DOI/ChEBI外链改链接条+↗、导航与正文链接加下划线；纯CSS追加（styles.css +14、case-page.css +3），644+68浏览器项、专项探针与保护170/170全过，见REPORT-028；三状态门不晋级，已随2026-10-23同步提交入库。
+
+- [TASK-032-paper-pdf-online-reading.md](TASK-032-paper-pdf-online-reading.md)：Completed（2026-10-23联合验收补跑通过），human_direct；论文卡"在线阅读论文 PDF"可用性落地——根因=8766旧进程无/api/paper（404），2026-10-23 15:35 CST预检后重启、端点200与%PDF-实测；研究对话框删除所有者点名两句（"新标签页打开 PDF"链接与"PDF 按所有者指定公开（TASK-008 例外）…请勿二次分发。"），app.js三条消息中性化＋test_inquiry_browser四处守卫同步；npm 69/69、保护170/170；联合全量验收已于2026-10-23补跑通过（dev.py check全绿、npm 69/69、test:browser 975/975、test:data-browser 68/68）；多会话撞号029→032见合同；三状态门不晋级，已随2026-10-23同步提交入库。
+
+- [TASK-029-compare-tabs-side-by-side-only.md](TASK-029-compare-tabs-side-by-side-only.md)：Completed，human_direct（两轮指令）；论文对照弹窗移除单路线页签仅留「并排对照/结论与反思」，并排视图改对齐矩阵（五字段＋原文位置最左标签列，三篇内容/要点/在线阅读按钮/PDF面板/选择路线各自成行对齐）；过程编号曾让位 TASK-030 后经所有者确认回归 029；975+68 浏览器项全过，见 REPORT-029；三状态门不晋级，已随2026-10-23同步提交入库。
+
+- [TASK-031-intro-single-act-two-zone.md](TASK-031-intro-single-act-two-zone.md)：Completed，human_direct；导入三幕改单幕两区顺序呈现（任一时刻仅当前幕：左叙事/分子/论文卡 + 右问题或门禁，答对显示反馈＋intro-advance 显式推进，删除 act-locked 占位，lab-state 状态机零改动）；原会话暂停期间由 TASK-029 会话代登记，恢复后自验收口：dev.py check 全绿、npm 69/69、test:browser 975/975、test:data-browser 68/68、保护 170/170，见 REPORT-031。
+
+- [TASK-030-number-transition-registry.md](TASK-030-number-transition-registry.md)：Completed（过渡登记），human_direct；对照弹窗任务临时占用 030 后回归 029，按治理编号连续性要求以本登记对补齐空号；无任何代码/内容改动，见 REPORT-030。
