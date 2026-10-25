@@ -1,7 +1,7 @@
 # TASK-057：三项Web改进与管理归并的Git同步
 
 ## 合同元数据
-- 任务ID：TASK-057；状态：In Progress（2026-10-25）。
+- 任务ID：TASK-057；状态：Completed（2026-10-25，Git同步验收，CI状态见报告）。
 - 基线：main / 92fe3f8；人工负责人：项目所有者；执行者：Cano。
 - 授权来源：human_direct，所有者在三项归并完成后明确要求“git 同步”。授权提交并普通推送当前已完成的039—056源码/资产/测试/文档，057仅为交付记录，不增加第四个Web改进主题。
 - 修改预算：本TASK/REPORT、docs/tasks/README.md、docs/reports/README.md、STATE.md、PROGRESS.md；允许为既有044三幅已授权原图及024已公开路线PNG补齐scripts/export_public_repository.py精确路径/SHA兼容及tests/test_governance.py对应守卫。不修改产品功能、CI或原件。既有待同步路径事前清单为temp/task-057/approved-payload.json；验证/干净检出/日志限temp/task-057/，不入Git。
@@ -20,10 +20,10 @@
 不实施036提案，不新增科学数据、模型、真实观测或教师结论；不提交其余raw/derived/private、研究包、密钥、temp或旧研究归档分支。不强推/重写历史、不改常驻服务/网络/防火墙，不提升研究、教师或公众发布三个门。
 
 ## 必须执行与验收标准
-- [ ] 事前路径清单/公开内容守卫通过；仅三幅已授权PNG、已公开的024路线PNG及原PDF等既有精确例外，不新增公开范围。
-- [ ] 原源码/来源/已完成合同报告的SHA不变（仅上述治理及必要导出兼容为允许修改）；public工作树及项目内干净检出检查通过。
-- [ ] 普通提交并推送public/main，本地/远端SHA一致，工作树无本次遗漏；CI以实际查询结果记录。
-- [ ] REPORT记真实分母、失败/偏差、提交/CI与限制；STATE/PROGRESS只更新当前事实与里程碑，三项主题仍为054—056。
+- [x] 事前路径清单/公开内容守卫通过；仅三幅已授权PNG、已公开的024路线PNG及原PDF等既有精确例外，不新增公开范围。
+- [x] 原源码/来源/已完成合同报告的SHA不变（仅上述治理及必要导出兼容为允许修改）；public工作树及项目内干净检出检查通过。
+- [x] 普通提交并推送public/main，本地/远端SHA一致，工作树无本次遗漏；CI以实际查询结果记录。
+- [x] REPORT记真实分母、失败/偏差、提交/CI与限制；STATE/PROGRESS只更新当前事实与里程碑，三项主题仍为054—056。
 
 ## 验证
 `python3 scripts/dev.py check`（public，使用已有Node22）、`git diff --cached --check`、公开路径/内容守卫、项目内detached干净检出、`git ls-remote public refs/heads/main`及`gh run view`。浏览器原回归引用053；不调用真实模型。

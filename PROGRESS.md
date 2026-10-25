@@ -12,6 +12,8 @@
 
 覆盖2026-10-24—25的17项执行记录，完整编号映射与原件见[任务索引](docs/tasks/README.md#原任务对应表)。原报告保留历史验证和失败，里程碑不再逐项堆叠重复验收数字。
 
+2026-10-25交付：三项Web改进及管理归并已随227523e同步public/main；工作树/干净检出与326文件公开核验通过，CI及同步事实见[REPORT-057](docs/reports/REPORT-057-web-improvements-git-sync.md)。
+
 ## 更早里程碑
 
 | 阶段 | 已完成的工程/文档成果 | 证据入口 |
@@ -30,6 +32,5 @@
 | 定量仿真与结果 | 缺可准入的原始测量链，真实观测为空 | 核验标准曲线、原始测量、条件与使用权限，再另立实施TASK；[数据缺口](docs/p10ns/261019/data_gap_list.md) |
 | 正式课程、量规与评分 | 过程交互已实现，教师验收未完成 | 教师审定课程/量规，按[验收标准](docs/acceptance-criteria.md)独立验收 |
 | 权限与公众发布 | 师生账号/正式权限未实现，public_teaching_release=not_started | 单独授权发布TASK，完成许可、权限、安全与平台验收；通行入口按ADR0010复审 |
-| 当前工作树交付 | 039—056按[TASK-057](docs/tasks/TASK-057-web-improvements-git-sync.md)同步中，结果见[REPORT-057](docs/reports/REPORT-057-web-improvements-git-sync.md) | 在单独授权的同步任务中审查载荷、提交并核对CI |
 
 下一步只列条件，不自动执行。交接与校内节点仍由[执行方案](docs/p10ns/261019/申报阶段分工与执行方案_20261019-1026.md)和[交接唯一记录](docs/p10ns/261019/handoff_acceptance.md)维护。

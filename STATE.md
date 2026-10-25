@@ -25,13 +25,14 @@
 | 答题通行入口 | admin7逐题标记admin_override，不走AI评价、不生成独立判断；不是教师批准或正式评分，正式权限/发布须按[ADR0010](docs/adr/0010-answer-passphrase-workflow.md)复审 |
 | 分子与阅读 | 五类分子为计算结构，EMIQ仅Q3M代表组分；三篇原PDF只读，笔记只属学生自述；图文/分子/AI反馈仍待专业审核 |
 | 逆合成 | [REPORT-035](docs/reports/REPORT-035-isoquercitrin-retro-handoff.md)仅接收计算来源并校验/保存/导出；动态搜索/仿真未部署；[TASK-036](docs/tasks/proposals/TASK-036-isoquercitrin-coupled-enzyme-evidence-plan.md)为未执行提案 |
-| Git | main / 92fe3f8；037相关功能随976dfdd同步，038以92fe3f8收尾。039—056正在按[TASK-057](docs/tasks/TASK-057-web-improvements-git-sync.md)检查并同步，结果见[REPORT-057](docs/reports/REPORT-057-web-improvements-git-sync.md)；尚未推送 |
-| CI | [REPORT-038](docs/reports/REPORT-038-normalization-git-sync.md)当时确认三平台public-check通过、browser尚在安装依赖；本轮未查询远端或触发新CI，不将旧CI当作当前工作树验收 |
+| Git | main → public/main；039—056及057导出兼容随227523e提交并推送，远端SHA已核对；本次文档收尾提交由Git日志定位，见[REPORT-057](docs/reports/REPORT-057-web-improvements-git-sync.md) |
+| CI | [功能提交227523e的CI](https://github.com/juliusloon/FlavoGlycoLab/actions/runs/40169280889)四项全部通过（Ubuntu/Windows/macOS public-check及browser）；后续文档提交如触发新CI，状态以Actions为准 |
 
 ## 工程验证
 
 | 验证层 | 最新证据及限制 |
 | --- | --- |
+| 本次Git同步 | 工作树与227523e干净检出均Python79（76通过/3显式research跳过）及Node87/87；全树326/326路径/内容守卫、244/244保护SHA、实际快照导出通过；见[REPORT-057](docs/reports/REPORT-057-web-improvements-git-sync.md) |
 | 本轮文档整理 | public工程检查通过：Python78（75通过/3显式research跳过）、Node87/87；17/17映射、307/307链接、298/298保护SHA通过，见[REPORT-056](docs/reports/REPORT-056-web-reliability-management-consolidation.md) |
 | 最近完整Web回归 | [REPORT-053](docs/reports/REPORT-053-experience-report-reliability.md)：Python78（75通过/3显式research跳过）、Node87/87、工作台1702/1702、跨页692/692、异步专项31/31、8766交互36/36；363保护文件SHA不变、11/11相关资产一致 |
 | 阅读/分子专项 | [REPORT-055](docs/reports/REPORT-055-web-reading-molecule-consolidation.md)汇总原图113、笔记本419、便签94及五分子154等原验收；分母有重叠，不合计为新增测试 |
