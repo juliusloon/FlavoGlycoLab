@@ -37,11 +37,8 @@ try {
 
   main.innerHTML = `${returnControl()}
     <header class="data-hero">
-      <p class="hero-kicker">${e(data.kicker)} · 截至 ${e(data.as_of)}</p>
       <h1>${e(data.title)}</h1>
-      <p class="hero-lead">${e(data.lead)}</p>
       <div class="badge-row">
-        <span class="badge review">全部记录待教师审定</span>
         <span class="badge neutral">${data.records.length} 条已登记报告记录</span>
         <span class="badge source">原文报告 · 非本次观测</span>
       </div>
@@ -51,8 +48,7 @@ try {
     <section class="query-panel" aria-labelledby="query-title">
       <div class="query-heading">
         <div>
-          <p class="section-kicker">检索</p>
-          <h2 id="query-title">按路线、来源或关键词查</h2>
+          <h2 id="query-title">筛选文献记录</h2>
         </div>
         <button class="text-button" type="button" data-clear>清除筛选</button>
       </div>
@@ -89,23 +85,21 @@ try {
 
     <section id="data-results" class="data-results" aria-label="查询结果"></section>
 
-    <section class="source-panel" aria-labelledby="source-title">
-      <p class="section-kicker">来源</p>
-      <h2 id="source-title">三篇论文的登记状态</h2>
+    <details class="source-panel" id="source-details">
+      <summary id="source-title">数据来源与审定状态</summary>
       <div class="source-grid">
         ${usedSourceIds.map((id) => {
           const source = sources.find((item) => item.source_id === id);
           return `<article class="source-card">
             <h3>${e(source?.label || id)}</h3>
-            <p class="source-id">${e(id)} · DOI ${e(source?.doi || '未登记')}</p>
+            <p class="source-id">DOI ${e(source?.doi || '未登记')}</p>
             <p>${e(source?.source_locator || '原文定位待登记')}</p>
             <p class="source-boundary">${e(source?.license_status || '许可状态待核')}</p>
-            <p class="source-review">待教师审定 · 摘录核对不等于独立实验验证</p>
+            <p class="source-review">待教师审定</p>
           </article>`;
         }).join('')}
       </div>
-      <p class="fine-print">本页不加载论文原文、不调用 AI、不读取学习记录；所有结果只来自同源内容文件。来源许可与再分发状态以登记为准。</p>
-    </section>`;
+    </details>`;
 
   const results = main.querySelector('#data-results');
   const count = main.querySelector('#result-count');
@@ -141,8 +135,7 @@ try {
         <div><dt>使用边界</dt><dd>${e(record.boundary)}</dd></div>
       </dl>
       <footer class="record-foot">
-        <span>${e(sourceLabel(record.source_id))} · ${e(record.source_id)}</span>
-        <span class="review-flag">待教师审定</span>
+        <span>${e(sourceLabel(record.source_id))}</span>
       </footer>
     </article>`;
   }
@@ -157,7 +150,6 @@ try {
       results.innerHTML = `<div class="record-grid">${matched.map(recordCard).join('')}</div>`;
     } else {
       results.innerHTML = `<div class="empty-results" role="status">
-        <p class="empty-kicker">0 条匹配</p>
         <h2>${e(data.empty_state.title)}</h2>
         <p>${e(data.empty_state.body)}</p>
         <p class="empty-hint">${e(data.empty_state.hint)}</p>

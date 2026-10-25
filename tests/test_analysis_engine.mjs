@@ -54,3 +54,14 @@ test('compute evaluates all eight whitelist calculations from reported record va
 test('GAP_OPTIONS stays the fixed five-item gap list', () => {
   assert.deepEqual(GAP_OPTIONS, ['缺标准曲线/校准链', '缺原始峰表或图谱积分', '缺重复测量值', '缺本方案实测数据', '其他']);
 });
+
+test('method card values supply reaction conditions without donor or quench contamination',()=>{
+  const r1=comparePlanToRecord({temperature:'35',ph:'7.5',concentration:'1.25',duration:'30'},byId['DQ-R1-01']);
+  assert.ok(r1.fields.every(f=>f.status==='✔'));
+  const r2=comparePlanToRecord({temperature:'55',ph:'6.5',concentration:'20',duration:'60'},byId['DQ-R2-01']);
+  assert.deepEqual(r2.fields.map(f=>f.refValue),[55,6.5,20,null]);
+  const donor=comparePlanToRecord({concentration:'1.25',duration:'30'},byId['DQ-R1-02']);
+  assert.equal(donor.fields.find(f=>f.key==='concentration').refValue,null);
+  assert.equal(donor.fields.find(f=>f.key==='duration').refValue,null);
+  assert.deepEqual(extractConditions('100 °C 加热 30 min 终止；UDP 0.25 mM').parsed,{temperature_c:null,ph:null,substrate_mm:null,duration_min:null});
+});

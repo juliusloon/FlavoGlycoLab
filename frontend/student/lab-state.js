@@ -1,5 +1,5 @@
 import {validImportRecord} from './retro-import.js';
-import { freshLearning, resetLearning, hydrateLearning, learningMarkdown, hasTutorInteraction } from './learning-state.js';
+import { freshLearning, resetLearning, hydrateLearning, learningMarkdown, hasTutorInteraction, validAnswer } from './learning-state.js';
 import { routeLearningGate } from './quest-state.js';
 export const STORAGE_KEY = 'flavoglycolab.workbench.v1';
 export const STAGES = ['案例与路线','配置反应体系','设定实验方案','操作与取样','查看分析结果','结论与反思'];
@@ -17,13 +17,14 @@ export const copy = value => JSON.parse(JSON.stringify(value));
 // TASK-027 L02 两阶段：参照练习（guided）与开放探究（open）。revision 复用既有 contextRevision。
 export const STAGE_MODES = ['guided','open'];
 export const PARAM_LABELS = {volume:'反应体积',concentration:'底物浓度',temperature:'计划温度',ph:'计划pH',duration:'计划时长',samples:'取样时点',control:'对照方案',hypothesis:'假设'};
+export const ACTIVITY_FIELDS={ugtActivity:'UGT',susActivity:'GmSUS',enzymeActivity:'α-L-鼠李糖苷酶'};
 // TASK-026: 结果分析台预留状态；分析结果依赖方案/材料，下游失效时一并重置。
 export function freshAnalysis(){return {refRecords:[],comparisons:null,calculations:[],gaps:[],boundaryNote:'',boundaryDone:false};}
 export function freshRun(){
   return {id:globalThis.crypto?.randomUUID?.() || `run-${Date.now()}-${Math.random().toString(36).slice(2)}`,stage:0,route:'R1',reason:'',routeConfirmed:false,materials:{},assemblyConfirmed:false,
-    plan:{volume:'',concentration:'',temperature:'',ph:'',duration:'',samples:'',control:'',hypothesis:''},planConfirmed:false,
+    plan:{volume:'',concentration:'',temperature:'',ph:'',duration:'',samples:'',control:'',hypothesis:'',ugtActivity:'',susActivity:'',enzymeActivity:''},planConfirmed:false,
     operation:'idle',samples:[],analysis:freshAnalysis(),analysisReviewed:false,reflection:{conclusion:'',limitation:'',next:''},completed:false,events:[],chat:[],learning:freshLearning(),aiRequested:false,contextRevision:0,
-    stageMode:'guided',guidedDone:{}};
+    stageMode:'guided',guidedDone:{},paperNotes:{}};
 }
 export function freshState(){return {version:1,current:freshRun(),records:[],updatedAt:null};}
 export function log(run,action,detail=''){run.events.push({at:new Date().toISOString(),action,detail});run.events=run.events.slice(-200);}
@@ -42,7 +43,7 @@ export function selectRoute(run,id){
   if(id!==run.route){clearDownstream(run,0);run.plan=freshRun().plan;run.reason='';run.route=id;run.stage=0;run.chat=[];run.stageMode='guided';log(run,'更换路线',id);}
 }
 export function confirmRoute(run,reason){
-  if(typeof reason!=='string'||reason.trim().length<8)throw Error('请至少用8个字说明你的路线选择依据。');
+  if(!validAnswer(reason))throw Error('请至少用8个字说明你的路线选择依据。');
   if(run.routeConfirmed && run.reason!==reason.trim())clearDownstream(run,0,1);
   run.reason=reason.trim().slice(0,2000);run.routeConfirmed=true;run.stage=1;log(run,'确认路线',`${run.route}：${run.reason}`);
 }
@@ -64,12 +65,16 @@ export function confirmAssembly(run){
 }
 export function sampleTimes(plan){return String(plan.samples).split(/[,，\s]+/).filter(Boolean).map(Number);}
 export function validatePlan(plan){
+  for(const key of Object.keys(ACTIVITY_FIELDS)){
+    const value=plan[key]??'';
+    if(typeof value!=='string'||(value.trim()!==''&&(!Number.isFinite(Number(value))||Number(value)<=0||Number(value)>1e9)))return `${ACTIVITY_FIELDS[key]}酶活性浓度须为正数，单位mU/mL；不明确时可留空。`;
+  }
   const fields=[['volume','反应体积',0,10000],['concentration','底物浓度',0,100000],['temperature','计划温度',-20,150],['ph','计划pH',0,14],['duration','计划时长',0,10080]];
   for(const [k,label,min,max] of fields){const n=Number(plan[k]);if(String(plan[k]).trim()===''||!Number.isFinite(n)||n<min||n>max||(['volume','concentration','duration'].includes(k)&&n===0))return `${label}输入无效。请填写合理格式的数值（仅检查输入，不判断化学适用性）。`;}
   const times=sampleTimes(plan);
   if(!times.length||times.length>8||times.some((t,i)=>!Number.isFinite(t)||t<0||t>Number(plan.duration)||(i>0&&t<=times[i-1])))return '请输入1—8个递增且不超过计划时长的取样时点，用逗号分隔。';
   if(!['negative','blank','both'].includes(plan.control))return '请选择对照方案。';
-  if(typeof plan.hypothesis!=='string'||plan.hypothesis.trim().length<8)return '请至少用8个字写出可检验假设。';
+  if(!validAnswer(plan.hypothesis))return '请至少用8个字写出可检验假设。';
   return null;
 }
 export function confirmPlan(run,plan,content=null){
@@ -164,7 +169,7 @@ export function introProgress(run){
   return{step:1,act1:null,act2:null,papers:[],complete:false};
  }
  const papers=Array.isArray(ex.papers)?ex.papers.filter(id=>RECIPES[id]):[];
- return{step:ex.step,act1:ex.act1??null,act2:ex.act2??null,papers,complete:ex.step===3&&papers.length>=1};
+ return{step:ex.step,act1:ex.act1??null,act2:ex.act2??null,papers,complete:ex.step===3};
 }
 export function answerIntroAct(run,step,choiceId,correct){
  const progress=introProgress(run);
@@ -183,7 +188,7 @@ export function recordIntroPaper(run,routeId){
 }
 export function completeRun(state,reflection){
   const run=state.current;if(!run.analysisReviewed)throw Error('请先检查分析数据状态。');
-  for(const k of ['conclusion','limitation','next'])if(typeof reflection[k]!=='string'||reflection[k].trim().length<8)throw Error('请分别填写结论、证据局限和下一步，每项至少8个字。');
+  for(const k of ['conclusion','limitation','next'])if(!validAnswer(reflection[k]))throw Error('请分别填写结论、证据局限和下一步，每项至少8个字。');
   run.reflection=copy(reflection);run.completed=true;log(run,'保存练习记录','未生成真实观测或成绩。');
   const snapshot={...copy(run),id:`${run.id}-v${Date.now().toString(36)}`,runId:run.id,savedAt:new Date().toISOString(),quantitative_result:null,teacher_approved:false};
   state.records=[snapshot,...state.records].slice(0,12);return snapshot;
@@ -193,6 +198,7 @@ export function hydrate(text){
   if(s?.version!==1||!s.current||!Array.isArray(s.records)||s.records.length>12)throw Error('记录版本不支持');
   for(const r of [s.current,...s.records]){
     if(!RECIPES[r.route]||!Number.isInteger(r.stage)||r.stage<0||r.stage>5||typeof r.reason!=='string'||!r.plan||!r.materials||!r.reflection||!Array.isArray(r.samples)||!Array.isArray(r.events)||!Array.isArray(r.chat))throw Error('记录损坏');
+    for(const key of Object.keys(ACTIVITY_FIELDS))if(r.plan[key]===undefined)r.plan[key]='';
     if(typeof r.id!=='string'||r.reason.length>2000||Object.keys(freshRun().plan).some(k=>typeof r.plan[k]!=='string'||r.plan[k].length>2000)||['conclusion','limitation','next'].some(k=>typeof r.reflection[k]!=='string'||r.reflection[k].length>2000)||r.events.length>200||r.events.some(x=>!x||typeof x.at!=='string'||typeof x.action!=='string'||typeof x.detail!=='string')||r.chat.some(x=>!x||!['user','assistant'].includes(x.role)||typeof x.content!=='string'))throw Error('记录字段无效');
     if(r.assemblyConfirmed&&(!r.routeConfirmed||!Object.keys(MATERIALS).every(k=>r.materials[k]===RECIPES[r.route][k])))throw Error('装配顺序无效');
     if(r.planConfirmed&&!r.assemblyConfirmed)throw Error('条件顺序无效');
@@ -204,6 +210,8 @@ export function hydrate(text){
     if(!canVisit(r,r.stage))throw Error('步骤顺序无效');
     if(r.operation==='running'){r.operation='mixed';log(r,'刷新中断演练','请重新启动，不推断已完成。');}
     if(r.retroImport!==undefined&&!validImportRecord(r.retroImport))throw Error('逆合成来源记录无效');
+    if(r.paperNotes===undefined)r.paperNotes={};
+    if(!r.paperNotes||typeof r.paperNotes!=='object'||Array.isArray(r.paperNotes)||Object.entries(r.paperNotes).some(([id,note])=>!['Pei2019','Zhang2015','Niu2024'].includes(id)||typeof note!=='string'||note.length>8000))throw Error('论文笔记无效');
     r.chat=r.chat.slice(-30);
     r.learning=hydrateLearning(r.learning);
     if(!r.analysis||typeof r.analysis!=='object'||Array.isArray(r.analysis))r.analysis=freshAnalysis(); // TASK-026: 旧存档补默认分析状态。
@@ -231,5 +239,5 @@ export function hydrate(text){
 }
 export function exportPayload(state){return {schema:'flavoglycolab.practice.v1',exportedAt:new Date().toISOString(),kind:'student_process_practice',observations:[],quantitative_result:null,teacher_approved:false,current:copy(state.current),records:copy(state.records)};}
 export function markdownRecord(run){
-  return `# 异槲皮苷实验练习记录\n\n记录：${run.id}\n\n路线：${run.route}\n\n独立依据：${run.reason}\n\n## 学生设计条件（非已测/推荐值）\n\n${Object.entries(run.plan).map(([k,v])=>`- ${k}: ${v}`).join('\n')}\n\n## 操作\n\n${run.events.map(e=>`- ${e.at} ${e.action} ${e.detail}`).join('\n')}\n\n## 分析结果\n\n无对应实验数据。observations=[]；quantitative_result=null；teacher_approved=false。\n\n${run.retroImport?`## 逆合成计算来源\n\n${run.retroImport.packet.selection.source_id} · ${run.retroImport.packet.selection.doi}\n\n计算候选，未独立复算；无实验观测。\n\n运行索引：${run.retroImport.packet.run.id}\n\n`:""}${learningMarkdown(run)}\n## 学生结论\n\n${run.reflection.conclusion}\n\n证据局限：${run.reflection.limitation}\n\n下一步：${run.reflection.next}\n\n## AI 辅导记录\n\n${run.chat.map(m=>`${m.role==='user'?'学生':m.mode==='model'?'模型':'系统'}：${m.content}`).join('\n\n')}\n`;
+  return `# 异槲皮苷实验练习记录\n\n记录：${run.id}\n\n路线：${run.route}\n\n独立依据：${run.reason}\n\n## 学生设计条件（非已测/推荐值）\n\n${Object.entries(run.plan).map(([k,v])=>`- ${k}: ${v}`).join('\n')}\n\n## 操作\n\n${run.events.map(e=>`- ${e.at} ${e.action} ${e.detail}`).join('\n')}\n\n## 分析结果\n\n无对应实验数据。observations=[]；quantitative_result=null；teacher_approved=false。\n\n${run.retroImport?`## 逆合成计算来源\n\n${run.retroImport.packet.selection.source_id} · ${run.retroImport.packet.selection.doi}\n\n计算候选，未独立复算；无实验观测。\n\n运行索引：${run.retroImport.packet.run.id}\n\n`:""}${learningMarkdown(run)}\n## 论文阅读笔记（学生自述）\n\n${Object.entries(run.paperNotes||{}).map(([id,note])=>`### ${id}\n\n${note}`).join('\n\n')}\n\n## 学生结论\n\n${run.reflection.conclusion}\n\n证据局限：${run.reflection.limitation}\n\n下一步：${run.reflection.next}\n\n## AI 辅导记录\n\n${run.chat.map(m=>`${m.role==='user'?'学生':m.mode==='model'?'模型':'系统'}：${m.content}`).join('\n\n')}\n`;
 }

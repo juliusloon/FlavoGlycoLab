@@ -25,3 +25,18 @@ SDF由本机RDKit对来源SMILES执行 `AddHs → ETKDGv3(randomSeed=20261021) �
 `mountMolecule(element, {reducedMotion})` 在已有尺寸的元素中挂载，返回 `destroy()`、`reset()`、`setStyle('ball-stick'|'stick'|'sphere'|'2d')`、`highlight('sugar'|'aglycone'|'linkage'|null)`；异步返回的 `data` 包含来源与SMILES。页面切换必须调用 `destroy()` 释放GPU资源。
 
 默认不自动旋转；鼠标拖动/滚轮及方向键/加减键/Home可以旋转、缩放和复位。屏幕阅读器保留结构描述。主体界面应在来源面板明确显示“计算构象 · 待教师审定”，并保留本来源/许可入口。
+
+## TASK-052：五类身份切换（2026-10-25）
+
+`mountMolecule(element, {moleculeId, reducedMotion})`新增固定白名单，默认仍为isoquercitrin。任务02按钮顺序为isoquercitrin、rutin、quercetin、emiq-example、spiraeoside；每次切换回收前一viewer，异步旧挂载不得覆盖新选择，二维降级与来源/SMILES均跟随当前身份。计算结构均pending_teacher_review，不是实验构象。
+
+| 资产 | 来源与定位 | 结构校验 |
+| --- | --- | --- |
+| quercetin | [ChEBI:16243](https://www.ebi.ac.uk/chebi/CHEBI:16243)，API default_structure.smiles | C15H10O7；22重原子；REFJWTPEDVJJIY-UHFFFAOYSA-N |
+| rutin | [ChEBI:28527](https://www.ebi.ac.uk/chebi/CHEBI:28527)，同字段 | C27H30O16；43重原子；IKGXIBQEEMLURG-NVPNHPEKSA-N |
+| spiraeoside | [ChEBI:75839](https://www.ebi.ac.uk/chebi/CHEBI:75839)，同字段 | C21H20O12；33重原子；OIUBYZLTFSLSBY-HMGRVEAOSA-N |
+| emiq-example | [Makino et al. 2009](https://doi.org/10.1248/bpb.32.2034)，p.2035，Fig.1化合物3（Q3M）、4（EMIQ）及Chemicals段 | 手工编码一个α-(1→4)葡萄糖延伸代表Q3M；C27H30O17；44重原子；UTECWQIXBMWRRR-XDVLAUTQSA-N |
+
+三个新增ChEBI结构按CC BY 4.0署名ChEBI / EMBL-EBI，原响应SHA各自保存于JSON。EMIQ代表的结构事实根据图1手工编码：在原异槲皮苷葡萄糖O4接入一个α-D葡萄糖基，保留β连接及其余立体中心；JSON登记论文PDF指纹、定位、原异槲皮苷资产指纹与推导方法。**未复制/分发论文原文或图片**，不声称第三方论文属于CC BY 4.0。手工编码的Q3M另经PubChem精确InChIKey查询命中[CID10304622](https://pubchem.ncbi.nlm.nih.gov/compound/10304622)，分子式与立体SMILES经RDKit标准化均相符；交叉响应SHA保存在emiq-example.json。EMIQ为混合物，当前代表不提供平均分子式、组分比例、纯度或完整产品结构。
+
+四项新资产使用RDKit 2026.09.1，ETKDGv3种子20261025、MMFF94最多2000步优化，全部收敛；SDF重读InChIKey与生成前一致。原有异槲皮苷JSON/SVG字节保持不变。来源响应、手工编码生成脚本、论文定位图及核验保存在本轮本地QA目录，不是运行依赖。运行只依赖本目录JSON/SVG与既有本地3Dmol库。

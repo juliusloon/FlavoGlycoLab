@@ -16,3 +16,7 @@ ADR回答为什么长期采用某项结构或数据语义决策，不替代TASK�
 - [0006-collaboration-data-profiles.md](0006-collaboration-data-profiles.md)：默认公开开发配置、显式研究模式及离线研究包。
 
 - [ADR0008：独立页面地址与共享界面组件](0008-page-navigation-component-system.md)：原生hash子页面、访问/续接、统一token与组件唯一责任。
+
+- [ADR0009：论文笔记本与学生阅读笔记](0009-paper-notebook-student-notes.md)：四便签原生阅读浮窗、run内学生笔记、导入不再以论文点击计数解锁。
+
+- [ADR0010：答题通行词的流程语义](0010-answer-passphrase-workflow.md)：admin7逐题放行，独立标记admin_override，保留流程/科学审核边界。

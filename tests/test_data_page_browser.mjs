@@ -39,9 +39,17 @@ for (const [width, height] of [[1536, 1024], [768, 1024], [375, 812]]) {
   check(`${width}: 21 registered records render`, await page.locator('#data-results .data-record').count() === 21);
   check(`${width}: page identity`, (await page.title()).includes('数据查询'));
   check(`${width}: boundary calls out non-live and non-observation`, (await page.locator('.data-boundary').textContent()).includes('不是实时文献库') && (await page.locator('.data-boundary').textContent()).includes('不是本次实验测量'));
-  check(`${width}: every card is labelled original report and pending review`,
+  check(`${width}: report labels stay visible without repeated review badges`,
     await page.locator('#data-results .data-record .badge.report').count() === 21 &&
-    await page.locator('#data-results .review-flag').count() === 21);
+    await page.locator('#data-results .review-flag').count() === 0);
+  const sourceDetails = page.locator('#source-details');
+  check(`${width}: source and review details start collapsed`, !(await sourceDetails.evaluate(el => el.open)));
+  await sourceDetails.locator('summary').click();
+  check(`${width}: source details remain available on demand`,
+    await sourceDetails.locator('.source-card').count() === 3 &&
+    (await sourceDetails.innerText()).includes('待教师审定'));
+  await sourceDetails.locator('summary').click();
+  await page.evaluate(() => scrollTo(0, 0));
   check(`${width}: source locations are visible`, await page.locator('#data-results .data-record').first().locator('dt', { hasText: '原文定位' }).count() === 1);
   await noOverflow(page, `${width}: data page has no horizontal overflow`);
   await page.screenshot({ path: path.join(out, `data-query-${width}.png`), fullPage: false, animations: 'disabled' });
@@ -76,11 +84,11 @@ for (const [width, height] of [[1536, 1024], [768, 1024], [375, 812]]) {
   await page.goto(pageUrl('index.html'));
   await page.waitForFunction(() => /实时辅导|尚未配置|连接不可用/.test(document.querySelector('#ai-status')?.textContent || ''));
   const aiText = await page.locator('#ai-status').textContent();
-  const badge = await page.locator('#ai-mode-badge').textContent();
+  const badgeCount = await page.locator('#ai-mode-badge').count();
   check(`${width}: AI status follows runtime configuration`, /实时辅导|尚未配置|连接不可用/.test(aiText));
-  check(`${width}: fixed badge says local demo, not formal platform`, badge === '本机演示 · 未接入正式平台');
+  check(`${width}: tutor omits the removed demo badge`, badgeCount === 0);
   check(`${width}: page never claims an unconnected model when configured`, !aiText.includes('未连接实时大模型'));
-  if (aiText.includes('实时辅导')) check(`${width}: configured state keeps the local-demo boundary`, aiText.includes('未接入正式平台'));
+  if (aiText.includes('实时辅导')) check(`${width}: configured state shows the concise model label`, aiText === 'Qwen · 实时辅导');
   await context.close();
 }
 

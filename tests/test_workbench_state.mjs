@@ -188,7 +188,7 @@ test('fresh run starts the intro at step one and completes it only through order
   assert.throws(()=>L.answerIntroAct(r,1,'a',true));
   L.answerIntroAct(r,2,'b',true);
   p=L.introProgress(r);
-  assert.equal(p.step,3);assert.equal(p.act2,'b');assert.equal(p.complete,false);
+  assert.equal(p.step,3);assert.equal(p.act2,'b');assert.equal(p.complete,true);assert.deepEqual(p.papers,[]);
   assert.equal(r.exploration.revealed,true);
   L.recordIntroPaper(r,'R1');L.recordIntroPaper(r,'R1');
   p=L.introProgress(r);
@@ -369,4 +369,43 @@ test('TASK-035: imported computation survives export and reload without advancin
  assert.equal(L.exportPayload(restored).current.retroImport.packet.selection.source_id,'Pei2019');
  restored.current.retroImport.packet.teacher_approved=true;
  assert.throws(()=>L.hydrate(JSON.stringify(restored)),/逆合成来源记录无效/);
+});
+
+// TASK-047: reading is optional; notes are student input, never observations or task completion.
+test('paper notes survive reload/export/history and stay isolated from task progress and new runs',()=>{
+ const s=L.freshState(),note='比较底物与供体，继续核对原文证据。<script>不要执行</script>';
+ s.current.paperNotes.Pei2019=note;
+ const restored=L.hydrate(JSON.stringify(s));
+ assert.equal(restored.current.paperNotes.Pei2019,note);assert.deepEqual(restored.current.learning,s.current.learning);
+ assert.equal(restored.current.aiRequested,false);assert.equal(L.introProgress(restored.current).complete,false);
+ assert.equal(L.exportPayload(restored).current.paperNotes.Pei2019,note);assert.match(L.markdownRecord(restored.current),/论文阅读笔记（学生自述）/);
+ L.selectRoute(restored.current,'R2');assert.equal(restored.current.paperNotes.Pei2019,note);
+ restored.current=sampled(prepared());restored.current.paperNotes.Niu2024=note;restored.current.analysisReviewed=true;restored.current.stage=5;
+ L.completeRun(restored,{conclusion:'只有文献与流程记录，暂无实验观测',limitation:'缺少标准曲线和真实样品测量数据',next:'补齐对应来源与经过审核的测量资料'});
+ restored.current.paperNotes.Niu2024='修改后的笔记';assert.equal(restored.records[0].paperNotes.Niu2024,note);
+ restored.current=L.freshRun();assert.deepEqual(restored.current.paperNotes,{});assert.equal(L.hydrate(JSON.stringify(restored)).records[0].paperNotes.Niu2024,note);
+});
+test('paper note migration accepts old saves and rejects unknown, malformed or oversized inputs',()=>{
+ const s=L.freshState();delete s.current.paperNotes;assert.deepEqual(L.hydrate(JSON.stringify(s)).current.paperNotes,{});
+ for(const invalid of [null,[],{unknown:'伪来源'},{Pei2019:42},{Pei2019:'字'.repeat(8001)}]){s.current.paperNotes=invalid;assert.throws(()=>L.hydrate(JSON.stringify(s)),/论文笔记无效/);}
+ s.current.paperNotes={Pei2019:'字'.repeat(8000)};assert.equal(L.hydrate(JSON.stringify(s)).current.paperNotes.Pei2019.length,8000);
+});
+
+test('optional named enzyme activities preserve units and migrate older records',()=>{
+  assert.equal(L.validatePlan({...plan,ugtActivity:'70',susActivity:'120'}),null);
+  for(const invalid of ['-1','NaN','Infinity','0','1000000001'])assert.ok(L.validatePlan({...plan,ugtActivity:invalid}));
+  const old=L.freshState();for(const k of Object.keys(L.ACTIVITY_FIELDS))delete old.current.plan[k];
+  const restored=L.hydrate(JSON.stringify(old));assert.equal(restored.current.plan.ugtActivity,'');
+  restored.current.plan.ugtActivity='70';restored.current.plan.susActivity='120';
+  assert.equal(L.hydrate(JSON.stringify(restored)).current.plan.susActivity,'120');
+});
+
+test('refresh during evaluation retains answer, removes stuck loading and permits retry',()=>{
+  const s=L.freshState();Learning.draftLearning(s.current,'01','note','刷新仍应保留已提交回答与来源边界');
+  Learning.checkLearning(s.current,content.learning.steps[0]);
+  s.current.learning.entries['01'].eval={state:'evaluating',evalId:'interrupted'};
+  const restored=L.hydrate(JSON.stringify(s));
+  assert.equal(restored.current.learning.entries['01'].note,s.current.learning.entries['01'].note);
+  assert.equal(restored.current.learning.entries['01'].eval.state,'degraded');
+  assert.equal(restored.current.learning.entries['01'].eval.reason,'interrupted');
 });

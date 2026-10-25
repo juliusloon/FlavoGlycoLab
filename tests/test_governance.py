@@ -29,7 +29,7 @@ class GovernanceContractTest(unittest.TestCase):
 
     def test_adrs_are_independent_and_sequential(self):
         numbers=sorted(int(p.name[:4]) for p in (ROOT/"docs/adr").glob("[0-9][0-9][0-9][0-9]-*.md"))
-        self.assertEqual(numbers,[1,2,3,4,5,6,7,8])
+        self.assertEqual(numbers,[1,2,3,4,5,6,7,8,9,10])
 
     def test_active_project_identity(self):
         expected=("FlavoGlycoLab","flavoglycolab")
@@ -72,6 +72,26 @@ class GovernanceContractTest(unittest.TestCase):
         for name in POLICY["PUBLIC_PDFS"]:
             with self.assertRaises(POLICY["ExportError"]):
                 POLICY["check_content"](name,b"%PDF-1.7 changed bytes")
+
+    def test_literature_image_exception_is_exact(self):
+        prefix="frontend/student/assets/literature/"
+        expected={prefix+name for name in (
+            "zhang2015-fig6.png", "pei2019-fig1b.png", "niu2024-fig4a.png")}
+        self.assertEqual({name for name in POLICY["PUBLIC_IMAGES"]
+                          if name.startswith(prefix)},expected)
+        route="frontend/student/assets/figures/route_map_v1.png"
+        self.assertEqual(set(POLICY["PUBLIC_IMAGES"]),expected|{
+            route,"frontend/student/assets/lab-bench.png"})
+        for name in expected|{route}:
+            body=(ROOT/name).read_bytes()
+            POLICY["check_path"](name)
+            POLICY["check_content"](name,body)
+            with self.assertRaises(POLICY["ExportError"]):
+                POLICY["check_content"](name,body+b"changed")
+        with self.assertRaises(POLICY["ExportError"]):
+            POLICY["check_content"](prefix+"unknown.png",b"\x89PNG\r\n\x1a\n\0")
+        with self.assertRaises(POLICY["ExportError"]):
+            POLICY["check_path"]("data/raw/literature/unknown.png")
 
     def test_template_minimum_content(self):
         task=(ROOT/"docs/tasks/TEMPLATE.md").read_text(encoding="utf-8")

@@ -1,0 +1,36 @@
+{
+  "package": "pdfjs-dist",
+  "version": "5.4.624",
+  "source": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-5.4.624.tgz",
+  "upstream": "https://github.com/mozilla/pdf.js/releases/tag/v5.4.624",
+  "license": "Apache-2.0",
+  "integrity": "sha512-sm6TxKTtWv1Oh6n3C6J6a8odejb5uO4A4zo/2dgkHuC0iu8ZMAXOezEODkVaoVp8nX1Xzr+0WxFJJmUr45hQzg==",
+  "usage": "Only the existing three registered PDFs; no runtime CDN, editing or PDF viewer chrome. .mjs files use .js names for the existing static server.",
+  "files": {
+    "pdf.min.js": {
+      "upstream_path": "build/pdf.min.mjs",
+      "sha256": "5f1177175790dcf5b5b0a888205f132bea690c35194e4613099d421a16423d0b",
+      "size": 424135,
+      "original_bytes": true
+    },
+    "pdf.worker.min.js": {
+      "upstream_path": "build/pdf.worker.min.mjs",
+      "sha256": "f499515a0dc93d97787d693a75218a439675719283f56812067c036dcae1f8d5",
+      "size": 1078612,
+      "original_bytes": true
+    },
+    "LICENSE": {
+      "upstream_path": "LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "size": 10174,
+      "original_bytes": true
+    },
+    "text-layer.css": {
+      "upstream_path": "web/pdf_viewer.css",
+      "sha256": "dc0a65669229b45b2f5626ee299e70fc4b2534054e71cbf39f1381bd7f2ed0ee",
+      "size": 1394,
+      "original_bytes": false,
+      "changes": "Select text-layer positioning rules only; adapt selection color."
+    }
+  }
+}

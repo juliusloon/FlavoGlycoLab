@@ -23,11 +23,14 @@ def doctor(profile='public'):
         summary = EvidenceCatalog(ROOT, profile).summary(verify_sources=True)
         if not summary['source_integrity']['ok']:
             raise ValueError(json.dumps(summary['source_integrity'], ensure_ascii=False))
-        for name in ('index.html', 'app.js', 'retro-import.js', 'lab-state.js', 'learning-state.js', 'quest-state.js', 'molecule-viewer.js', 'ui.js', 'analysis-engine.js', 'styles.css', 'navigation.js', 'components.js', 'components.css', 'design-tokens.css',
+        for name in ('index.html', 'app.js', 'paper-notebook.js', 'paper-notebook.css', 'paper-pdf-reader.js', 'vendor/pdfjs/pdf.min.js', 'vendor/pdfjs/pdf.worker.min.js', 'vendor/pdfjs/text-layer.css', 'vendor/pdfjs/LICENSE', 'vendor/pdfjs/provenance.json', 'retro-import.js', 'lab-state.js', 'learning-state.js', 'quest-state.js', 'molecule-viewer.js', 'ui.js', 'analysis-engine.js', 'styles.css', 'navigation.js', 'components.js', 'components.css', 'design-tokens.css',
                      'components.html', 'components-page.js', 'views/pages.js', 'case.html', 'case-page.js', 'case-page.css', 'data.html', 'data-page.js', 'data-page.css', 'data-query.js',
                      'views/workbench.js', 'views/learning.js', 'views/inquiry.js', 'views/inquiry-tools.js', 'inquiry-tools.css',
                      'content/demo-content.json', 'assets/lab-bench.png', 'assets/molecules/isoquercitrin.json',
-                     'assets/molecules/isoquercitrin-2d.svg', 'vendor/3dmol/3Dmol-min.js'):
+                     'assets/molecules/isoquercitrin-2d.svg', 'assets/molecules/rutin.json', 'assets/molecules/rutin-2d.svg',
+                     'assets/molecules/quercetin.json', 'assets/molecules/quercetin-2d.svg',
+                     'assets/molecules/spiraeoside.json', 'assets/molecules/spiraeoside-2d.svg',
+                     'assets/molecules/emiq-example.json', 'assets/molecules/emiq-example-2d.svg', 'vendor/3dmol/3Dmol-min.js'):
             if not (ROOT / 'frontend/student' / name).is_file():
                 raise ValueError('运行资产缺失：frontend/student/' + name + '；请git pull --ff-only更新完整代码。')
         print(json.dumps({'ok': True, 'python': sys.version.split()[0], 'profile': profile,

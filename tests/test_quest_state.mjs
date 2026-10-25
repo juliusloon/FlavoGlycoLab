@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {freshRun, freshState, hydrate, copy, clearDownstream, selectRoute} from '../frontend/student/lab-state.js';
-import {draftLearning, checkLearning} from '../frontend/student/learning-state.js';
+import {draftLearning, checkLearning, isAdminPass, validAnswer, learningMarkdown} from '../frontend/student/learning-state.js';
 import {stageTasks, taskPassed, taskStatus, questProgress, canOpenTask, nextTaskId, routeLearningGate} from '../frontend/student/quest-state.js';
 
 const content = JSON.parse(fs.readFileSync(new URL('../frontend/student/content/demo-content.json', import.meta.url), 'utf8'));
@@ -248,7 +248,9 @@ test('TASK-026: failed evaluation blocks open tasks while degraded paths keep re
   assert.equal(taskPassed(run, task('04')), false);
   run.learning.entries['04'].eval = { state: 'passed', pass: true };
   assert.equal(taskPassed(run, task('04')), true);
-  for (const state of ['evaluating', 'degraded']) {
+  run.learning.entries['04'].eval = {state:'evaluating'};
+  assert.equal(taskPassed(run,task('04')),false);
+  for (const state of ['degraded']) {
     run.learning.entries['04'].eval = { state, reason: 'network' };
     assert.equal(taskPassed(run, task('04')), true);
   }
@@ -333,4 +335,70 @@ test('L03: feedback_rules cover three routes and required kinds with full proven
     if (rule.reference && rule.reference.value === 'unknown')
       assert.ok(!/\d+\s*%/.test(rule.feedback_text), `${rule.rule_id} unknown 参照不得携带数值阈值`);
   }
+});
+
+test('admin7 passes every task on each route without choosing or inventing a matching answer', () => {
+  for(const route of ['R1','R2','R3']){
+    const state=freshState(),run=state.current;run.route=route;
+    for(const item of content.learning.steps){
+      run.stage=item.stage;
+      draftLearning(run,item.id,'note',' admin7 ');
+      const entry=checkLearning(run,item);
+      assert.equal(taskPassed(run,item),true,`${route}/${item.id}`);
+      assert.equal(entry.eval.mode,'admin_override');
+      assert.equal(entry.choice,'');
+      if(item.choices.length)assert.equal(entry.matches,false);
+    }
+    assert.deepEqual(run.learning.independent,{});
+    run.stage=0; // Model the learning records without fabricating operation prerequisites.
+    const restored=hydrate(JSON.stringify(state)).current;
+    for(const item of content.learning.steps)assert.equal(taskPassed(restored,item),true);
+    assert.match(learningMarkdown(restored),/admin_override/);
+  }
+});
+
+test('passphrase is exact, recorded, route-bound, and revoked by edits', () => {
+  for(const text of ['Admin7','admin77','xadmin7','admin7x','请admin7','admin 7',''])assert.equal(isAdminPass(text),false);
+  assert.equal(isAdminPass('\nadmin7  '),true);
+  assert.equal(validAnswer('admin7',15),true);
+  const run=freshRun();draftLearning(run,'01','note','admin7');
+  assert.equal(taskPassed(run,task('01')),false);
+  checkLearning(run,task('01'));assert.equal(nextTaskId(run,content,'01'),'02');
+  assert.equal(routeLearningGate(run,content,'R2').completed,0);
+  draftLearning(run,'01','note','普通的新草稿内容');
+  assert.equal(taskPassed(run,task('01')),false);
+  assert.equal(run.learning.entries['01'].eval,undefined);
+  assert.equal(canOpenTask(run,content,'02'),false);
+});
+
+test('admin7 outranks failed model or choice verdicts but does not change ordinary answer rules', () => {
+  const run=freshRun();draftLearning(run,'02','choice','c1');draftLearning(run,'02','note','admin7');
+  checkLearning(run,task('02'));run.learning.entries['02'].eval={state:'failed',mode:'model',pass:false};
+  assert.equal(taskPassed(run,task('02')),true);
+  draftLearning(run,'02','note','admin77');assert.throws(()=>checkLearning(run,task('02')),/8/);
+  draftLearning(run,'02','note','足够长但选择仍不正确的正常回答');checkLearning(run,task('02'));
+  assert.equal(taskPassed(run,task('02')),false);
+  assert.equal(run.learning.entries['02'].eval,undefined);
+});
+
+test('all five local structure assets preserve distinct identities and audited geometry metadata', () => {
+  const ids=['isoquercitrin','rutin','quercetin','emiq-example','spiraeoside'],keys=new Set();
+  for(const id of ids){
+    const asset=JSON.parse(fs.readFileSync(new URL(`../frontend/student/assets/molecules/${id}.json`,import.meta.url),'utf8'));
+    assert.equal(asset.geometry_kind,'computed_conformer_not_observed');
+    assert.equal(asset.review_status,'pending_teacher_review');
+    assert.equal(asset.human_reviewed,false);
+    assert.match(asset.source_sha256,/^[a-f0-9]{64}$/);
+    assert.ok(asset.source_id&&asset.source_locator&&asset.source_license);
+    assert.ok(fs.existsSync(new URL(`../frontend/student/assets/molecules/${id}-2d.svg`,import.meta.url)));
+    const atomCount=Number(asset.sdf.split('\n')[3].slice(0,3));
+    assert.equal(asset.atom_groups.sugar.length+asset.atom_groups.aglycone.length,atomCount);
+    keys.add(asset.inchi_key);
+    if(id==='emiq-example'){
+      assert.equal(asset.representation_kind,'representative_component_not_mixture');
+      assert.equal(asset.formula,'C27H30O17');
+      assert.match(asset.source_locator,/Q3M/);
+    }
+  }
+  assert.equal(keys.size,5);
 });

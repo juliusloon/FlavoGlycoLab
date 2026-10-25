@@ -12,7 +12,7 @@ export function importedSourceCard(run,content){
  const value=run.retroImport;if(!validImportRecord(value))return '';
  const back=new URL(globalThis.location?.href||'http://127.0.0.1:8766/');back.port='8767';back.pathname='/';back.search=new URLSearchParams({run:value.packet.run.id}).toString();back.hash='';
  const p=value.packet,s=content.sources.find(s=>s.source_id===p.selection.source_id);
- return `<section class="retro-source-card" aria-label="逆合成来源"><strong>逆合成 → ${e(s?.label||p.selection.source_id)} · ${e(p.selection.route_id)} 开发入口</strong><p>目标结构与本地论文来源匹配。来自 FlavoRetro 的计算候选；原始运行留存于导出端，未在此独立复算。</p><div class="actions"><a class="button secondary" href="${e(back.href)}" target="_blank" rel="noopener">查看原始候选</a><button class="button secondary" data-action="retro-papers">阅读与比较三篇论文</button><button class="button secondary" data-action="retro-export">导出计算来源</button></div><p class="fine-print">计算来源已随本机练习保存 · 未产生实验观测</p></section>`;
+ return `<section class="retro-source-card" aria-label="逆合成来源"><strong>逆合成计算候选 · ${e(s?.label||p.selection.source_id)}</strong><p>FlavoRetro 计算候选已匹配目标结构与论文，原始运行尚未独立复算。</p><div class="actions"><a class="button secondary" href="${e(back.href)}" target="_blank" rel="noopener">查看原始候选</a><button class="button secondary" data-action="retro-papers">阅读与比较三篇论文</button><button class="button secondary" data-action="retro-export">导出计算来源</button></div><p class="fine-print">计算来源已随本机练习保存 · 未产生实验观测</p></section>`;
 }
 export function mountRetroImport({content,getRun,attach,onPapers,onExport,onError}){
  const dialog=document.querySelector('#retro-import-dialog'),body=dialog.querySelector('.retro-import-body'),status=dialog.querySelector('[role=status]'),accept=dialog.querySelector('[data-retro-accept]');
@@ -20,7 +20,7 @@ export function mountRetroImport({content,getRun,attach,onPapers,onExport,onErro
  const close=()=>dialog.close();dialog.querySelector('[data-retro-close]').onclick=close;
  const summary=value=>{
   const p=value.packet;
-  body.innerHTML=`<h3>异槲皮苷 · ${e(p.selection.source_id)} 开发入口</h3><p>接收后将来源附到当前草稿。实验路线、已有回答与学习进度由你继续操作。</p><ul>${p.literature.map(x=>`<li>${e(x.source_id)} · ${e(x.role==='main_development'?'体外双酶主开发':x.role==='alternative_synthesis'?'选择性水解备选':'工程菌并行开发')} · ${x.mcts_action?'实际搜索生成的文献转换':'同产物开发参照'}</li>`).join('')}</ul><p>目标与论文匹配通过；交接校验和只核对完整性，不证明上游运行真实性。候选仍需实验验证。</p>`;
+  body.innerHTML=`<h3>异槲皮苷 · ${e(p.selection.source_id)}</h3><p>来源将附到当前草稿，路线选择与学习进度保留。</p><ul>${p.literature.map(x=>`<li>${e(x.source_id)} · ${e(x.role==='main_development'?'体外双酶主开发':x.role==='alternative_synthesis'?'选择性水解备选':'工程菌并行开发')} · ${x.mcts_action?'实际搜索生成的文献转换':'同产物开发参照'}</li>`).join('')}</ul><p>目标、论文与文件完整性核对通过，计算候选仍需实验验证。</p>`;
  };
  document.querySelector('#retro-import-button').onclick=()=>{generation++;pending=null;accept.hidden=true;body.textContent='选择 FlavoRetro 导出的交接 JSON 文件，核对后附到练习。';status.textContent='';dialog.showModal();};
  async function receive(packet){

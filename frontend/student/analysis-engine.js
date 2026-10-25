@@ -8,13 +8,14 @@ const num = text => {
 };
 const fmt = n => (n === null || n === undefined || !Number.isFinite(n) ? '—' : String(Number(n.toFixed(4))));
 
-/** 从记录 conditions 文本提取关键条件；提取不到 → null（表示原文未给）。 */
+/** 仅提取明确的反应条件；未知不借用另一条记录或供体/终止条件。 */
 export function extractConditions(conditionsText) {
   const raw = String(conditionsText ?? '');
-  const temp = raw.match(/(\d+(?:\.\d+)?)\s*°?C/i);
-  const ph = raw.match(/pH\s*(\d+(?:\.\d+)?)/i);
-  const conc = raw.match(/(\d+(?:\.\d+)?)\s*mM/i);
-  const dur = raw.match(/(\d+(?:\.\d+)?)\s*(h|hr|min)\b/i);
+  const reaction=raw.split(/[；;。]/).filter(part=>!/终止|灭活|淬灭|须回|不套|待核|未给/.test(part)).join('；');
+  const temp = reaction.match(/(\d+(?:\.\d+)?)\s*°?C\b/i);
+  const ph = reaction.match(/pH\s*(\d+(?:\.\d+)?)/i);
+  const conc = reaction.match(/(?:槲皮素|芦丁|底物)\s*(\d+(?:\.\d+)?)\s*mM\b/i);
+  const dur = reaction.match(/(\d+(?:\.\d+)?)\s*(h|hr|min)\b/i);
   const parsed = {
     temperature_c: temp ? Number(temp[1]) : null,
     ph: ph ? Number(ph[1]) : null,
@@ -37,7 +38,9 @@ const REF_KEYS = { temperature: 'temperature_c', ph: 'ph', concentration: 'subst
  * ✔ 一致 / △ 不同（给出两边值）/ ？ 原文未给 / — 不适用（plan 字段为空或非数）。
  */
 export function comparePlanToRecord(plan, record) {
-  const { parsed } = extractConditions(record?.conditions ?? '');
+  // Method cards keep the actual recipe in value; result values are never recipes.
+  const text=record?.category==='方法条件'?`${record.value??''}；${record.conditions??''}`:record?.conditions??'';
+  const { parsed } = extractConditions(text);
   const fields = PLAN_FIELDS.map(([key, label]) => {
     const planRaw = String(plan?.[key] ?? '').trim();
     const planValue = planRaw === '' ? null : Number(planRaw);

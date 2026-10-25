@@ -2,6 +2,18 @@
 
 以异槲皮苷为首个待审案例的教学建设项目。当前可运行分子与三案例驱动的六阶段探究空间：观察异槲皮苷结构、比较三论文、逐项完成主线判断、装配体系、设计条件与对照、演练取样、审查证据并导出记录。真实实验观测为空，不能给出产率或色谱，22条案例仍待教师审核。
 
+## 项目管理入口
+
+[当前状态](STATE.md) · [里程碑与阻断](PROGRESS.md) · [任务与历史映射](docs/tasks/README.md) · [报告索引](docs/reports/README.md)
+
+10月24—25日的Web改进归并为三项：
+
+| 管理任务 | 简明报告 |
+| --- | --- |
+| [054 页面与交互统一](docs/tasks/TASK-054-web-interface-consolidation.md) | [REPORT-054](docs/reports/REPORT-054-web-interface-consolidation.md) |
+| [055 文献阅读与分子学习](docs/tasks/TASK-055-web-reading-molecule-consolidation.md) | [REPORT-055](docs/reports/REPORT-055-web-reading-molecule-consolidation.md) |
+| [056 流程稳定性与验收](docs/tasks/TASK-056-web-reliability-management-consolidation.md) | [REPORT-056](docs/reports/REPORT-056-web-reliability-management-consolidation.md) |
+
 ## 克隆后直接运行
 
 需要Git和Python 3.10+，无需原始私有数据、服务器账号、Conda、GPU或npm安装。
@@ -43,15 +55,9 @@ python scripts/dev.py evidence  # 查看真实案例索引与公开来源核验
 
 ## 当前能力与边界
 
-截至2026-10-21，实验台、同源后端和可选Qwen辅导已实现。路线、装配和条件变更使下游记录失效，支持刷新恢复、最多12个快照、方案比较、JSON/Markdown导出。运行只使用本仓库；无CDN、构建器或外部工作区依赖。
+截至2026-10-25，学生端已具备24项主线、可恢复的子页面、五类分子、三论文对照/原文阅读与笔记、四回合分析及可选Qwen辅导。方案变更使下游记录失效，支持刷新恢复、最多12个快照、方案比较与导出；详细能力、验证来源和未完成事项统一见[STATE](STATE.md)。
 
-全量历史池含3059条混合资源，不能称3059个实验；21条结构命中不能称21项独立酶法研究。公开案例表11项历史数值仍为withheld_unlicensed，10项原缺失保留missing。没有教师审定的定量观测、真实D1仿真、正式评分、师生账户或完整24步课程验收。
-
-HYK的三篇全文摘录已本地接收，三路线现可展开“本路线的文献证据与缺口”，查看酶/宿主、供体、原文页码和不同的数据限制。Pei/Zhang已具备全文，冲突和缺件见[交接检查](docs/p10ns/261019/handoff_acceptance.md#h01本轮接收检查)与[数据缺口](docs/p10ns/261019/data_gap_list.md)。收到摘录不等于已获得可用于学生样品的定量观测。
-
-Niu2024补充材料已在TASK-016收到并与出版社原件匹配；七项材料核对结果见[SI登记](metadata/literature_supplements.json)。另两篇在已核公开来源未见SI；原件仍仅本地保存，不增加成员日常运行依赖。
-
-TASK-017已由subagents补齐LYW/ZYT的[代理交接](docs/p10ns/261019/handoff_acceptance.md)：5类身份、21条候选证据、24步教学设计及B1/B2脚本。TASK-018进一步接入本地3D分子、三案例六阶段对照、顺序主线、证据分类/假设工具及按需浮动AI；支持Enter发送、Shift+Enter换行。TASK-020按所有者2026-10-21实际转交的LYW v5矩阵将24项主线校正为六界面×4步（4/4/4/4/4/4），实际稿未给分钟、分值或成绩类型，网页不展示未提交量规；12项数据依赖任务（沿用TASK-019代理设计）标“待教师审定”。论文对照新增4条明确标为“原文报告、非本次观测”的文献值，以及三路线结论与反思（C01—C14、21条命中边界）。
+真实实验观测为空，定量D1仿真、正式评分、师生权限与完整课程验收仍未完成。3059条历史混合候选不等于3059个实验，21条结构命中不等于21项独立酶法研究。
 
 **公开源码不代表公众教学服务已验收发布。** research_evaluation仍为历史研究候选，teaching_case_review为22/22待审，public_teaching_release为not_started。机器测试通过不代替科学或教学审核。
 
@@ -75,6 +81,6 @@ npm run test:browser
 
 原创代码[Apache-2.0](LICENSE)，原创文档[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hans)。第三方PDF、原始数据与模型保留各自许可，不被本项目代码/文档许可覆盖；[许可说明](LICENSES/README.md)。三个公开PDF仍是TASK-008 human_direct的精确范围例外，其余受限原件/派生数据/private及旧研究历史不进入公共Git。
 
-[当前状态](STATE.md) · [里程碑](PROGRESS.md) · [本次交付报告](docs/reports/REPORT-013-collaboration-ready.md) · [工作台设计](docs/design/workbench.md) · [路线规划](ROADMAP.md) · [文档索引](docs/README.md) · [问题反馈](https://github.com/juliusloon/FlavoGlycoLab/issues)
+[当前状态](STATE.md) · [里程碑](PROGRESS.md) · [简明报告索引](docs/reports/README.md) · [工作台设计](docs/design/workbench.md) · [路线规划](ROADMAP.md) · [文档索引](docs/README.md) · [问题反馈](https://github.com/juliusloon/FlavoGlycoLab/issues)
 
 LJX的[第6/7栏技术准备稿](docs/p10ns/261019/shenbaoshu_sections_LJX.md)、[交付接收与接入清单](docs/p10ns/261019/handoff_acceptance.md)、[站会记录](docs/p10ns/261019/standup_log.md)及[双浏览器走查](docs/operations/browser-acceptance.md)由TASK-014维护；校内事务由两位指导老师负责。

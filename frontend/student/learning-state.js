@@ -2,6 +2,9 @@
 // LYW v5: six interfaces with four tasks each; this is sequencing, not grades.
 export const LEARNING_STAGES = [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5];
 export const freshLearning = () => ({version:1,entries:{},independent:{}});
+// Owner-authorized local workflow override; never a scientific/teacher verdict.
+export const isAdminPass = value => typeof value==='string' && value.trim()==='admin7';
+export const validAnswer = (value,min=8) => typeof value==='string' && (isAdminPass(value)||value.trim().length>=min);
 export function hasTutorInteraction(run){
   return run.aiRequested===true ||
     run.chat?.some(m=>m.role==='user'||m.role==='assistant'&&m.mode==='model')===true ||
@@ -26,16 +29,18 @@ export function draftLearning(run,id,field,value){
 export function checkLearning(run,task){
   if(!task||learningStage(task.id)!==run.stage||task.stage!==run.stage)throw Error('请在当前阶段核对学习任务。');
   const entry=run.learning?.entries[task.id];
-  if(!entry||entry.note.trim().length<8)throw Error('请至少用8个字写出判断依据或需要补充的证据。');
-  if(task.choices.length&&!task.choices.some(c=>c.id===entry.choice))throw Error('请先作出选择，再核对依据。');
+  if(!entry||!validAnswer(entry.note))throw Error('请至少用8个字写出判断依据或需要补充的证据。');
+  const override=isAdminPass(entry.note);
+  if(!override&&task.choices.length&&!task.choices.some(c=>c.id===entry.choice))throw Error('请先作出选择，再核对依据。');
   const expected=task.route_answers?.[run.route]??task.answer;
   const matches=expected?entry.choice===expected:null;
   // A route change may clear visible chat, but cannot erase prior AI exposure.
   run.aiRequested=hasTutorInteraction(run);
   delete entry.eval; // TASK-026: 新提交清除旧评价，评价闭环将重新发起。
   Object.assign(entry,{status:'recorded',checkedAt:new Date().toISOString(),matches,
-    feedback:task.feedback,route:run.route,aiUsedBefore:run.aiRequested});
-  if(['04','09'].includes(task.id)&&!entry.aiUsedBefore&&!run.learning.independent[task.id]){
+    feedback:override?'通行词已放行。':task.feedback,route:run.route,aiUsedBefore:run.aiRequested});
+  if(override)entry.eval={state:'passed',pass:true,mode:'admin_override',evaluatedAt:entry.checkedAt};
+  if(!override&&['04','09'].includes(task.id)&&!entry.aiUsedBefore&&!run.learning.independent[task.id]){
     run.learning.independent[task.id]={note:entry.note,route:run.route,at:entry.checkedAt};
   }
   run.completed=false;return entry;
@@ -51,6 +56,8 @@ export function hydrateLearning(value){
     // No measured result/grade fields may be restored through this extension.
     // TASK-026: eval 允许 undefined 或带合法 state 的对象；非法形状只丢弃该字段，不丢整条。
     if(x.eval!==undefined&&(!object(x.eval)||!['evaluating','passed','failed','degraded'].includes(x.eval.state)))delete x.eval;
+    // A restored browser record has no live request. Keep the answer and allow retry.
+    if(x.eval?.state==='evaluating')x.eval={state:'degraded',reason:'interrupted'};
     if(Object.keys(x).some(k=>!['choice','note','status','checkedAt','matches','feedback','route','aiUsedBefore','eval'].includes(k)))throw Error('学习记录包含不支持的字段');
   }
   for(const [id,x] of Object.entries(value.independent)){
@@ -63,5 +70,5 @@ export function learningMarkdown(run){
   const entries=Object.entries(run.learning?.entries??{});
   const independent=Object.entries(run.learning?.independent??{});
   const legacy=independent.some(([id])=>['05','06'].includes(id));
-  return `## 学习任务自述\n\n${entries.map(([id,x])=>`### 步骤 ${id} · ${x.status==='recorded'?'已记录':'草稿'}\n\n选择：${x.choice||'短答'}\n\n${x.note}\n\n核对提示：${x.feedback||'尚未核对'}\n`).join('\n')||'尚未填写。'}\n\n## 首次独立判断\n\n${independent.map(([id,x])=>`步骤 ${id} · ${x.route} · ${x.at}\n\n${x.note}`).join('\n\n')||'未记录发起AI请求前的独立提交。'}${legacy?'\n\n*步骤05/06为TASK-020前的旧版编号，仅作历史记录保留，不对应当前24步任务。*':''}\n`;
+  return `## 学习任务自述\n\n${entries.map(([id,x])=>`### 步骤 ${id} · ${x.status==='recorded'?'已记录':'草稿'}\n\n选择：${x.choice||'短答'}\n\n${x.note}\n\n核对提示：${x.feedback||'尚未核对'}${x.status==='recorded'&&isAdminPass(x.note)?'（admin_override；非AI评价或教师审核）':''}\n`).join('\n')||'尚未填写。'}\n\n## 首次独立判断\n\n${independent.map(([id,x])=>`步骤 ${id} · ${x.route} · ${x.at}\n\n${x.note}`).join('\n\n')||'未记录发起AI请求前的独立提交。'}${legacy?'\n\n*步骤05/06为TASK-020前的旧版编号，仅作历史记录保留，不对应当前24步任务。*':''}\n`;
 }

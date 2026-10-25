@@ -20,8 +20,19 @@ CASE_PATH = "data/registries/case_admission.csv"
 WITHHELD = "withheld_unlicensed"
 # TASK-008 human_direct：三个精确PDF字节例外；出版方权利核验未代签。
 PUBLIC_PDFS = json.loads((ROOT / "metadata/public_sources.json").read_text(encoding="utf-8"))["files"]
-# TASK-013：既有原创装置图随完整工作台交付，其它二进制仍拒绝。
-PUBLIC_IMAGES = {"frontend/student/assets/lab-bench.png": "eb86a435e97ce7a734feca9c54416da3603473dbfcac419bf6566b4517cd4a11"}
+# TASK-013装置图、TASK-024已公开路线图及TASK-044选图；其它二进制仍拒绝。
+PUBLIC_IMAGES = {
+    "frontend/student/assets/lab-bench.png": "eb86a435e97ce7a734feca9c54416da3603473dbfcac419bf6566b4517cd4a11",
+    # 既有SHA见assets/figures/README.md；不修改原图或扩大图件范围。
+    "frontend/student/assets/figures/route_map_v1.png": "c539af231b12ca3f484ab0d9f7e553637748bfcd3998cd046c2c45f7492b9713",
+}
+# TASK-057仅兼容既有精确选图；SHA仍由原来源登记唯一维护，不放开目录。
+_FIGURE_ASSETS = {"zhang2015-fig6.png", "pei2019-fig1b.png", "niu2024-fig4a.png"}
+PUBLIC_IMAGES.update({
+    "frontend/student/assets/literature/" + item["asset"]: item["sha256"]
+    for item in json.loads((ROOT / "frontend/student/assets/literature/sources.json").read_text(encoding="utf-8"))["files"]
+    if item["asset"] in _FIGURE_ASSETS
+})
 # 已核定的本地保留范围；未知文件仍由下方路径/内容守卫拒绝。
 LOCAL_ONLY_PREFIXES = {
     "docs/p10ns/261017/": "本地老师汇报包及其第三方参考资源，不在公开范围",
@@ -135,7 +146,7 @@ def check_path(name: str) -> None:
 def check_content(name: str, body: bytes) -> None:
     if name in PUBLIC_IMAGES:
         if not body.startswith(b"\x89PNG\r\n\x1a\n") or hashlib.sha256(body).hexdigest() != PUBLIC_IMAGES[name]:
-            raise ExportError(f"原创装置图与交付基线不符：{name}")
+            raise ExportError(f"指定图片字节与批准基线不符：{name}")
         return
     if name in PUBLIC_PDFS:
         if not body.startswith(b"%PDF-") or hashlib.sha256(body).hexdigest() != PUBLIC_PDFS[name]:

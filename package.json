@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/test_workbench_state.mjs tests/test_quest_state.mjs tests/test_case_page.mjs tests/test_data_query.mjs tests/test_analysis_engine.mjs tests/test_navigation.mjs",
+    "test:submission-browser": "node tests/test_submission_browser.mjs",
     "test:browser": "node tests/test_workbench_browser.mjs",
     "test:pages-browser": "node tests/test_pages_browser.mjs",
     "test:data-browser": "node tests/test_data_page_browser.mjs"

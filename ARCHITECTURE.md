@@ -69,6 +69,8 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 计划路线 | ROADMAP.md | yes | planned only |
 | Agent操作纪律 | AGENTS.md | yes | active |
 | TASK/REPORT/ADR模板 | docs/{tasks,reports,adr}/TEMPLATE.md | yes | active |
+| 本轮Web任务归并与历史映射 | docs/tasks/README.md | yes | TASK-054—056：10月24—25日17项原执行记录各归属一次；原合同/报告不改号、不删除；索引不复制实时状态 |
+| 本轮简明成果报告 | docs/reports/REPORT-054-web-interface-consolidation.md、REPORT-055-web-reading-molecule-consolidation.md、REPORT-056-web-reliability-management-consolidation.md | yes | 管理汇总与验证出处；原执行授权/失败/测试仍由原报告保存，不作新的功能或教师验收 |
 | 长期决定 | docs/adr/ | yes | active |
 | 原始来源登记 | data/registries/source_registry.csv | yes | 123登记/122现存 |
 | 候选案例准入 | data/registries/case_admission.csv | yes | 22未审 |
@@ -99,11 +101,17 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 工作台产品设计 | docs/design/workbench.md | yes | 六阶段交互、24步需求映射、实时AI职责与真实仿真后续依赖 |
 | 页面/界面规范 | docs/design/interface-system.md | yes | TASK-037；页面矩阵、访问/续接、token、组件调用与验收唯一规范 |
 | 页面路由/续接 | frontend/student/navigation.js | yes | TASK-037；解析独立地址、调用既有门禁；last-page仅为界面偏好，不复制完成状态 |
-| 共享界面组件 | frontend/student/components.js、components.css、design-tokens.css | yes | TASK-037；页头、标题、按钮、字段、面板、状态、空状态、返回与分栏的唯一维护位置 |
-| 总览与局部页面导航 | frontend/student/views/pages.js | yes | TASK-037；已有内容/学习状态的只读投影 |
+| 共享界面组件 | frontend/student/components.js、components.css、design-tokens.css | yes | TASK-037/039；单行页头、共享设置及二级开发入口、标题、按钮、字段、面板、状态、空状态、返回与分栏的唯一维护位置 |
+| 总览与不可访问页面 | frontend/student/views/pages.js | yes | TASK-037/039；已有内容/学习状态的只读投影，不再重复学习页导航 |
 | 可操作组件展示 | frontend/student/components.html、components-page.js | yes | TASK-037；生产组件示例，演示数据只在页面内存中使用 |
 | 页面导航工程守卫 | tests/test_navigation.mjs、tests/test_pages_browser.mjs | yes | TASK-037；直达/返回/刷新/续接、锁定页、共享外观、案例/数据/组件跨页验收 |
+| 左下站点控件与导航折叠 | frontend/student/components.js、components.css及现有四HTML挂载点 | yes，TASK-045/046 | 展开时标题/更多及向上菜单，收起时三个56px方形入口并隐藏更多；原生dialog/焦点恢复；sidebarToggle/syncSidebarPanels仅维护展示，旧mountSiteHeader函数名兼容 |
+| 导航组折叠偏好 | localStorage键flavoglycolab.sidebar.v1 | no | quests/workflow两个布尔值，存储失败可继续使用；不属于学习记录/解锁/导出真值，不依赖Paperico运行资产 |
 | 原创装置示意 | frontend/student/assets/lab-bench.png | yes | imagegen生成装置场景，非实验原件/数据 |
+| 合成难点页文献原图及派生定位 | frontend/student/assets/literature/，sources.json唯一登记原图定位/裁取与SHA | yes，TASK-044 human_direct限本页选图展示 | 三篇既有公开PDF各一图/分面；保留原作者/出版方权利，rights_verified=false、pending_teacher_review；demo-content.json仅为图文展示投影，不复制科学准入真值 |
+| 论文笔记本呈现 | frontend/student/paper-notebook.js、paper-notebook.css及index.html挂载点 | yes，TASK-047/050 | 四图标短便签原生dialog，无header/常驻说明；对应PDF/阅读指导/笔记；复用inquiry阶段矩阵及现有解读，非新来源/学习状态真值 |
+| 论文纯内容阅读 | frontend/student/paper-pdf-reader.js、vendor/pdfjs/及provenance.json | yes，TASK-050；第三方Apache-2.0 | 固定5.4.624，本地worker/canvas/文本层、白底原页、懒渲染/尺寸/回收；同源三PDF原件只读，不改后端，不复制来源准入真值 |
+| 学生论文笔记 | lab-state.js的run.paperNotes | 随现有localStorage/快照/导出，不入Git | 三个source_id各最多8000字符，仅学生自述；旧记录迁移/校验，换路线保留、新实验清空，不作为通过/观测；ADR0009 |
 | 浏览器练习记录 | localStorage键flavoglycolab.workbench.v1 | no | 当前源的用户方案/操作/AI对话；最多12快照；不是教师记录真值 |
 | 模型服务私有配置 | data/private/runtime/tutor.json | no | 0600；服务器端读取，不暴露给student或导出Git |
 | TASK-012验收证据 | temp/task-012/ | no | 概念、截图、真实模型探针、测试、保护与部署检查；保留审计 |
@@ -276,3 +284,20 @@ TASK-017实现责任补充：learning-state.js独立管理学习草稿/核对/�
 ## TASK-035 逆合成来源接收
 
 `metadata/retrosynthesis.json`唯一登记外部交接的本地目标/前体/论文角色合同；不是新反应数据池或第二份教学准入表。`scripts/retro_handoff.py`只读本地公开三篇原件与内容登记，校验包的身份/来源/角色/校验和；`serve_lab.py /api/retro-import/validate`是同源有界出口，固定本地加载兼容python -I。`frontend/student/retro-import.js`唯一编排接收/文件/来源卡与退回原始运行；`app.js`将校验记录附到当前草稿，`lab-state.js.run.retroImport`随现有保存/导出，不改变任何学习完成真值。`temp/task-035`仅本地实际交接包/校验与浏览器证据，Git忽略；不新增模型或另一仓库文件依赖。ADR0007解释长期边界。TASK-027的动态化受限评估保持历史事实；本次只接收计算来源，未将动态搜索或数值仿真部署到Lab。
+
+## TASK-039 学生端聚焦模式（2026-10-24）
+
+在既有student模块内收敛入口和布局，不新增运行文件、依赖或科学模块。`components.js`唯一同步挂载跨页共享设置和原生dialog/details二级开发入口，主导航仅总览/探究，记录独立右上；切换至逆合成弹窗前在捕获阶段关闭设置，保留原生回焦。`index.html`持有body级AI启动器，`app.js`继续管理浮窗事件和页面class，不另建状态。`design-tokens.css`维护16px外边距、1200px总览宽度和272—336px响应式左栏，`styles.css`维护24步外壳；`views/inquiry.js`只精简共享任务定位和D01展示，`views/workbench.js`只调整阶段提醒外壳。D02/D03内部函数、探究工具、原始内容、状态机、科学登记和服务端未改。`views/pages.js`只投影总览与不可访问页；案例/数据/组件页复用共享入口与流式外壳。规范和使用说明仍归既有interface-system.md与student/README.md；验收截图、独立Agent代码/视觉报告仅存`/tmp/flavoglycolab-task-039/`，不进入运行或公开数据。实际验证和边界见REPORT-039，三个状态门不晋级。
+
+## TASK-052：分子身份切换与答题通行词（2026-10-25）
+
+沿用现有职责：assets/molecules每个JSON唯一保存该显示结构的来源/定位/SHA、计算SDF、分组及待审状态，配套同名二维SVG；molecule-viewer.js维护固定身份白名单、生命周期及降级。任务02的按钮、合页及结构讲解归views/inquiry.js，app.js只编排切换，不另存第二份分子选择/学习真值。EMIQ结构仅为手工编码的Q3M代表，非整份产品或新实验数据。
+
+learning-state.js唯一维护isAdminPass/validAnswer及提交标记，quest-state.js在原recorded/route答案中推导放行；app.js负责原生校验适配、导入/导师入口、拒绝陈旧AI回复和零评价请求，lab-state.js仅扩展已有文本长度检查。views/inquiry-tools.js允许通行词带入主线回答。沿用既有entry.eval.mode=admin_override与events，不增全局权限或进度真值；ADR0010定义长期边界。scripts/dev.py清点新增八项结构资产；工程守卫不替代三个审核门。
+
+
+## TASK-053：提交一致性与分步分析（2026-10-25）
+
+沿用原工件职责：app.js唯一持有在途评价的AbortController和不可变提交快照，编辑/上下文修订取消请求，陈旧/其他任务响应不重绘当前表单；learning-state.js恢复中断评价为degraded，quest-state.js从同一entry推导进度，evaluating暂停推进，确定性选项核对仍优先。无新增进度存储或教师结论。
+
+analysis-engine.js在方法条件卡合并读取既有value/conditions，分离底物与供体、反应与终止条件；不补齐其他记录。views/workbench.js拥有四回合页签、折叠取样与加酶量展示，app.js只保存有界内存的未提交分析草稿/展示偏好，仍以run.analysis保存已提交事实。lab-state.js的plan新增三个可选分酶酶活性浓度字符串，旧记录迁移为空，随既有快照/导出流转；属于学生设计值，无文献默认值或真实观测。测试新增test_submission_browser.mjs，复用项目已有Playwright，不新增运行依赖。

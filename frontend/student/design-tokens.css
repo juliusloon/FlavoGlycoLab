@@ -15,7 +15,9 @@
   --fg-text-xs: 12px;
   --fg-text-sm: 13px;
   --fg-text-base: 14px;
-  --fg-text-lg: 18px;
+  --fg-text-lg: 16px;
+  --fg-text-xl: 20px;
+  --fg-text-title: 24px;
   --fg-space-1: 4px;
   --fg-space-2: 8px;
   --fg-space-3: 12px;
@@ -27,8 +29,13 @@
   --fg-radius-panel: 16px;
   --fg-shadow: 0 8px 30px #24473b07;
   --fg-page-width: 1180px;
-  --fg-rail-width: 248px;
-  --fg-header-height: 72px;
+  --fg-page-gutter: 16px;
+  --fg-reading-width: 1200px;
+  --fg-rail-expanded-width: clamp(272px,20vw,336px);
+  --fg-rail-collapsed-width: 56px;
+  --fg-rail-width: var(--fg-rail-expanded-width);
+  --fg-control-height: 56px;
+  --fg-header-height: 0px;
   /* Compatibility names for existing teaching views; no second palette. */
   --ink: var(--fg-color-text); --muted: var(--fg-color-muted);
   --teal: var(--fg-color-accent); --deep: var(--fg-color-accent-hover);
@@ -40,3 +47,4 @@
   --violet: #6d28d9; --violet-soft: #f5f3ff; --report: #9a3412;
   --shadow: var(--fg-shadow);
 }
+@media(max-width:760px){:root{--fg-text-title:22px}}

@@ -4,7 +4,9 @@ import fs from 'node:fs';
 import {parsePage,pageAccess,resumePage,stageAccessible} from '../frontend/student/navigation.js';
 import {freshRun,answerIntroAct,recordIntroPaper} from '../frontend/student/lab-state.js';
 import {draftLearning,checkLearning} from '../frontend/student/learning-state.js';
-import {button,statusBadge,siteHeader} from '../frontend/student/components.js';
+import * as components from '../frontend/student/components.js';
+import {overviewPage} from '../frontend/student/views/pages.js';
+const {button,statusBadge,siteHeader,settingsDialog}=components;
 const content=JSON.parse(fs.readFileSync(new URL('../frontend/student/content/demo-content.json',import.meta.url)));
 function introduced(){const run=freshRun();answerIntroAct(run,1,content.intro.case.question.answer,true);answerIntroAct(run,2,content.intro.chemical_limit.question.answer,true);recordIntroPaper(run,'R1');return run;}
 function completeStage(run,stage){for(const t of content.learning.steps.filter(t=>t.stage===stage)){if(t.choices.length)draftLearning(run,t.id,'choice',t.route_answers?.[run.route]??t.answer);draftLearning(run,t.id,'note','逐项核对来源、研究方向与证据范围。');checkLearning(run,t);}}
@@ -42,8 +44,31 @@ test('paper comparison and access checks never mutate learning or selected route
 });
 test('legacy links are explicit redirects; shared navigation identifies its current page',()=>{
   for(const path of ['/case','/data','/ai','/about','/steps'])assert.equal(parsePage(`#${path}`).kind,'redirect');
-  const nav=siteHeader('data');assert.match(nav,/href="\.\/data\.html" aria-current="page"/);
+  const nav=siteHeader('home');assert.match(nav,/id="nav-home"/);
   assert.equal((nav.match(/aria-current="page"/g)||[]).length,1);
   assert.match(button({label:'<script>x</script>',href:'#/home'}),/&lt;script&gt;/);
   assert.match(statusBadge('待教师审定','warning'),/fg-status warning/);
+});
+test('shared workspace controls provide the title and an accessible more-menu trigger',()=>{
+  const controls=siteHeader('home',{workbench:true});
+  assert.match(controls,/id="nav-home"/);assert.match(controls,/id="workspace-more"/);
+  assert.match(controls,/popovertarget="workspace-menu"/);assert.match(controls,/aria-haspopup="menu"/);
+  assert.doesNotMatch(controls,/fg-site-nav|fg-header|id="tutor-launcher"|id="retro-import-button"/);
+});
+test('shared settings expose four developer links and scope workbench controls',()=>{
+  assert.equal(typeof settingsDialog,'function');
+  const workbench=settingsDialog({workbench:true}),independent=settingsDialog();
+  for(const dialog of [workbench,independent]){
+    assert.equal((dialog.match(/id="settings-dialog"/g)||[]).length,1);
+    assert.match(dialog,/<details>/);assert.match(dialog,/<summary>开发者模式<\/summary>/);
+    assert.deepEqual(Array.from(dialog.matchAll(/data-site-page="([^"]+)"/g),match=>match[1]),['papers','case','data','components']);
+  }
+  for(const id of ['reduce-motion','retro-import-button'])assert.match(workbench,new RegExp(`id="${id}"`));
+  assert.match(workbench,/data-action="replay-intro"/);
+  assert.doesNotMatch(independent,/id="reduce-motion"|id="retro-import-button"|data-action="replay-intro"/);
+});
+test('overview removes developer resource cards without removing learning context',()=>{
+  const overview=overviewPage(freshRun(),content,'/intro/1');
+  assert.doesNotMatch(overview,/fg-resource|资料与证据/);
+  assert.match(overview,/实验阶段/);assert.match(overview,/回看案例导入/);
 });

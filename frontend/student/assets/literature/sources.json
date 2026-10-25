@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "scope": "TASK-044 selected figures from the three existing public PDFs; not a scientific admission registry",
+  "rights_verified": false,
+  "review_status": "pending_teacher_review",
+  "files": [
+    {
+      "id": "Zhang2015-fig6",
+      "asset": "zhang2015-fig6.png",
+      "source_id": "Zhang2015",
+      "source_path": "data/raw/literature/Biotransformation of rutin to isoquercitrin using recombinant α-l-rhamnosidase from Bifidobacterium breve.pdf",
+      "source_sha256": "26ef2ba07b43ffe53d18cdc1808b517c26137dfdc07fdb336ea3bf8a5d4e86a5",
+      "figure": "6",
+      "pdf_page": 7,
+      "printed_page": "1263",
+      "derivation": {
+        "method": "pdftoppm raster render, rectangle crop; no redraw or data alteration",
+        "render_scale_to": 3200,
+        "render_size_px": [
+          2376,
+          3200
+        ],
+        "crop_box_px": [
+          700,
+          240,
+          2190,
+          650
+        ]
+      },
+      "width": 1490,
+      "height": 410,
+      "sha256": "c6ce4cf0485adf6abb01dac084d360b00078d8913055ec64300dacffb321ef65",
+      "quality_status": "agent_checked_against_original_pdf",
+      "review_status": "pending_teacher_review",
+      "rights_verified": false,
+      "license_status": "original_publisher_rights_retained; no project license applied",
+      "display_authorization": "TASK-044 human_direct; selected figures for intro/2 only"
+    },
+    {
+      "id": "Pei2019-fig1b",
+      "asset": "pei2019-fig1b.png",
+      "source_id": "Pei2019",
+      "source_path": "data/raw/literature/Synergistic Catalysis of Glycosyltransferase and Sucrose Synthase to Produce Isoquercitrin Through Glycosylation of Quercetin.pdf",
+      "source_sha256": "0820ef04fbf00fd72fa2f9e81c396e0fe8c4afddaa1151947bf500f92db5e67f",
+      "figure": "1b",
+      "pdf_page": 2,
+      "printed_page": "454",
+      "derivation": {
+        "method": "pdftoppm raster render, rectangle crop; no redraw or data alteration",
+        "render_scale_to": 3200,
+        "render_size_px": [
+          2473,
+          3200
+        ],
+        "crop_box_px": [
+          880,
+          1164,
+          1406,
+          1730
+        ]
+      },
+      "width": 526,
+      "height": 566,
+      "sha256": "26ef837b3e3ce4b0625a9a1fe3eec534b645e5e17ec202d3ace7d15c3ad062aa",
+      "quality_status": "agent_checked_against_original_pdf",
+      "review_status": "pending_teacher_review",
+      "rights_verified": false,
+      "license_status": "original_publisher_rights_retained; no project license applied",
+      "display_authorization": "TASK-044 human_direct; selected figures for intro/2 only"
+    },
+    {
+      "id": "Niu2024-fig4a",
+      "asset": "niu2024-fig4a.png",
+      "source_id": "Niu2024",
+      "source_path": "data/raw/literature/Combinatorial metabolic engineering of Bacillus subtilis enables the efficient biosynthesis of isoquercitrin from quercetin.pdf",
+      "source_sha256": "95f63a8c3d8a4d6d96fc9421eaae96297fc3e4c2f00c31f034b66cc7fbd22513",
+      "figure": "4A",
+      "pdf_page": 8,
+      "printed_page": "8 of 13",
+      "derivation": {
+        "method": "pdftoppm raster render, rectangle crop; no redraw or data alteration",
+        "render_scale_to": 3200,
+        "render_size_px": [
+          2401,
+          3200
+        ],
+        "crop_box_px": [
+          468,
+          1660,
+          1210,
+          2158
+        ]
+      },
+      "width": 742,
+      "height": 498,
+      "sha256": "ef28d8c24549d82ff78ba1eba40884cda036704a360afe9d38b891c27c83eb4c",
+      "quality_status": "agent_checked_against_original_pdf",
+      "review_status": "pending_teacher_review",
+      "rights_verified": false,
+      "license_status": "original_publisher_rights_retained; no project license applied",
+      "display_authorization": "TASK-044 human_direct; selected figures for intro/2 only"
+    }
+  ]
+}

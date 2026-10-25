@@ -1,5 +1,6 @@
 // Navigation through student self-checks, not scientific validation or grades.
 // The content order is authoritative; no progress is stored separately from answers.
+import {isAdminPass} from './learning-state.js';
 
 export function stageTasks(content, stage) {
   if (!Number.isInteger(stage) || stage < 0 || stage > 5) return [];
@@ -10,14 +11,16 @@ export function stageTasks(content, stage) {
 // 模型不可翻转锚定结果；无评价/评价降级时保持"已记录"语义，AI 不可用不卡死流程。
 function entryPassedForRoute(run, task, routeId) {
   const entry = run?.learning?.entries?.[task.id];
-  if (entry?.status !== 'recorded' || entry.route !== routeId ||
-      typeof entry.note !== 'string' || entry.note.trim().length < 8) return false;
+  if (entry?.status !== 'recorded' || entry.route !== routeId || typeof entry.note !== 'string') return false;
+  if (isAdminPass(entry.note)) return true;
+  if (entry.note.trim().length < 8) return false;
   const evalState = entry.eval?.state;
+  if (evalState === 'evaluating') return false;
   if (evalState === 'passed' || evalState === 'failed') {
     if (evalState !== 'passed') return false;
     return !task.choices?.length || entry.matches === true;
   }
-  if (!task.choices?.length) return true; // evaluating/degraded/无评价：保持已记录语义。
+  if (!task.choices?.length) return true; // degraded/无评价：保持已记录语义。
   const expected = task.route_answers?.[routeId] ?? task.answer;
   return entry.matches === true && typeof expected === 'string' &&
     entry.choice === expected && task.choices.some(choice => choice.id === entry.choice);
