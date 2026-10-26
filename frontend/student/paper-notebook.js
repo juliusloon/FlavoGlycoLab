@@ -11,12 +11,16 @@ const tabPaths={
 function tabIcon(id){return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${tabPaths[id]}</svg>`;}
 
 // Reading UI only. Notes live in the current run; opening a paper never completes a task.
-export function mountPaperNotebook({dialog,launcher,content,getRun,onNote,onRead,onAsk}){
+export function mountPaperNotebook({dialog,launcher,content,getRun,onNote,onRead}){
  const papers=content.routes.map(route=>({route,...content.learning.paper_digests.papers[route.source_id],id:route.source_id}));
  let selected='compare',runId=null,comparison='all';
  const pending=new Map(),readers=new Map();
  function cancelLoads(){for(const cancel of [...pending.values()])cancel();pending.clear();}
  function comparisonHTML(){return caseComparison(getRun(),content,comparison==='analysis'?'analysis':null,{standalone:true,notebook:true});}
+ function paperEvidence(routeId){
+  const card=content.case_page.route_cards.find(row=>row.id===routeId);
+  return `<details class="notebook-research-evidence"><summary>研究结果与证据边界</summary><dl><dt>反应方向</dt><dd>${e(card.direction)}</dd><dt>催化体系</dt><dd>${e(card.system)}</dd><dt>原文报告结果</dt><dd><ul>${card.key_results.map(result=>`<li>${e(result)}</li>`).join('')}</ul></dd><dt>对照</dt><dd>${e(card.controls)}</dd><dt>仍缺证据</dt><dd>${e(card.gaps)}</dd></dl></details>`;
+ }
  function build(){
   cancelLoads();for(const reader of readers.values())reader.destroy();readers.clear();
   const tabs=[{id:'compare',label:'三篇论文对比'},...papers.map(p=>({id:p.id,label:p.label}))];
@@ -25,7 +29,7 @@ export function mountPaperNotebook({dialog,launcher,content,getRun,onNote,onRead
    <div class="notebook-pages"><section role="tabpanel" id="notebook-page-compare" aria-labelledby="notebook-tab-compare" tabindex="0" hidden></section>
    ${papers.map(p=>`<section class="notebook-paper" role="tabpanel" id="notebook-page-${p.id}" aria-labelledby="notebook-tab-${p.id}" hidden>
     <div class="notebook-reader"><div class="notebook-pdf"><p class="notebook-pdf-status" role="status" hidden></p><div class="notebook-pdf-recovery" hidden><button type="button" class="text-button" data-notebook-retry="${p.id}">重新加载 PDF</button><a href="./api/paper/${p.id}" target="_blank" rel="noopener noreferrer">新标签页打开 ↗</a></div><div class="notebook-pdf-content" role="document" aria-label="${e(p.label)} 论文 PDF" tabindex="0"></div></div></div>
-    <div class="notebook-writing"><div class="notebook-reading-guide"><h3>${e(p.route.name)}</h3><p>${e(p.one_line)}</p><details><summary>阅读指引与要点</summary><p>${e(p.reading_guide)}</p><ul>${p.key_points.map(point=>`<li>${e(point)}</li>`).join('')}</ul><a href="./data.html?source=${p.id}" target="_blank" rel="noopener noreferrer">查看文献数据 ↗</a></details><button type="button" class="text-button" data-notebook-ask="${p.id}">问导师解读此篇</button></div>
+    <div class="notebook-writing"><div class="notebook-reading-guide"><h3>${e(p.route.name)}</h3><p>${e(p.one_line)}</p><div class="notebook-paper-digest" data-paper-digest="${p.id}"><h4>论文解读</h4><p>${e(p.reading_guide)}</p><ul>${p.key_points.map(point=>`<li>${e(point)}</li>`).join('')}</ul><a href="./data.html?source=${p.id}" target="_blank" rel="noopener noreferrer">查看文献数据 ↗</a></div>${paperEvidence(p.route.id)}</div>
     <label class="notebook-note"><span>我的阅读笔记</span><textarea data-paper-note="${p.id}" rows="8" maxlength="8000" placeholder="记下研究思路、关键证据，以及想进一步核对的问题…">${e(getRun().paperNotes?.[p.id]||'')}</textarea></label><p class="notebook-save error" data-note-status="${p.id}" role="status" hidden></p></div>
    </section>`).join('')}</div></div>`;
   runId=getRun().id;
@@ -71,8 +75,8 @@ export function mountPaperNotebook({dialog,launcher,content,getRun,onNote,onRead
   const button=event.target.closest('button');if(!button)return;
   if(button.hasAttribute('data-notebook-close'))dialog.close();
   else if(button.dataset.notebookTab)select(button.dataset.notebookTab);
+  else if(button.dataset.notebook)select(button.dataset.notebook);
   else if(button.dataset.notebookRetry){const id=button.dataset.notebookRetry;pending.get(id)?.();readers.get(id)?.destroy();readers.delete(id);loadPDF(id);}
-  else if(button.dataset.notebookAsk){dialog.close();onAsk(button.dataset.notebookAsk);}
   else if(button.dataset.compareRoute){comparison=button.dataset.compareRoute;select('compare');}
   event.stopPropagation();
  });

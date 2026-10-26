@@ -1,6 +1,6 @@
 // Navigation through student self-checks, not scientific validation or grades.
 // The content order is authoritative; no progress is stored separately from answers.
-import {isAdminPass} from './learning-state.js';
+import {isAdminPass,isCommonTask} from './learning-state.js';
 
 export function stageTasks(content, stage) {
   if (!Number.isInteger(stage) || stage < 0 || stage > 5) return [];
@@ -11,7 +11,8 @@ export function stageTasks(content, stage) {
 // 模型不可翻转锚定结果；无评价/评价降级时保持"已记录"语义，AI 不可用不卡死流程。
 function entryPassedForRoute(run, task, routeId) {
   const entry = run?.learning?.entries?.[task.id];
-  if (entry?.status !== 'recorded' || entry.route !== routeId || typeof entry.note !== 'string') return false;
+  if (entry?.status !== 'recorded' || typeof entry.note !== 'string') return false;
+  if (!isCommonTask(task.id) && (!['R1','R2','R3'].includes(routeId) || entry.route !== routeId)) return false;
   if (isAdminPass(entry.note)) return true;
   if (entry.note.trim().length < 8) return false;
   const evalState = entry.eval?.state;
@@ -31,9 +32,8 @@ export function taskPassed(run, task) {
   return entryPassedForRoute(run, task, run?.route);
 }
 
-// TASK-027 L02 先学后做：路线前置学习门禁。只按阶段1（导入后主线 01—04）判断，
-// 逐路线独立：切换路线后按目标路线重新判断，不继承另一条路线的通过结论；
-// 缺内容时永远不放行。不另存进度真值，全部从已存学习答案推导。
+// TASK-059: 01—03为共通学习，04绑定显式选择；更换路线后重判04。
+// 缺内容或未选择时不放行，进度全部从已存答案推导。
 export function routeLearningGate(run, content, routeId = run?.route) {
   const tasks = stageTasks(content, 0);
   const completed = tasks.filter(task => entryPassedForRoute(run, task, routeId)).length;
@@ -41,7 +41,7 @@ export function routeLearningGate(run, content, routeId = run?.route) {
     route: routeId,
     completed,
     total: tasks.length,
-    complete: tasks.length > 0 && completed === tasks.length,
+    complete: ['R1','R2','R3'].includes(routeId) && tasks.length > 0 && completed === tasks.length,
   };
 }
 
@@ -49,7 +49,7 @@ export function taskStatus(run, task) {
   if (taskPassed(run, task)) return task.choices?.length ? 'passed' : 'submitted';
   const entry = run?.learning?.entries?.[task?.id];
   if (!entry) return 'pending';
-  if (entry.status === 'recorded') return entry.route === run?.route ? 'retry' : 'stale';
+  if (entry.status === 'recorded') return isCommonTask(task.id)||entry.route === run?.route ? 'retry' : 'stale';
   return 'draft';
 }
 

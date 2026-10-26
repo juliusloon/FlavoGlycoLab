@@ -49,6 +49,7 @@ async function beginTask(page, id) {
   await page.locator(`main [data-learning-card="${id}"]`).waitFor();
 }
 async function saveAnswer(page, task, route, choice) {
+  if(task.id==='04')await page.locator(`[data-route-choice][data-choose-route="${route}"]`).click();
   const card = page.locator(`main [data-learning-card="${task.id}"]`);
   const answer = choice ?? task.route_answers?.[route] ?? task.answer;
   if (task.choices.length) await card.locator(`label.answer-option:has(input[name="choice"][value="${answer}"])`).click();
@@ -97,8 +98,8 @@ async function checkTaskShell(page, task, route, width) {
     const expectedRail = Math.min(336,Math.max(272,width * 0.2));
     ok(`${route}/${width}: mission ${task.id} uses the 16px gutter and responsive 272–336px dock`,
       Math.abs(parseFloat(layout.columns) - expectedRail) < 1 && layout.gutter === 16 && layout.columnGap === 16);
-    if(width>900)ok(`${route}/${width}: mission ${task.id} aligns all three panel tops`,await page.evaluate(()=>{
-      const tops=['#quest-panel','.task-narrative','.task-rail'].map(q=>document.querySelector(q).getBoundingClientRect().top);return Math.max(...tops)-Math.min(...tops)<=1;
+    if(width>900)ok(`${route}/${width}: mission ${task.id} anchors its content-height answer above the notebook`,await page.evaluate(()=>{
+      const rail=document.querySelector('.task-rail').getBoundingClientRect(),notebook=document.querySelector('#notebook-launcher').getBoundingClientRect();return Math.abs(notebook.top-rail.bottom-16)<=1;
     }));
   }
   ok(`${route}/${width}: mission ${task.id} aligns the response panel with the AI launcher`,await page.evaluate(()=>Math.abs(document.querySelector('.task-rail').getBoundingClientRect().right-document.querySelector('#tutor-launcher').getBoundingClientRect().right)<=1));
@@ -109,8 +110,13 @@ async function checkPreservedTaskVisual(page, task, route, width) {
     await card.locator('.identity-tile').count() === 5 && await card.locator('#identity-detail').count() === 1 &&
     await card.locator('.narr-page').count() === 1 && await card.locator('.narr-prose').isVisible() &&
     await card.locator('#molecule-viewer').isVisible() && await card.locator('.narr-pager').count() === 0);
-  if (['03','04'].includes(task.id)) ok(`${route}/${width}: D01 route cards remain intact`,
-    await card.locator('.compact.case-cards .case-card').count() === 3);
+  if (task.id==='03') ok(`${route}/${width}: D01 compares routes through notebook reading entries`,
+    await card.locator('.narr-page').count()===1 && await card.locator('.narr-pager').count()===0 &&
+    await card.locator('.case-card[data-notebook]').count()===3 && await card.locator('.paper-digests').count()===0);
+  if (task.id==='04') ok(`${route}/${width}: D01 decision keeps planning controls and reading cards in the main panel`,
+    await card.locator('.narr-page').count()===1 && await card.locator('.route-decision').count()===1 &&
+    await card.locator('.task-narrative [data-route-choice]').count()===3 && await card.locator('.task-narrative .case-card[data-notebook]').count()===3 &&
+    await card.locator('.task-rail [data-route-choice],.paper-digests').count()===0);
   if (['05','06','07','10','11','12'].includes(task.id)) ok(`${route}/${width}: D02/D03 route context remains intact for mission ${task.id}`,
     await card.locator('.task-route-context').count() === 1 && await card.locator('.task-route-context [data-action="compare"]').count() === 1);
   if (task.id === '08') ok(`${route}/${width}: D02 evidence ladder remains intact`,
@@ -240,9 +246,9 @@ async function compareStudies(page, stage, route, width) {
     await dialog.locator('.study').count() === 3 &&
     (await dialog.textContent()).includes('Pei') && (await dialog.textContent()).includes('Zhang') && (await dialog.textContent()).includes('Niu'));
   ok(`${route}/${width}: stage ${stage + 1} field rows share one leftmost label column`,
-    await dialog.locator('.matrix-row[data-field]').count() === 6 &&
-    await dialog.locator('.matrix-row[data-field] .matrix-label').count() === 6 &&
-    await dialog.locator('.matrix-row[data-field] .matrix-cell').count() === 18);
+    await dialog.locator('.matrix-row[data-field]').count() === (stage===0?10:6) &&
+    await dialog.locator('.matrix-row[data-field] .matrix-label').count() === (stage===0?10:6) &&
+    await dialog.locator('.matrix-row[data-field] .matrix-cell').count() === (stage===0?30:18));
   for (const cell of await dialog.locator('.matrix-row[data-field] .matrix-cell').all()) {
     ok(`${route}/${width}: stage ${stage + 1} matrix cell has source-anchored content`, Boolean((await cell.textContent()).trim()));
   }
@@ -291,81 +297,24 @@ async function fillPlan(page) {
   if (await control.count()) await control.selectOption('both');
 }
 async function verifyWrongAnswer(page, route, width) {
-  await beginTask(page, '01');
-  const card01 = page.locator('main [data-learning-card="01"]');
-  const guide = card01.locator('.task-rail .rail-guide');
-  const guideAngleText = await guide.locator('.guidance-angles').textContent();
-  ok(`${route}/${width}: mission 01 shows one right-rail guide with three observations, comparison angles and its hint`,
-    await page.locator('.rail-guide').count() === 1 && await guide.locator('ol li').count() === 3 &&
-    await guide.locator('.angle-chip').count() === 0 && ['R1 体外加糖','R2 选择性去糖','R3 全细胞转化'].every(text=>(guideAngleText.includes(text))) && (await guide.textContent()).includes(lessons[0].hint) &&
-    await card01.locator('.task-example').count() === 0);
-  const note01 = card01.locator('textarea[name="note"]');
-  const hint01 = lessons[0].hint;
-  await note01.fill('');
-  ok(`${route}/${width}: empty mission 01 shows the full hint once in the rail guide, not in the textarea placeholder`,
-    await note01.inputValue() === '' && await guide.locator('.rail-guide-hint').count() === 1 &&
-    (await guide.locator('.rail-guide-hint').textContent()).includes(hint01) &&
-    (await card01.textContent()).split(hint01).length - 1 === 1 &&
-    !((await note01.getAttribute('placeholder')) || '').includes(hint01));
-  ok(`${route}/${width}: mission 01 removes duplicate guidance and ChEBI labels from the observation area`,
-    await card01.locator('.task-narrative .task-guidance,.narr-guidance').count() === 0 &&
-    await guide.locator('.point-sources').count() === 0 && !(await guide.textContent()).includes('ChEBI'));
-  ok(`${route}/${width}: mission 01 guidance uses one plain, unindented text style`,await guide.locator('.guidance-copy p,.guidance-copy li').evaluateAll(items=>{
-    const styles=items.map(el=>{const s=getComputedStyle(el);return {font:s.fontSize,weight:s.fontWeight,line:s.lineHeight,color:s.color,left:el.getBoundingClientRect().left,background:s.backgroundColor,border:s.borderTopWidth};});
-    return styles.length===7&&styles.every(s=>s.font==='14px'&&s.weight==='400'&&s.line===styles[0].line&&s.color===styles[0].color&&Math.abs(s.left-styles[0].left)<1&&s.background==='rgba(0, 0, 0, 0)'&&s.border==='0px');
-  }));
-  ok(`${route}/${width}: mission 01 combines the context and molecular evidence on the first of two pages`,
-    await card01.locator('.narr-page').count() === 2 &&
-    await card01.locator('.narr-page[data-narr-page="0"] > .narr-prose').count() === 1 &&
-    await card01.locator('.narr-page[data-narr-page="0"] > .task-molecule').isVisible());
-  await card01.locator('.task-molecule .structure-source').waitFor({state:'attached'});
-  ok(`${route}/${width}: mission 01 retains molecular structure provenance outside the observation guide`,
-    (await card01.locator('.task-molecule .structure-source').textContent()).includes('ChEBI:68352'));
-  ok(`${route}/${width}: mission view splits into a narrative column and a stable form rail`,
-    await card01.locator('.task-view').count() === 1 &&
-    await card01.locator('.task-narrative').count() === 1 &&
-    await card01.locator('.task-rail .learning-form').count() === 1 &&
-    await card01.locator('.task-rail .task-actions button[type="submit"]').count() === 1);
-  ok(`${route}/${width}: mission 01 combines three reading cards with the notebook comparison entry`,
-    await card01.locator('.paper-digest-preview').count() === 3 &&
-    await card01.locator('.paper-digest-preview [data-notebook]').count() === 3 &&
-    await card01.locator('.paper-notebook-entry [data-notebook="compare"]').count() === 1);
-  ok(`${route}/${width}: narrative pager flips pages with pure DOM hidden toggles`,
-    await card01.locator('.narr-page[data-narr-page="0"]').isVisible() &&
-    !(await card01.locator('.narr-page[data-narr-page="1"]').isVisible()));
-  await card01.locator('.pager-next').click();
-  ok(`${route}/${width}: pager advances directly to papers and moves focus to its title`,
-    !(await card01.locator('.narr-page[data-narr-page="0"]').isVisible()) &&
-    await card01.locator('.narr-page[data-narr-page="1"] .paper-digests').isVisible() &&
-    (await page.evaluate(() => document.activeElement?.classList.contains('narr-page-title'))));
-  await card01.locator('.pager-prev').click();
-  ok(`${route}/${width}: pager returns to the context page`, await card01.locator('.narr-page[data-narr-page="0"]').isVisible());
-  await card01.locator('[data-action="ask-task-tutor"]').first().click();
-  ok(`${route}/${width}: mission ask-tutor opens the mentor with a prefilled mission question`,
-    await page.locator('#tutor-panel').isVisible() &&
-    (await page.locator('#question').inputValue()).includes('任务01'));
-  await page.locator('#question').fill('');
-  await page.locator('#close-tutor').click();
-  const first = lessons[0];
-  await card01.locator('button[type="submit"]').click();
-  ok(`${route}/${width}: an empty rationale is blocked by a Chinese validation message`,
-    (await card01.locator('textarea[name="note"]').evaluate(el => el.validationMessage)).includes('请先完成这一空项'));
-  await saveAnswer(page, first, route);
-  ok(`${route}/${width}: mission 01 shows the marked example only after submission`,
-    await card01.locator('.task-example').count() === 1 &&
-    (await card01.locator('.task-example summary').textContent()).includes('参考示例'));
-  await beginTask(page, '02');
-  const task = lessons[1];
-  const wrong = task.choices.find(choice => choice.id !== task.answer).id;
-  const card = await saveAnswer(page, task, route, wrong);
-  ok(`${route}/${width}: wrong mission answer remains on the current task`,
-    (await card.locator('.learning-feedback').textContent()).includes('再检查') &&
-    (await readState(page)).current.learning.entries['02'].matches === false);
-  ok(`${route}/${width}: wrong answer cannot unlock the next mission or reaction setup`,
-    await page.locator('#quest-panel [data-task="03"]').first().isDisabled() &&
-    await card.locator('.task-actions [data-task="03"]').count() === 0 &&
-    await page.locator('#workflow [data-stage="1"]').isDisabled());
+  const card01=page.locator('main [data-learning-card="01"]');
+  const note=card01.locator('textarea[name="note"]');
+  ok(`${route}/${width}: mission01 defines only the goal and required result records`,
+    await card01.locator('.mission-brief').isVisible() && await card01.locator('.narr-page').count()===1 &&
+    await card01.locator('.narr-pager,#molecule-viewer,.paper-digests').count()===0 && (await readState(page)).current.route===null);
+  await card01.locator('[data-action="ask-task-tutor"]').click();
+  ok(`${route}/${width}: mission tutor opens with a task01 question`,await page.locator('#tutor-panel').isVisible()&&(await page.locator('#question').inputValue()).includes('任务01'));
+  await page.locator('#question').fill('');await page.locator('#close-tutor').click();
+  await card01.locator('[type="submit"]').click();
+  ok(`${route}/${width}: empty rationale has Chinese validation`,(await note.evaluate(el=>el.validationMessage)).includes('请先完成这一空项'));
+  await saveAnswer(page,lessons[0],route);
+  ok(`${route}/${width}: reference example appears only after submission`,await card01.locator('.task-example').count()===1);
+  await beginTask(page,'02');const task=lessons[1],wrong=task.choices.find(choice=>choice.id!==task.answer).id;
+  const card=await saveAnswer(page,task,route,wrong);
+  ok(`${route}/${width}: wrong answer remains on task02`,(await card.locator('.learning-feedback').textContent()).includes('再检查')&&(await readState(page)).current.learning.entries['02'].matches===false);
+  ok(`${route}/${width}: wrong answer cannot unlock task03 or assembly`,await page.locator('#quest-panel [data-task="03"]').first().isDisabled()&&await card.locator('.task-actions [data-task="03"]').count()===0&&await page.locator('#workflow [data-stage="1"]').isDisabled());
 }
+
 async function exerciseAnalysisBench(page, route, width) {
   const records = content.data_query.records.filter(r => r.route === route);
   ok(`${route}/${width}: analysis bench renders the honesty banner, four rounds and the blacklist card`,
@@ -487,11 +436,7 @@ async function normalFlow(width, height, route) {
   await compareStudies(page, 0, route, width);
   await paperPanel(page, route, width);
   await page.locator('main [data-action="begin-quest"]').click();
-  await page.locator('.rail-foot [data-action="compare"]').click();
-  await page.locator(`#evidence-dialog [data-choose-route="${route}"]`).click();
-  await confirmOptionalRouteChange(page);
-  await closeEvidence(page);
-  ok(`${route}/${width}: selecting a study sets the intended route`, (await readState(page)).current.route === route);
+  ok(`${route}/${width}: all reading before decision leaves planning route empty`,(await readState(page)).current.route===null);
   await verifyWrongAnswer(page, route, width);
   if ([1536,375].includes(width)) {
     const sameBox = (a,b) => ['x','y','width','height'].every(key => Math.abs(a[key] - b[key]) < 1);
@@ -510,12 +455,12 @@ async function normalFlow(width, height, route) {
       height - launcherBox.y - launcherBox.height >= 0 && height - launcherBox.y - launcherBox.height <= 40);
     await page.locator('#tutor-launcher').click();
     const panelBox = await page.locator('#tutor-panel').boundingBox();
-    ok(`${route}/${width}: mentor stays fixed and reserves desktop reading space`,
+    ok(`${route}/${width}: mentor stays fixed without changing the reading layout`,
       await page.locator('#question').isVisible() &&
       await page.locator('#tutor-panel').evaluate(el => getComputedStyle(el).position === 'fixed' && !el.closest('.topbar')) &&
       width - panelBox.x - panelBox.width >= 0 && width - panelBox.x - panelBox.width <= 40 &&
       height - panelBox.y - panelBox.height >= 0 && height - panelBox.y - panelBox.height <= 40 &&
-      (width>=1100?(await mainBox()).width<before.width:sameBox(before,await mainBox())));
+      sameBox(before,await mainBox()));
     await noOverflow(page, `${route}/${width}: open lower-right mentor does not overflow`);
     if (width === 1536 && !liveAI) {
       await page.locator('#question').fill('请帮我核对这项研究的来源');
@@ -646,24 +591,23 @@ async function normalFlow(width, height, route) {
   // Reading a different study and cancelling a route change must preserve the draft.
   await page.locator('#workflow [data-stage="0"]').click();
   const alternative = route === 'R2' ? 'R3' : 'R2';
-  await page.locator(`main [data-case="${alternative}"]`).first().click();
-  await page.locator(`#evidence-dialog [data-choose-route="${alternative}"]`).click();
+  await page.locator('[data-task="04"]').first().click();
+  await page.locator(`[data-route-choice][data-choose-route="${alternative}"]`).click();
   await page.locator('#route-change-dialog').waitFor();
   await page.locator('#route-change-dialog [value="cancel"]').click();
   ok(`${route}/${width}: cancelling route change preserves the current plan`, (await readState(page)).current.route === route && (await readState(page)).current.plan.temperature === '31');
   await closeEvidence(page);
-  await page.locator(`main [data-case="${alternative}"]`).first().click();
-  await page.locator(`#evidence-dialog [data-choose-route="${alternative}"]`).click();
+  await page.locator(`[data-route-choice][data-choose-route="${alternative}"]`).click();
   await page.locator('#route-change-dialog [value="confirm"]').click();
   await closeEvidence(page);
   await page.waitForFunction(({key,route}) => JSON.parse(localStorage.getItem(key)).current.route === route, {key:stateKey,route:alternative});
   const rerouted = await readState(page);
-  ok(`${route}/${width}: confirmed route change restarts current quests but keeps saved work`, rerouted.current.route === alternative && Object.keys(rerouted.current.learning.entries).length === 0 && rerouted.records.length === 1 && Object.keys(rerouted.records[0].learning.entries).length === 24);
+  ok(`${route}/${width}: confirmed route change keeps common learning and invalidates only route-dependent work`, rerouted.current.route === alternative && Object.keys(rerouted.current.learning.entries).length === 4 && rerouted.current.learning.entries['04'].status==='draft' && rerouted.records.length === 1 && Object.keys(rerouted.records[0].learning.entries).length === 24);
   await page.locator('#workspace-more').click();await page.locator('#settings-button').click();
   await page.locator('#reduce-motion').check();
   await page.locator('#settings-dialog [data-close-dialog]').first().click();
   await page.reload();
-  await page.locator('.exploration-scene').waitFor();
+  await page.locator('[data-learning-card="04"]').waitFor();
   ok(`${route}/${width}: reduced-motion preference survives reload`, await page.evaluate(() => document.documentElement.classList.contains('reduce-motion') || document.body.classList.contains('reduce-motion')));
   await page.locator('#tutor-launcher').click();
   await page.keyboard.press('Escape');
@@ -886,10 +830,10 @@ async function adminPassFixture(){
   });
   await page.goto(url);await settleHealth(page);
   for(const act of [1,2]){
-    await page.locator('.intro-pass-details summary').click();
-    page.once('dialog',dialog=>dialog.accept());
-    await page.locator('.intro-pass-form input').fill('admin7');await page.locator('.intro-pass-form [type=submit]').click();
-    ok(`pass fixture: intro${act} records override`,(await readState(page)).current.exploration[`act${act}`]==='admin7');
+    ok(`pass fixture: intro${act} has no shortcut control`,await page.locator('.intro-pass-details,.intro-pass-form').count()===0);
+    const question=(act===1?content.intro.case:content.intro.chemical_limit).question;
+    await page.locator(`[data-act="${act}"][data-choice="${question.answer}"]`).click();
+    ok(`pass fixture: intro${act} records its ordinary answer`,(await readState(page)).current.exploration[`act${act}`]===question.answer);
     await page.locator('[data-action=intro-advance]').click();
   }
   await page.locator('[data-action=begin-quest]').click();await page.locator('#tutor-launcher').click();
@@ -913,6 +857,7 @@ async function adminPassFixture(){
   ok('pass fixture: ordinary answer still invokes evaluation',requests.length===1);
   for(const id of ['02','03','04']){
     if(id!=='02')await page.locator(`.task-actions [data-task="${id}"]`).click();
+    if(id==='04')await page.locator('[data-choose-route="R1"]').click();
     await form.locator('[name=note]').fill('admin7');await form.locator('[type=submit]').click();await form.locator('.learning-feedback').waitFor();
     ok(`pass fixture: ${id} marks local override`,(await readState(page)).current.learning.entries[id].eval.mode==='admin_override');
   }

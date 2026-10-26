@@ -105,14 +105,16 @@ TASK-004仅修订本地老师汇报的表达并验证显示，不新增业务模
 | 总览与不可访问页面 | frontend/student/views/pages.js | yes | TASK-037/039；已有内容/学习状态的只读投影，不再重复学习页导航 |
 | 可操作组件展示 | frontend/student/components.html、components-page.js | yes | TASK-037；生产组件示例，演示数据只在页面内存中使用 |
 | 页面导航工程守卫 | tests/test_navigation.mjs、tests/test_pages_browser.mjs | yes | TASK-037；直达/返回/刷新/续接、锁定页、共享外观、案例/数据/组件跨页验收 |
-| 左下站点控件与导航折叠 | frontend/student/components.js、components.css及现有四HTML挂载点 | yes，TASK-045/046 | 展开时标题/更多及向上菜单，收起时三个56px方形入口并隐藏更多；原生dialog/焦点恢复；sidebarToggle/syncSidebarPanels仅维护展示，旧mountSiteHeader函数名兼容 |
-| 导航组折叠偏好 | localStorage键flavoglycolab.sidebar.v1 | no | quests/workflow两个布尔值，存储失败可继续使用；不属于学习记录/解锁/导出真值，不依赖Paperico运行资产 |
+| 左下站点控件与导航折叠 | frontend/student/components.js、components.css及现有四HTML挂载点 | yes，TASK-045/046/061 | 展开时标题/纯图标更多及向上菜单；主线按钮统一收起/展开两组内容，收起时只留主线与总览两个56px方形入口并隐藏历程和更多；原生dialog/焦点恢复；sidebarToggle/syncSidebarPanels仅维护展示，旧mountSiteHeader函数名兼容 |
+| 导航组折叠偏好 | localStorage键flavoglycolab.sidebar.v1 | no | 单一collapsed布尔值，兼容读取旧quests/workflow双布尔偏好，存储失败可继续使用；不属于学习记录/解锁/导出真值，不依赖Paperico运行资产 |
 | 原创装置示意 | frontend/student/assets/lab-bench.png | yes | imagegen生成装置场景，非实验原件/数据 |
 | 合成难点页文献原图及派生定位 | frontend/student/assets/literature/，sources.json唯一登记原图定位/裁取与SHA | yes，TASK-044 human_direct限本页选图展示 | 三篇既有公开PDF各一图/分面；保留原作者/出版方权利，rights_verified=false、pending_teacher_review；demo-content.json仅为图文展示投影，不复制科学准入真值 |
 | 论文笔记本呈现 | frontend/student/paper-notebook.js、paper-notebook.css及index.html挂载点 | yes，TASK-047/050 | 四图标短便签原生dialog，无header/常驻说明；对应PDF/阅读指导/笔记；复用inquiry阶段矩阵及现有解读，非新来源/学习状态真值 |
 | 论文纯内容阅读 | frontend/student/paper-pdf-reader.js、vendor/pdfjs/及provenance.json | yes，TASK-050；第三方Apache-2.0 | 固定5.4.624，本地worker/canvas/文本层、白底原页、懒渲染/尺寸/回收；同源三PDF原件只读，不改后端，不复制来源准入真值 |
 | 学生论文笔记 | lab-state.js的run.paperNotes | 随现有localStorage/快照/导出，不入Git | 三个source_id各最多8000字符，仅学生自述；旧记录迁移/校验，换路线保留、新实验清空，不作为通过/观测；ADR0009 |
 | 浏览器练习记录 | localStorage键flavoglycolab.workbench.v1 | no | 当前源的用户方案/操作/AI对话；最多12快照；不是教师记录真值 |
+| 共通学习与显式路线选择 | lab-state.js、learning-state.js、quest-state.js；[ADR0011](docs/adr/0011-common-learning-before-route-selection.md) | yes，TASK-059 | route初始null，caseFlowVersion=2标记格式；01—03共通，04及以后按路线；未确认改选保留共通记录/04草稿/首次独立历史，后续依赖失效；旧存档区分默认与显式选择 |
+| 案例与路线四任务呈现 | views/inquiry.js、styles.css、app.js；paper-notebook.js/CSS | yes，TASK-059/061 | 01实验目标，02画布内资料卡/来源，03卡片只打开笔记本及系统对照，04路线决策；内容复用demo-content.json，不另存科学或学习真值；总结单入口进入guided配置阶段。063由styles.css维护右卡内容高度/最大可用高度、底边衔接笔记本入口16px、导师不挤压布局及窄屏流式回退；app.js/index.html管理导师面板和单一启动按钮的原生popover及对话框焦点范围，论文解读/证据区排版与指定删减仍归paper-notebook.js/CSS |
 | 模型服务私有配置 | data/private/runtime/tutor.json | no | 0600；服务器端读取，不暴露给student或导出Git |
 | TASK-012验收证据 | temp/task-012/ | no | 概念、截图、真实模型探针、测试、保护与部署检查；保留审计 |
 | TASK-010验收证据 | temp/task-010/ | no | 概念/渲染图、比对表、浏览器/治理日志与保护SHA，仅本次工程证据 |

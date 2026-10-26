@@ -58,3 +58,26 @@
  .notebook-pdf-content{padding:34px 14px 24px}.notebook-pdf-status,.notebook-pdf-recovery{margin:16px 14px}
  .notebook-writing{padding:16px;overflow:visible}.notebook-note{min-height:250px}#notebook-page-compare{padding:24px 12px}
 }
+
+/* Route comparison and paper interpretation share the notebook. */
+.notebook-comparison-intro{font-size:var(--fg-text-base);line-height:1.85;color:var(--muted);max-width:86ch;margin:8px 0 24px}
+.notebook-comparison-intro p+p{margin-top:8px}
+.notebook-condition-comparison{margin:36px 0 16px;font-size:var(--fg-text-base);line-height:1.85}
+.notebook-condition-comparison h3{font-size:var(--fg-text-lg);margin-bottom:12px}
+.notebook-condition-comparison>p{color:var(--muted);margin:12px 0}
+.notebook-condition-comparison .analysis-table{min-width:800px}
+.notebook-evidence-boundary{border-left:3px solid var(--teal);padding:8px 16px}
+.notebook-paper-digest{margin:24px 0;padding-top:20px;border-top:1px solid var(--line)}
+.notebook-paper-digest h4{font-size:var(--fg-text-lg);font-weight:650;margin:0 0 14px;color:var(--ink)}
+.notebook-reading-guide .notebook-paper-digest p{margin:0 0 16px;line-height:1.95}
+.notebook-paper-digest ul{display:grid;gap:10px;margin:0 0 18px;padding-left:22px;line-height:1.85}
+.notebook-paper-digest li::marker{color:var(--teal)}
+.notebook-paper-digest>a{display:inline-block;font-size:var(--fg-text-sm);text-underline-offset:4px}
+.notebook-reading-guide .notebook-research-evidence{margin:24px 0 8px;padding-top:18px;border-top:1px solid var(--line);line-height:1.85}
+.notebook-research-evidence summary{font-size:var(--fg-text-base);font-weight:650;padding:4px 0}
+.notebook-research-evidence dl{margin:18px 0 0}
+.notebook-research-evidence dt{font-size:var(--fg-text-sm);font-weight:650;color:var(--ink);margin:20px 0 6px}
+.notebook-research-evidence dt:first-child{margin-top:0}
+.notebook-research-evidence dd{color:var(--muted);margin:0}
+.notebook-research-evidence ul{display:grid;gap:10px;margin:0;padding-left:22px}
+.notebook-research-evidence li::marker{color:var(--teal)}

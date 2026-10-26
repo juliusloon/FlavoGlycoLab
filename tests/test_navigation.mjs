@@ -2,14 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {parsePage,pageAccess,resumePage,stageAccessible} from '../frontend/student/navigation.js';
-import {freshRun,answerIntroAct,recordIntroPaper} from '../frontend/student/lab-state.js';
+import {freshRun,selectRoute,answerIntroAct,recordIntroPaper} from '../frontend/student/lab-state.js';
 import {draftLearning,checkLearning} from '../frontend/student/learning-state.js';
 import * as components from '../frontend/student/components.js';
 import {overviewPage} from '../frontend/student/views/pages.js';
 const {button,statusBadge,siteHeader,settingsDialog}=components;
 const content=JSON.parse(fs.readFileSync(new URL('../frontend/student/content/demo-content.json',import.meta.url)));
 function introduced(){const run=freshRun();answerIntroAct(run,1,content.intro.case.question.answer,true);answerIntroAct(run,2,content.intro.chemical_limit.question.answer,true);recordIntroPaper(run,'R1');return run;}
-function completeStage(run,stage){for(const t of content.learning.steps.filter(t=>t.stage===stage)){if(t.choices.length)draftLearning(run,t.id,'choice',t.route_answers?.[run.route]??t.answer);draftLearning(run,t.id,'note','逐项核对来源、研究方向与证据范围。');checkLearning(run,t);}}
+function completeStage(run,stage){for(const t of content.learning.steps.filter(t=>t.stage===stage)){if(t.id==='04'&&!run.route)selectRoute(run,'R1');if(t.choices.length)draftLearning(run,t.id,'choice',t.route_answers?.[run.route]??t.answer);draftLearning(run,t.id,'note','逐项核对来源、研究方向与证据范围。');checkLearning(run,t);}}
 
 test('every intro, stage and task has its own canonical URL; invalid URLs stay unknown',()=>{
   for(let i=1;i<=3;i++)assert.equal(parsePage(`#/intro/${i}`).act,i);
@@ -26,7 +26,7 @@ test('fresh and partial runs cannot bypass intro, task order or stage prerequisi
   const ready=introduced();
   assert.equal(pageAccess(parsePage('#/task/01'),ready,content).allowed,true);
   assert.equal(pageAccess(parsePage('#/task/02'),ready,content).allowed,false);
-  ready.routeConfirmed=true;assert.equal(stageAccessible(ready,content,1),false);
+  selectRoute(ready,'R1');ready.routeConfirmed=true;assert.equal(stageAccessible(ready,content,1),false);
   completeStage(ready,0);assert.equal(stageAccessible(ready,content,1),true);
   assert.equal(pageAccess(parsePage('#/task/05'),ready,content).allowed,true);
 });

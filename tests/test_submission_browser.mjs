@@ -2,7 +2,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
-import {freshState,STORAGE_KEY,confirmRoute,addMaterial,RECIPES,confirmAssembly,confirmPlan,operate} from '../frontend/student/lab-state.js';
+import {freshState,STORAGE_KEY,selectRoute,confirmRoute,addMaterial,RECIPES,confirmAssembly,confirmPlan,operate} from '../frontend/student/lab-state.js';
 import {draftLearning,checkLearning} from '../frontend/student/learning-state.js';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const content=JSON.parse(await fs.readFile(new URL('../frontend/student/content/demo-content.json',import.meta.url),'utf8'));
@@ -12,7 +12,7 @@ const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXEC
 const checks=[],errors=[],requests=[];
 const ok=(name,value)=>{assert.ok(value,name);checks.push(name);};
 const task=id=>content.learning.steps.find(t=>t.id===id);
-function record(run,id){const t=task(id);run.stage=t.stage;draftLearning(run,id,'note',`任务${id}：依据本路线文献核对反应条件，保留未知与缺失证据。`);if(t.choices.length)draftLearning(run,id,'choice',t.route_answers?.[run.route]??t.answer);checkLearning(run,t);}
+function record(run,id){if(id==='04'&&!run.route)selectRoute(run,'R1');const t=task(id);run.stage=t.stage;draftLearning(run,id,'note',`任务${id}：依据本路线文献核对反应条件，保留未知与缺失证据。`);if(t.choices.length)draftLearning(run,id,'choice',t.route_answers?.[run.route]??t.answer);checkLearning(run,t);}
 function fixture(to=6){const s=freshState(),r=s.current;r.exploration={step:3,act1:'ok',act2:'ok',revealed:true,routeChosen:true};for(let n=1;n<=4;n++)record(r,String(n).padStart(2,'0'));confirmRoute(r,r.learning.entries['04'].note);for(let n=5;n<=to;n++)record(r,String(n).padStart(2,'0'));return s;}
 async function open(state,hash,width=1440){const ctx=await browser.newContext({viewport:{width,height:960}}),page=await ctx.newPage();page.setDefaultTimeout(8000);page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('503 (Service Unavailable)'))errors.push(m.text());});await page.addInitScript(({key,state})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(state));},{key:STORAGE_KEY,state});await page.route('**/api/health',r=>r.fulfill({json:{configured:true}}));await page.route('**/api/tutor',async route=>{const payload=route.request().postDataJSON();if(payload.kind!=='evaluate'){requests.push({payload});await route.fulfill({json:{mode:'model',answer:'夹具：补充对照与来源。'}});return;}const slot={payload,route};requests.push(slot);await new Promise(resolve=>slot.finish=resolve);try{if(slot.reply==='error')await route.fulfill({status:503,json:{error:'fixture unavailable'}});else await route.fulfill({json:{mode:slot.reply?.mode||'model',evaluation:{eval_id:slot.reply?.evalId||payload.evaluation.eval_id,pass:slot.reply?.pass??true,rubric_hits:[],missing:[],guidance:[],evidence_refs:[]}}});}catch{/* aborted old request */}});await page.goto(url+hash);await page.waitForFunction(()=>document.querySelector('#ai-status')?.textContent.includes('实时辅导'));return {ctx,page};}
 const stateOf=page=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),STORAGE_KEY);
@@ -26,8 +26,8 @@ try{
  ok('one request and loading with no next task',requests.length===1&&await page.locator('.learning-form [type=submit]').isDisabled()&&await page.locator('.task-actions [data-task="08"]').count()===0);
  await finish(page,first);
  ok('passed07 updates progress and enables08',await page.locator('.task-actions [data-task="08"]').isVisible()&&(await page.locator('#quest-panel').textContent()).includes('3 / 4'));
- await page.locator('.task-actions [data-task="08"]').click();ok('new task empty with explicit notice',await page.locator('[name=note]').inputValue()===''&&(await page.locator('.draft-notice').textContent()).includes('已清空'));
- const draft='任务08独有草稿，返回后仍应保留原文。';await page.locator('[name=note]').fill(draft);await page.locator('#quest-panel [data-task="07"]').click();await page.locator('#quest-panel [data-task="08"]').click();ok('task switching restores only its own draft',await page.locator('[name=note]').inputValue()===draft&&(await page.locator('.draft-notice').textContent()).includes('已载入草稿'));
+ await page.locator('.task-actions [data-task="08"]').click();ok('new task starts empty without redundant notice',await page.locator('[name=note]').inputValue()===''&&await page.locator('.draft-notice').count()===0);
+ const draft='任务08独有草稿，返回后仍应保留原文。';await page.locator('[name=note]').fill(draft);await page.locator('#quest-panel [data-task="07"]').click();await page.locator('#quest-panel [data-task="08"]').click();ok('task switching restores only its own draft',await page.locator('[name=note]').inputValue()===draft);
  await page.locator('#quest-panel [data-task="07"]').click();const stale=await answer(page,'07','旧提交等待回复，随后会编辑为新的草稿。');const edited='修改后的独立草稿，旧回复不得覆盖或清空。';await page.locator('[name=note]').fill(edited);stale.reply={pass:true};stale.finish();await page.waitForTimeout(150);
  ok('edit cancels pending and rejects stale reply',await page.locator('[name=note]').inputValue()===edited&&(await stateOf(page)).current.learning.entries['07'].status==='draft'&&await page.locator('.eval-panel.passed').count()===0&&!await page.locator('.learning-form [type=submit]').isDisabled());
  const fail=await answer(page,'07');await finish(page,fail,{pass:false});ok('failed evaluation blocks next and permits retry',await page.locator('.eval-panel.failed').isVisible()&&await page.locator('.task-actions [data-task="08"]').count()===0);

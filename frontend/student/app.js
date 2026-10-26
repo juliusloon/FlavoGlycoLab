@@ -90,7 +90,8 @@ async function attachMolecule(version){
   const details=document.createElement('details');details.className='structure-source';
   const summary=document.createElement('summary');summary.textContent='结构来源与 SMILES';details.append(summary);
   if(next.data){const link=document.createElement('a');link.href=next.data.source_url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=[next.data.source_id,next.data.crosscheck_id].filter(Boolean).join(' · ');details.append(link);const code=document.createElement('code');code.textContent=next.data.smiles;details.append(code);}
-  element.closest('.molecule-stage').append(details);
+  const sourceHost=main.querySelector('#identity-detail [data-structure-source]')||main.querySelector('#identity-detail')||element.closest('.molecule-stage');
+  sourceHost.append(details);
  }catch{toast('三维结构暂不可用，可继续查看案例与身份说明。',true);}
 }
 function render(moveFocus=false){
@@ -270,7 +271,7 @@ main.addEventListener('submit',event=>{
    const task=content.learning.steps.find(t=>t.id===id),fields=collect(form);
    const override=isAdminPass(fields.note);
    if(pendingEval?.taskId===id)return;
-   if(id==='04'&&!run.exploration?.routeChosen&&!override){main.querySelector('[data-route-choice]')?.focus();throw Error('请先在回答框上方选择规划路线，再提交下方的选择依据。');}
+   if(id==='04'&&!run.route){main.querySelector('[data-route-choice]')?.focus();throw Error('请先选择规划路线，再填写选择依据。');}
    draftLearning(run,id,'note',fields.note||'');if(task.choices.length)draftLearning(run,id,'choice',fields.choice||'');
    checkLearning(run,task);
    if(override)log(run,'通行词放行',`任务${id} · admin_override`);
@@ -289,7 +290,7 @@ main.addEventListener('submit',event=>{
  }
  guard(()=>{
   if(['plan-form','reflection-form'].includes(form.id))for(const [field,value] of Object.entries(collect(form)))if(isAdminPass(value))log(run,'通行词放行',`${form.id}/${field} · admin_override`);
-  if(form.id==='route-form'){const reason=run.learning.entries['04']?.note||run.reason;confirmRoute(run,reason);}
+  if(form.id==='route-form'){const reason=run.learning.entries['04']?.note||run.reason;enterGuided(run,content);confirmRoute(run,reason);}
   if(form.classList.contains('material-form')){addMaterial(run,form.dataset.kind,form.elements.material.value);toast('✓ 已加入体系，可继续选择下一项。');}
   if(form.id==='plan-form')confirmPlan(run,collect(form),content);
   if(form.id==='analysis-form'){if(!form.elements.reviewed.checked)throw Error('请确认已区分操作记录和实验观测。');run.analysisReviewed=true;run.stage=5;log(run,'核对分析证据','没有对应观测，定量结果保持未知。');if((run.stageMode??'guided')==='guided')completeGuided(run);} // L02: 走完参照流程即解锁开放探究。
@@ -344,13 +345,32 @@ async function togglePaper(button){
   clearTimeout(slowTimer);status.className='paper-status error';status.textContent='此入口暂未提供论文 PDF 在线阅读。';
  }
 }
-function applyRoute(id){clearTimeout(runTimer);selectRoute(state.current,id);state.current.exploration={...(state.current.exploration||{}),revealed:true,routeChosen:true};activeTask=null;view='workbench';evidenceDialog.close();save();render(true);toast('已选择新的规划路线，请重新核对主线判断。');}
+function applyRoute(id){cancelEvaluation();clearTimeout(runTimer);selectRoute(state.current,id);state.current.exploration={...(state.current.exploration||{}),revealed:true,routeChosen:true};activeTask='04';view='workbench';evidenceDialog.close();save();render();toast('规划路线已更新，前三步学习记录已保留。');}
 function chooseRoute(id){
  if(id===state.current.route){state.current.exploration={...(state.current.exploration||{}),revealed:true,routeChosen:true};evidenceDialog.close();save();render();toast('已确认这条规划路线。');return;}
- if(Object.keys(state.current.learning.entries).length||state.current.routeConfirmed){pendingRoute=id;evidenceDialog.close();document.querySelector('#route-change-dialog').showModal();}
+ if(state.current.routeConfirmed||state.current.stage>0){pendingRoute=id;evidenceDialog.close();document.querySelector('#route-change-dialog').showModal();}
  else applyRoute(id);
 }
-function toggleTutor(open){tutor.hidden=!open;tutorLauncher.setAttribute('aria-expanded',String(open));if(open){renderTutor();question.focus();}else tutorLauncher.focus();}
+// Keep the fixed tutor in the top layer and inside the active modal's focus scope.
+function syncTutorLayer(){
+ const modal=[...document.querySelectorAll('dialog[open]')].findLast(dialog=>dialog.matches(':modal'));
+ const parent=modal||document.body;
+ for(const element of [tutorLauncher,tutor]){
+  if(element.parentElement!==parent){element.hidePopover();parent.append(element);}
+  if(!element.hidden&&!element.matches(':popover-open'))element.showPopover();
+ }
+}
+const tutorLayerObserver=new MutationObserver(syncTutorLayer);
+for(const dialog of document.querySelectorAll('dialog'))tutorLayerObserver.observe(dialog,{attributes:true,attributeFilter:['open']});
+syncTutorLayer();
+function toggleTutor(open){
+ if(!open)tutor.hidePopover();
+ tutor.hidden=!open;tutorLauncher.setAttribute('aria-expanded',String(open));
+ syncTutorLayer();
+ if(open){renderTutor();question.focus();}
+ else tutorLauncher.focus();
+}
+tutor.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();toggleTutor(false);}});
 function click(event){
  const gapInput=event.target.closest('input[data-action="analysis-add-gap"]');
  if(gapInput){ // TASK-026 回合4：勾选/取消证据缺口。
@@ -623,8 +643,7 @@ async function init(){
  catch{main.innerHTML='<div class="load-error"><h1>实验内容暂时无法加载</h1><p>检查网络连接后重试，本机记录不会被清空。</p><button class="button primary" data-action="reload">重新加载</button></div>';return;}
  notebook=mountPaperNotebook({dialog:document.querySelector('#paper-notebook'),launcher:document.querySelector('#notebook-launcher'),content,getRun:()=>state.current,
   onNote(id,note){state.current.paperNotes??={};state.current.paperNotes[id]=note.slice(0,8000);save();return !saveError&&!loadWarning;},
-  onRead(id){openPaper=id;renderTutor();},
-  onAsk(id){openPaper=id;tutorRole='literature_analyst';question.value='请结合这篇论文解读本步任务';toggleTutor(true);}
+  onRead(id){openPaper=id;renderTutor();}
  });
  const retro=mountRetroImport({content,getRun:()=>state.current,attach(value){state.current.retroImport=value;log(state.current,'接收逆合成来源',value.packet.selection.source_id);save();render();toast('计算来源已附到当前练习。');},onPapers:()=>{showEvidence();if(!introProgress(state.current).complete)for(const button of evidenceDialog.querySelectorAll('[data-choose-route]')){button.disabled=true;button.textContent='完成分子导入后选择路线';}},onExport:packet=>download('FlavoRetro-handoff.json',JSON.stringify(packet,null,2),'application/json'),onError:message=>toast(message,true)});
  if(incomingNew){document.querySelector('#workspace-more').focus();document.querySelector('#confirm-dialog').showModal();}

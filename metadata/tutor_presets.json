@@ -4,13 +4,13 @@
  "boundary": "机器反馈preset · 待教师审定 · 不构成成绩",
  "steps": {
   "01": {
-   "objective": "写出自己想比较的一个具体方面（如底物、催化剂、供体或反应时间），并说明该比较需要哪类证据。",
+   "objective": "写清本次实验以异槲皮苷为目标的生物催化制备任务，并说明判断任务完成需要记录哪些结果。",
    "rubric": [
-    {"id": "r1", "point": "比较点具体涉及底物、催化剂、供体或时间中的至少一个方面", "required": true},
-    {"id": "r2", "point": "明确指出需要的证据类型（如条件适用范围、产物身份或定量指标）", "required": true}
+    {"id": "r1", "point": "明确目标产物为异槲皮苷，并说明本次制备方案设计或流程演练的目标", "required": true},
+    {"id": "r2", "point": "说明需要的结果记录，如制备过程、产物鉴定或目标完成的证据", "required": true}
    ],
    "min_hits_required": 2,
-   "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的双酶催化体系与另两篇的路线有何本质不同？"}
+   "paper_focus": {"source_id": "Pei2019", "question": "本次制备研究的目标产物和判断制备结果所需的证据是什么？"}
   },
   "02": {
    "objective": "说明芦丁与异槲皮苷在糖基组成或连接上的差别，并解释一个容易混淆的地方。",
@@ -31,10 +31,10 @@
    "paper_focus": {"source_id": "Pei2019", "question": "Pei2019的催化体系与另两篇的路线有何本质不同？"}
   },
   "04": {
-   "objective": "为一条主张选出能支持它的来源，并说明该来源能支持什么、不能支持什么。",
+   "objective": "明确选择一条制备路线，结合原料或催化体系说明理由，并指出支持证据及局限。",
    "rubric": [
-    {"id": "r1", "point": "主张与来源形成明确的对应关系", "required": true},
-    {"id": "r2", "point": "说明该来源的支持范围或局限", "required": true}
+    {"id": "r1", "point": "明确所选路线，并结合原料或催化体系说明理由", "required": true},
+    {"id": "r2", "point": "说明支持选择的文献证据或仍需核对的问题", "required": true}
    ],
    "min_hits_required": 2,
    "paper_focus": {"source_id": "Zhang2015", "question": "Zhang2015的证据能支持哪类主张、不能支持哪类主张？"}

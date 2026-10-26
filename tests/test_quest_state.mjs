@@ -11,6 +11,7 @@ const firstStage = stageTasks(content, 0);
 const task = id => content.learning.steps.find(item => item.id === id);
 function record(run, id, choice) {
   const item = task(id);
+  if(id==='04'&&!run.route)selectRoute(run,'R1');
   const oldStage = run.stage;
   run.stage = item.stage;
   if (item.choices.length) draftLearning(run, id, 'choice', choice ?? item.route_answers?.[run.route] ?? item.answer);
@@ -67,6 +68,7 @@ test('drafting a revision withdraws its gate until it is checked again', () => {
 test('self-reflections advance practice only after recording a reason and have a distinct submitted status', () => {
   const run = freshRun();
   for (const item of firstStage.slice(0, 3)) record(run, item.id);
+  selectRoute(run,'R1');
   draftLearning(run, '04', 'note', '我先独立比较原料和催化体系，再考虑对应文献证据。');
   assert.equal(taskPassed(run, task('04')), false);
   assert.equal(nextTaskId(run, content, '04'), null);
@@ -82,18 +84,13 @@ test('self-reflections advance practice only after recording a reason and have a
   assert.equal(taskPassed(run, task('04')), false);
 });
 
-test('route-specific answers are checked against the current route as well as recorded flags', () => {
-  const run = freshRun();
-  record(run, '03');
-  assert.equal(taskPassed(run, task('03')), true);
-  run.route = 'R2'; // Simulate an old or inconsistent record that escaped normal invalidation.
-  assert.equal(taskPassed(run, task('03')), false);
-  assert.equal(taskStatus(run, task('03')), 'stale');
-  run.learning.entries['03'].route = 'R2';
-  assert.equal(taskPassed(run, task('03')), false);
-  assert.equal(taskStatus(run, task('03')), 'retry');
-  record(run, '03');
-  assert.equal(taskPassed(run, task('03')), true);
+test('common route comparison remains valid across route choices, while later answers are route-bound', () => {
+  const run=freshRun();record(run,'03');
+  assert.equal(run.route,null);assert.equal(taskPassed(run,task('03')),true);
+  selectRoute(run,'R2');assert.equal(taskPassed(run,task('03')),true);
+  record(run,'05');assert.equal(taskPassed(run,task('05')),true);
+  run.route='R3';assert.equal(taskPassed(run,task('05')),false);
+  assert.equal(taskStatus(run,task('05')),'stale');
 });
 
 test('legacy out-of-order and wrong recorded answers cannot bypass sequence after reload', () => {
@@ -136,7 +133,7 @@ test('upstream invalidation preserves early progress and historical records but 
   assert.equal(questProgress(run, content, 4).completed, 0);
   assert.equal(taskPassed(snapshot, task('18')), true);
   selectRoute(run, 'R2');
-  assert.equal(questProgress(run, content, 0).completed, 0);
+  assert.equal(questProgress(run, content, 0).completed, 3);
   assert.equal(questProgress(snapshot, content, 0).allComplete, true);
 });
 
@@ -295,7 +292,7 @@ test('L02: each route gate is independent and any route can be the first learned
     assert.equal(gate.complete, false);
     assert.equal(gate.total, 4);
   }
-  for (const item of firstStage) record(run, item.id); // 以默认 R1 为首篇完成前置学习。
+  for (const item of firstStage) record(run, item.id); // 任务04才明确选定R1。
   assert.equal(routeLearningGate(run, content, 'R1').complete, true);
   assert.equal(routeLearningGate(run, content, 'R2').complete, false);
   assert.equal(routeLearningGate(run, content, 'R3').complete, false);
@@ -350,7 +347,7 @@ test('admin7 passes every task on each route without choosing or inventing a mat
       if(item.choices.length)assert.equal(entry.matches,false);
     }
     assert.deepEqual(run.learning.independent,{});
-    run.stage=0; // Model the learning records without fabricating operation prerequisites.
+    run.stage=0;run.exploration={routeChosen:true}; // Model the learning records without fabricating operation prerequisites.
     const restored=hydrate(JSON.stringify(state)).current;
     for(const item of content.learning.steps)assert.equal(taskPassed(restored,item),true);
     assert.match(learningMarkdown(restored),/admin_override/);
@@ -364,7 +361,7 @@ test('passphrase is exact, recorded, route-bound, and revoked by edits', () => {
   const run=freshRun();draftLearning(run,'01','note','admin7');
   assert.equal(taskPassed(run,task('01')),false);
   checkLearning(run,task('01'));assert.equal(nextTaskId(run,content,'01'),'02');
-  assert.equal(routeLearningGate(run,content,'R2').completed,0);
+  assert.equal(routeLearningGate(run,content,'R2').completed,1);
   draftLearning(run,'01','note','普通的新草稿内容');
   assert.equal(taskPassed(run,task('01')),false);
   assert.equal(run.learning.entries['01'].eval,undefined);
@@ -401,4 +398,47 @@ test('all five local structure assets preserve distinct identities and audited g
     }
   }
   assert.equal(keys.size,5);
+});
+
+test('TASK-059: no route exists before decision, and all three first choices preserve common responses',()=>{
+ for(const id of ['R1','R2','R3']){
+  const run=freshRun();assert.equal(run.route,null);
+  for(const t of firstStage.slice(0,3)){record(run,t.id);assert.equal(run.route,null);}
+  const common=copy(run.learning.entries);assert.equal(questProgress(run,content).completed,3);
+  selectRoute(run,id);assert.deepEqual(run.learning.entries,common);
+  assert.equal(canOpenTask(run,content,'04'),true);record(run,'04');
+  assert.equal(questProgress(run,content).allComplete,true);assert.equal(run.route,id);
+ }
+});
+test('TASK-059: changing a draft decision retains common work, notes and first independent history',()=>{
+ const run=freshRun();for(const t of firstStage.slice(0,3))record(run,t.id);
+ selectRoute(run,'R2');record(run,'04');
+ const note=run.learning.entries['04'].note,first=copy(run.learning.independent['04']);
+ const common=copy(Object.fromEntries(['01','02','03'].map(id=>[id,run.learning.entries[id]])));
+ selectRoute(run,'R3');assert.equal(questProgress(run,content).completed,3);
+ assert.equal(run.learning.entries['04'].status,'draft');assert.equal(run.learning.entries['04'].note,note);
+ assert.deepEqual(run.learning.independent['04'],first);
+ for(const id of ['01','02','03'])assert.deepEqual(run.learning.entries[id],common[id]);
+ assert.equal(canOpenTask(run,content,'04'),true);
+});
+test('TASK-059: null routes hydrate only before planning; explicit and phantom legacy selections differ',()=>{
+ const s=freshState();record(s.current,'01');assert.equal(hydrate(JSON.stringify(s)).current.route,null);
+ s.current.route='R1';assert.equal(hydrate(JSON.stringify(s)).current.route,null);
+ s.current.exploration={routeChosen:true};assert.equal(hydrate(JSON.stringify(s)).current.route,'R1');
+ s.current.route=null;s.current.routeConfirmed=true;assert.throws(()=>hydrate(JSON.stringify(s)));
+ s.current.routeConfirmed=false;s.current.stage=1;assert.throws(()=>hydrate(JSON.stringify(s)));
+});
+test('TASK-059: a passphrase cannot invent a route decision',()=>{
+ const run=freshRun();draftLearning(run,'04','note','admin7');assert.throws(()=>checkLearning(run,task('04')),/路线/);
+ assert.equal(run.route,null);assert.equal(taskPassed(run,task('04')),false);
+});
+
+test('TASK-059: old pre-task04 choices migrate to empty while actual old decisions remain',()=>{
+ const s=freshState();selectRoute(s.current,'R1');record(s.current,'01');delete s.current.caseFlowVersion;
+ let migrated=hydrate(JSON.stringify(s)).current;
+ assert.equal(migrated.route,null);assert.equal(migrated.caseFlowVersion,2);assert.ok(migrated.learning.entries['01']);
+ record(s.current,'04');delete s.current.caseFlowVersion;
+ migrated=hydrate(JSON.stringify(s)).current;assert.equal(migrated.route,'R1');assert.equal(migrated.learning.entries['04'].status,'recorded');
+ const fresh=freshState();selectRoute(fresh.current,'R3');assert.equal(hydrate(JSON.stringify(fresh)).current.route,'R3');
+ s.current.caseFlowVersion=99;assert.throws(()=>hydrate(JSON.stringify(s)),/版本/);
 });

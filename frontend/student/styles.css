@@ -446,17 +446,67 @@ progress.quest-progress{display:block;width:100%;height:3px;border:0;appearance:
 }
 
 /* TASK-053: visible task state, adjacent assembly feedback and analysis steps. */
-.draft-notice{display:block;padding:10px 12px;background:#edf5f4;border-radius:6px;color:#264e50;font-size:14px;line-height:1.6}
 .route-choice-field{padding:0;border:0;margin:0 0 18px;min-width:0}.route-choice-field legend{font-size:14px;font-weight:600;margin-bottom:10px}.route-choice-buttons{display:flex;flex-wrap:wrap;gap:8px}.route-choice-buttons .button{white-space:normal;text-align:left}.route-choice-buttons [aria-pressed=true]{background:#dcf1e8;border-color:#27775f;color:#194b3b}.route-choice-field p,.gate-guidance{font-size:14px;color:#345854;line-height:1.7}
 .task-actions [aria-busy=true]{cursor:progress;opacity:.85}.eval-panel.evaluating{border-left:3px solid #27775f}.eval-panel.evaluating p::before{content:'';display:inline-block;width:12px;height:12px;border:2px solid #b5d6ca;border-top-color:#27775f;border-radius:50%;margin-right:8px;animation:eval-spin 1s linear infinite}@keyframes eval-spin{to{transform:rotate(360deg)}}
-.intro-pass-details{margin-top:20px;font-size:13px;color:#49625b}.intro-pass-details summary{cursor:pointer}.intro-pass-details .intro-pass-form{margin-top:12px}
 .material-picker{display:flex;gap:8px;align-items:stretch}.material-picker select{min-width:0;flex:1}.material-picker .button{flex-shrink:0;padding-inline:12px}.material-status{margin:0;font-size:13px;line-height:1.6;color:#49625b}.material-form.added .material-status{color:#1d624b;font-weight:600}.material-form.added .material-picker{border-radius:6px;outline:2px solid #86bda6;outline-offset:3px;animation:material-added .4s ease-out}@keyframes material-added{from{background:#d9f2dc;transform:translateY(2px)}to{transform:translateY(0)}}
 .stage-mode-badge .mode-chip{font-size:14px;font-weight:650;color:#174e3a;background:#ddf0e7;padding:8px 12px}.stage-mode-badge .muted{font-size:14px;color:#3e5c50}
 .analysis-samples{border:1px solid var(--line);border-radius:8px;margin:18px 0;padding:12px 16px}.analysis-samples>summary{cursor:pointer;font-size:14px;font-weight:600;color:#34564b}.analysis-samples .analysis-layout{margin-top:14px}.analysis-tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);padding-bottom:10px;flex-wrap:wrap}.analysis-tabs [role=tab]{flex:1;min-width:110px;border:1px solid var(--line);background:#f7f9f8;border-radius:6px;padding:11px 8px;color:#38594c;font-size:14px;cursor:pointer}.analysis-tabs [aria-selected=true]{background:#def0e6;border-color:#39785d;color:#174b34;font-weight:650}.analysis-tabs [role=tab]:focus-visible{outline:2px solid #27775f;outline-offset:2px}.bench-round[hidden]{display:none}.bench-blacklist{padding-block:12px}.independent-status{margin:0;padding:8px 18px;color:#2b5b48;background:#edf6f0;font-size:13px;line-height:1.6}
 .molecule-stage [data-molecule=highlight][aria-pressed=true]{background:#fff0e8;color:#aa3b20;border-color:#e4522b}.molecule-stage .molecule-viewer-status:not(:empty){background:#fffffff2;padding:5px 8px;border-radius:4px;color:#963e22!important;font-weight:600}
-@media(min-width:1100px){body:has(#tutor-panel:not([hidden])) .workspace{padding-right:calc(min(385px,28vw) + 42px)}.tutor{width:min(385px,28vw)}}
+@media(min-width:1100px){.tutor{width:min(385px,28vw)}}
 @media(max-width:600px){.material-picker{flex-wrap:wrap}.material-picker select{flex-basis:65%}.material-picker .button{flex:1}.analysis-tabs{display:grid;grid-template-columns:1fr 1fr}.analysis-tabs [role=tab]{min-width:0}.tutor{inset:8px 8px auto;width:calc(100% - 16px);height:calc(100dvh - 16px);max-height:none}.independent-status{padding:8px 14px}}
 @media(prefers-reduced-motion:reduce){.eval-panel.evaluating p::before,.material-form.added .material-picker{animation:none}}.reduce-motion .eval-panel.evaluating p::before,.reduce-motion .material-form.added .material-picker{animation:none}
-@media(min-width:1100px) and (max-width:1499px){body:has(#tutor-panel:not([hidden])) .task-view{grid-template-columns:minmax(0,1fr)}body:has(#tutor-panel:not([hidden])) .task-rail{position:static;max-height:none}}
 .molecule-fallback svg .molecule-highlight{stroke:#e4522b!important;stroke-width:4px!important;filter:drop-shadow(0 0 2px #e4522b55)}.molecule-fallback svg path.molecule-highlight:not([class*="bond-"]){fill:#e4522b!important;stroke:none!important}
 .molecule-fallback .molecule-svg{width:100%;height:calc(100% - 40px)}
+
+/* TASK-059: one purpose per case task, with the molecular canvas filling its workspace. */
+.mission-brief{display:grid;gap:10px;max-width:64ch;margin-top:28px;font-size:var(--fg-text-base);line-height:1.85}
+.mission-brief h3{font-size:var(--fg-text-lg);margin-top:12px}.mission-brief p{color:var(--muted)}
+[data-learning-card="01"] .task-guidance p{font-size:var(--fg-text-base);line-height:1.85;margin-top:14px;color:var(--muted)}
+[data-learning-card="02"] .task-narrative{display:flex;flex-direction:column}
+[data-learning-card="02"] .task-title{margin-bottom:12px}
+[data-learning-card="02"] .narr-page-title{display:none}
+.identity-comparison{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0}
+.identity-comparison .identity-tile{padding:12px 7px;min-height:48px;font-size:var(--fg-text-sm)}
+.identity-model{display:flex;flex-direction:column;min-height:620px;height:calc(100dvh - 220px);position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--fg-radius-panel);overflow:hidden}
+.identity-overlay{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 16px 0;position:relative;z-index:2;pointer-events:none}
+.identity-overlay>*{pointer-events:auto}
+.identity-overlay .identity-detail{margin:0;padding:16px 18px;width:min(460px,70%);min-height:0;background:#f7faf8ed;border:1px solid var(--line);box-shadow:0 5px 18px #17352f0c;font-size:var(--fg-text-sm);line-height:1.7}
+.identity-overlay .identity-detail h3{font-size:var(--fg-text-lg);margin-bottom:8px}
+.identity-overlay .identity-facts{margin:8px 0}.identity-overlay .identity-facts>div{padding:3px 0}
+.identity-overlay .molecule-toolbar{display:flex;flex-direction:column;gap:8px;margin:0;align-items:stretch;padding:0;flex-shrink:0}
+.identity-overlay .molecule-toolbar button{background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:8px;box-shadow:0 4px 14px #17352f08;white-space:nowrap}
+.identity-model #molecule-viewer{height:auto;min-height:300px;flex:1;width:100%}
+.identity-model .structure-source{margin-top:10px;padding:0;font-size:var(--fg-text-xs)}
+.identity-model .structure-source code{display:block;overflow-wrap:anywhere;word-break:break-all;margin-top:8px;max-height:110px;overflow:auto}
+.identity-model .molecule-smiles{display:none}
+.route-reading-entry{margin:20px 0;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:var(--fg-text-sm);color:var(--muted)}
+.route-decision>p{line-height:1.85;color:var(--muted);margin-bottom:18px}
+.route-decision .route-choice-field{margin-bottom:24px}
+[data-learning-card="04"] .answer-reason{margin-top:0}
+[data-learning-card="04"] .answer-reason>span{font-size:var(--fg-text-base);font-weight:400;line-height:1.85;margin-bottom:14px}
+.route-summary-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:32px;align-items:stretch}
+.completion-summary{padding:28px 0}.completion-summary p{color:var(--muted);line-height:1.85;margin:12px 0}
+.route-summary-grid .initial-decision{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--fg-radius-panel);padding:28px}
+.initial-decision .text-button{margin-top:18px}.summary-next-step{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:32px;border-top:1px solid var(--line);margin-top:32px;padding-top:28px;line-height:1.85}
+.summary-next-step h2,.summary-next-step h3{font-size:var(--fg-text-lg);margin-bottom:10px}.summary-next-step p{color:var(--muted);margin-bottom:18px}
+@media(max-width:900px){.identity-model{height:680px;min-height:600px}.identity-overlay .identity-detail{width:min(460px,75%)}}
+@media(max-width:620px){.identity-comparison{grid-template-columns:repeat(3,minmax(0,1fr))}.identity-model{height:auto;min-height:650px}.identity-overlay{display:block;padding:12px 12px 0}.identity-overlay .identity-detail{width:100%;max-width:none}.identity-overlay .molecule-toolbar{flex-direction:row;margin-top:10px}.identity-overlay .molecule-toolbar button{flex:1}.identity-model #molecule-viewer{min-height:340px}.route-summary-grid,.summary-next-step{grid-template-columns:1fr;gap:20px}.completion-summary{padding:0}.route-summary-grid .initial-decision{padding:20px}}
+
+/* TASK-061: one sidebar state and a shared, top-anchored desktop work area. */
+.sidebar-collapsed .workflow{display:none}
+@media(min-width:901px){
+ body.fg-learning-page .workspace>main{padding-bottom:144px}
+ .task-view{min-height:calc(100dvh - 168px);align-items:stretch}
+ .task-view>:is(.task-narrative,.intro-act){min-height:calc(100dvh - 168px)}
+ .task-view>.task-rail{top:auto;bottom:0;align-self:end;height:auto;min-height:0;max-height:calc(100dvh - 168px)}
+ [data-learning-card="02"] .task-view{height:calc(100dvh - 168px);min-height:0}
+ [data-learning-card="02"] .task-narrative{height:100%;min-height:0}
+ [data-learning-card="02"] .narr-page{display:flex;flex:1;flex-direction:column;min-height:0}
+ [data-learning-card="02"] .identity-model{flex:1;height:auto;min-height:300px}
+}
+/* The tutor is a viewport overlay, including above native reading dialogs. */
+.tutor-launcher[popover]{position:fixed;inset:auto var(--notebook-right,16px) 16px auto;width:48px;height:48px;min-height:48px;margin:0;padding:12px;justify-content:center;gap:0;border-radius:12px}
+.tutor-launcher[popover]>.icon{width:22px;height:22px}
+.tutor[popover]{inset:auto 26px 24px auto;margin:0;padding:0;color:var(--ink)}
+@media(max-width:620px){.tutor[popover]{inset:auto 10px 10px auto}}
+@media(max-width:600px){.tutor[popover]{inset:8px 8px auto}}

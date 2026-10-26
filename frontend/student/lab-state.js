@@ -21,7 +21,7 @@ export const ACTIVITY_FIELDS={ugtActivity:'UGT',susActivity:'GmSUS',enzymeActivi
 // TASK-026: 结果分析台预留状态；分析结果依赖方案/材料，下游失效时一并重置。
 export function freshAnalysis(){return {refRecords:[],comparisons:null,calculations:[],gaps:[],boundaryNote:'',boundaryDone:false};}
 export function freshRun(){
-  return {id:globalThis.crypto?.randomUUID?.() || `run-${Date.now()}-${Math.random().toString(36).slice(2)}`,stage:0,route:'R1',reason:'',routeConfirmed:false,materials:{},assemblyConfirmed:false,
+  return {id:globalThis.crypto?.randomUUID?.() || `run-${Date.now()}-${Math.random().toString(36).slice(2)}`,caseFlowVersion:2,stage:0,route:null,reason:'',routeConfirmed:false,materials:{},assemblyConfirmed:false,
     plan:{volume:'',concentration:'',temperature:'',ph:'',duration:'',samples:'',control:'',hypothesis:'',ugtActivity:'',susActivity:'',enzymeActivity:''},planConfirmed:false,
     operation:'idle',samples:[],analysis:freshAnalysis(),analysisReviewed:false,reflection:{conclusion:'',limitation:'',next:''},completed:false,events:[],chat:[],learning:freshLearning(),aiRequested:false,contextRevision:0,
     stageMode:'guided',guidedDone:{},paperNotes:{}};
@@ -40,9 +40,17 @@ export function clearDownstream(run,from,learningFrom=from){
 }
 export function selectRoute(run,id){
   if(!RECIPES[id])throw Error('请选择已有路线。');
-  if(id!==run.route){clearDownstream(run,0);run.plan=freshRun().plan;run.reason='';run.route=id;run.stage=0;run.chat=[];run.stageMode='guided';log(run,'更换路线',id);}
+  if(id!==run.route){
+    const common=Object.fromEntries(Object.entries(run.learning?.entries??{}).filter(([key])=>['01','02','03'].includes(key)));
+    const note=run.learning?.entries['04']?.note,independent=copy(run.learning?.independent??{});
+    clearDownstream(run,0);Object.assign(run.learning.entries,common);run.learning.independent=independent;
+    if(note)run.learning.entries['04']={choice:'',note,status:'draft'};
+    run.plan=freshRun().plan;run.reason='';run.route=id;run.stage=0;run.stageMode='guided';log(run,'选择规划路线',id);
+  }
+  run.exploration={...(run.exploration||{}),routeChosen:true};
 }
 export function confirmRoute(run,reason){
+  if(!RECIPES[run.route])throw Error('请先选择规划路线。');
   if(!validAnswer(reason))throw Error('请至少用8个字说明你的路线选择依据。');
   if(run.routeConfirmed && run.reason!==reason.trim())clearDownstream(run,0,1);
   run.reason=reason.trim().slice(0,2000);run.routeConfirmed=true;run.stage=1;log(run,'确认路线',`${run.route}：${run.reason}`);
@@ -197,7 +205,7 @@ export function hydrate(text){
   const s=JSON.parse(text);
   if(s?.version!==1||!s.current||!Array.isArray(s.records)||s.records.length>12)throw Error('记录版本不支持');
   for(const r of [s.current,...s.records]){
-    if(!RECIPES[r.route]||!Number.isInteger(r.stage)||r.stage<0||r.stage>5||typeof r.reason!=='string'||!r.plan||!r.materials||!r.reflection||!Array.isArray(r.samples)||!Array.isArray(r.events)||!Array.isArray(r.chat))throw Error('记录损坏');
+    if(!(RECIPES[r.route]||r.route===null&&r.stage===0&&!r.routeConfirmed)||!Number.isInteger(r.stage)||r.stage<0||r.stage>5||typeof r.reason!=='string'||!r.plan||!r.materials||!r.reflection||!Array.isArray(r.samples)||!Array.isArray(r.events)||!Array.isArray(r.chat))throw Error('记录损坏');
     for(const key of Object.keys(ACTIVITY_FIELDS))if(r.plan[key]===undefined)r.plan[key]='';
     if(typeof r.id!=='string'||r.reason.length>2000||Object.keys(freshRun().plan).some(k=>typeof r.plan[k]!=='string'||r.plan[k].length>2000)||['conclusion','limitation','next'].some(k=>typeof r.reflection[k]!=='string'||r.reflection[k].length>2000)||r.events.length>200||r.events.some(x=>!x||typeof x.at!=='string'||typeof x.action!=='string'||typeof x.detail!=='string')||r.chat.some(x=>!x||!['user','assistant'].includes(x.role)||typeof x.content!=='string'))throw Error('记录字段无效');
     if(r.assemblyConfirmed&&(!r.routeConfirmed||!Object.keys(MATERIALS).every(k=>r.materials[k]===RECIPES[r.route][k])))throw Error('装配顺序无效');
@@ -214,6 +222,11 @@ export function hydrate(text){
     if(!r.paperNotes||typeof r.paperNotes!=='object'||Array.isArray(r.paperNotes)||Object.entries(r.paperNotes).some(([id,note])=>!['Pei2019','Zhang2015','Niu2024'].includes(id)||typeof note!=='string'||note.length>8000))throw Error('论文笔记无效');
     r.chat=r.chat.slice(-30);
     r.learning=hydrateLearning(r.learning);
+    // Distinguish old pre-task04 defaults from decisions made in the new flow.
+    if(r.caseFlowVersion!==undefined&&r.caseFlowVersion!==2)throw Error('案例流程版本不支持');
+    const legacyDecision=r.learning.entries['04']?.status==='recorded'&&r.learning.entries['04'].route===r.route;
+    if(r.stage===0&&!r.routeConfirmed&&(r.exploration?.routeChosen!==true||r.caseFlowVersion===undefined&&!legacyDecision))r.route=null;
+    r.caseFlowVersion=2;
     if(!r.analysis||typeof r.analysis!=='object'||Array.isArray(r.analysis))r.analysis=freshAnalysis(); // TASK-026: 旧存档补默认分析状态。
     if(r.exploration!==undefined){
       if(!r.exploration||typeof r.exploration!=='object'||Array.isArray(r.exploration))r.exploration=undefined;

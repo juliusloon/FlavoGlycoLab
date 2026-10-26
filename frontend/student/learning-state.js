@@ -5,6 +5,7 @@ export const freshLearning = () => ({version:1,entries:{},independent:{}});
 // Owner-authorized local workflow override; never a scientific/teacher verdict.
 export const isAdminPass = value => typeof value==='string' && value.trim()==='admin7';
 export const validAnswer = (value,min=8) => typeof value==='string' && (isAdminPass(value)||value.trim().length>=min);
+export const isCommonTask = id => ['01','02','03'].includes(id);
 export function hasTutorInteraction(run){
   return run.aiRequested===true ||
     run.chat?.some(m=>m.role==='user'||m.role==='assistant'&&m.mode==='model')===true ||
@@ -30,6 +31,7 @@ export function checkLearning(run,task){
   if(!task||learningStage(task.id)!==run.stage||task.stage!==run.stage)throw Error('请在当前阶段核对学习任务。');
   const entry=run.learning?.entries[task.id];
   if(!entry||!validAnswer(entry.note))throw Error('请至少用8个字写出判断依据或需要补充的证据。');
+  if(!isCommonTask(task.id)&&!['R1','R2','R3'].includes(run.route))throw Error('请先选择规划路线。');
   const override=isAdminPass(entry.note);
   if(!override&&task.choices.length&&!task.choices.some(c=>c.id===entry.choice))throw Error('请先作出选择，再核对依据。');
   const expected=task.route_answers?.[run.route]??task.answer;
@@ -38,7 +40,7 @@ export function checkLearning(run,task){
   run.aiRequested=hasTutorInteraction(run);
   delete entry.eval; // TASK-026: 新提交清除旧评价，评价闭环将重新发起。
   Object.assign(entry,{status:'recorded',checkedAt:new Date().toISOString(),matches,
-    feedback:override?'通行词已放行。':task.feedback,route:run.route,aiUsedBefore:run.aiRequested});
+    feedback:override?'通行词已放行。':task.feedback,route:isCommonTask(task.id)?null:run.route,aiUsedBefore:run.aiRequested});
   if(override)entry.eval={state:'passed',pass:true,mode:'admin_override',evaluatedAt:entry.checkedAt};
   if(!override&&['04','09'].includes(task.id)&&!entry.aiUsedBefore&&!run.learning.independent[task.id]){
     run.learning.independent[task.id]={note:entry.note,route:run.route,at:entry.checkedAt};
@@ -52,7 +54,7 @@ export function hydrateLearning(value){
   if(!object(value)||value.version!==1||!object(value.entries)||!object(value.independent)||Object.keys(value).some(k=>!['version','entries','independent'].includes(k)))throw Error('学习记录损坏');
   for(const [id,x] of Object.entries(value.entries)){
     if(learningStage(id)<0||!x||!validText(x.note,2000)||!validText(x.choice,20)||!['draft','recorded'].includes(x.status))throw Error('学习记录字段无效');
-    if(x.status==='recorded'&&(!validText(x.feedback,3000)||!validText(x.checkedAt,40)||!['R1','R2','R3'].includes(x.route)||typeof x.aiUsedBefore!=='boolean'||![true,false,null].includes(x.matches)))throw Error('学习核对记录无效');
+    if(x.status==='recorded'&&(!validText(x.feedback,3000)||!validText(x.checkedAt,40)||!(['R1','R2','R3'].includes(x.route)||isCommonTask(id)&&x.route===null)||typeof x.aiUsedBefore!=='boolean'||![true,false,null].includes(x.matches)))throw Error('学习核对记录无效');
     // No measured result/grade fields may be restored through this extension.
     // TASK-026: eval 允许 undefined 或带合法 state 的对象；非法形状只丢弃该字段，不丢整条。
     if(x.eval!==undefined&&(!object(x.eval)||!['evaluating','passed','failed','degraded'].includes(x.eval.state)))delete x.eval;

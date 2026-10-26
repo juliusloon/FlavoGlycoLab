@@ -9,7 +9,7 @@ export function overviewPage(run,content,resume) {
   const progress=introProgress(run);
   const resumeTitle=resume.startsWith('/task/')?`继续任务 ${resume.split('/').pop()}`
     :resume.startsWith('/intro/')?'从案例导入继续':STAGES[Number(resume.split('/').pop())-1]||STAGES[run.stage];
-  const resumePanel=panel({title:resumeTitle,body:`<p>${e(content.routes.find(r=>r.id===run.route)?.name||'异槲皮苷')} · ${done} / 24 项任务已记录</p><div class="actions">${button({label:'继续当前练习',href:`#${resume}`})}${button({label:'查看实验记录',href:'#/records',variant:'secondary'})}</div>`}).replace('fg-panel','fg-panel fg-resume');
+  const resumePanel=panel({title:resumeTitle,body:`<p>${e(content.routes.find(r=>r.id===run.route)?.name||'规划路线尚未选择')} · ${done} / 24 项任务已记录</p><div class="actions">${button({label:'继续当前练习',href:`#${resume}`})}${button({label:'查看实验记录',href:'#/records',variant:'secondary'})}</div>`}).replace('fg-panel','fg-panel fg-resume');
   const flow=panel({title:'实验阶段',body:`<ol class="fg-list">${STAGES.map((title,i)=>{
     const available=stageAccessible(run,content,i),p=questProgress(run,content,i);
     return `<li>${available?`<a href="#${i===0&&!progress.complete?`/intro/${Math.min(progress.step,3)}`:`/stage/${i+1}`}"`:'<div class="fg-locked-stage"'}><span class="stage-icon">${icon(STAGE_ICONS[i])}</span><span><strong>${e(title)}</strong><small>${p.completed} / ${p.total} 项${available?'':' · 完成前序步骤后解锁'}</small></span>${available?icon('arrow'):'<span aria-label="未解锁">○</span>'}${available?'</a>':'</div>'}</li>`;

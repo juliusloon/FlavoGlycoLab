@@ -16,6 +16,20 @@
 
 [TASK-057](../tasks/TASK-057-web-improvements-git-sync.md) / [REPORT-057](../reports/REPORT-057-web-improvements-git-sync.md)：2026-10-25已同步三项成果及原执行记录至public/main（功能提交227523e）；属于交付操作，不增加Web改进主题。
 
+## 本次页面调整
+
+[REPORT-063：内容高度问答卡底部衔接与笔记本导师入口](REPORT-063-bottom-card-notebook-tutor-entry.md)，对应[TASK-063](../tasks/TASK-063-bottom-card-notebook-tutor-entry.md)：记录底边衔接、自然增高与先打开论文再点击导师图标的真实交互验证。
+
+[REPORT-062：问答卡内容高度、导师浮层与论文阅读排版](REPORT-062-content-height-floating-tutor.md)，对应[TASK-062](../tasks/TASK-062-content-height-floating-tutor.md)：记录内容高度、导师覆盖/几何不变、三篇PDF/笔记及指定删减的浏览器验证。
+
+[REPORT-061：侧栏联动折叠与双栏纵向对齐](REPORT-061-panel-height-sidebar-sync.md)，对应[TASK-061](../tasks/TASK-061-panel-height-sidebar-sync.md)：记录联动折叠、纯图标入口、桌面双栏几何与窄屏流式布局的实际LAN及public浏览器验证。
+
+[REPORT-060：任务04去重文案与主面板路线选择](REPORT-060-task04-content-layout.md)，对应[TASK-060](../tasks/TASK-060-task04-content-layout.md)：只调整任务04文案与控件归属，记录实际LAN和浏览器验证。
+
+[REPORT-059：案例与路线四任务及总结页调整](REPORT-059-case-route-flow.md)，对应[TASK-059](../tasks/TASK-059-case-route-flow.md)：内容/布局、论文笔记本、路线初选与保留进度、旧记录迁移及LAN评价目标同步的实测。
+
+2026-10-25追加：[REPORT-058：路线比较与路线选择分别合为单页](REPORT-058-route-tasks-single-page.md)，对应[TASK-058](../tasks/TASK-058-route-tasks-single-page.md)，记录任务03/04合页与答题提示删减的实测。
+
 ## 更早报告
 
 <details>

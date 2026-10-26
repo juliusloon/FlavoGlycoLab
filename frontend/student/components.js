@@ -25,7 +25,7 @@ export function emptyState({title,description='',actions='',tone='neutral'}={}) 
 }
 // Kept as a compatibility export for the page entry points; the surface is a bottom control bar.
 export function siteHeader(active,{workbench=false}={}) {
-  return `<a class="brand workspace-brand" id="nav-home" data-site-page="home" href="./index.html#/home" aria-label="FlavoGlycoLab 实验总览"${active==='home'?' aria-current="page"':''}><svg viewBox="0 0 36 36" aria-hidden="true"><path d="m18 3 13 7v16l-13 7L5 26V10Z"/><path d="m18 10 7 4v8l-7 4-7-4v-8Z"/></svg><span class="brand-name">Flavo<b>Glyco</b>Lab</span></a><button type="button" id="workspace-more" class="workspace-more" popovertarget="workspace-menu" aria-label="更多" aria-haspopup="menu" aria-expanded="false" aria-controls="workspace-menu"><span class="more-label">更多</span><svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>`;
+  return `<a class="brand workspace-brand" id="nav-home" data-site-page="home" href="./index.html#/home" aria-label="FlavoGlycoLab 实验总览"${active==='home'?' aria-current="page"':''}><svg viewBox="0 0 36 36" aria-hidden="true"><path d="m18 3 13 7v16l-13 7L5 26V10Z"/><path d="m18 10 7 4v8l-7 4-7-4v-8Z"/></svg><span class="brand-name">Flavo<b>Glyco</b>Lab</span></a><button type="button" id="workspace-more" class="workspace-more" popovertarget="workspace-menu" aria-label="更多" aria-haspopup="menu" aria-expanded="false" aria-controls="workspace-menu"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>`;
 }
 function workspaceMenu(active,{workbench=false}={}) {
   return `<div id="workspace-menu" class="workspace-menu" popover="auto" role="menu" aria-label="实验空间操作">${workbench?`<button type="button" role="menuitem" data-action="new">${icon('plus')}开启新实验</button>`:`<a role="menuitem" href="./index.html#new">${icon('plus')}开启新实验</a>`}<a role="menuitem" id="nav-records" data-site-page="records" href="./index.html#/records"${active==='records'?' aria-current="page"':''}>${icon('history')}实验记录</a><button type="button" role="menuitem" id="settings-button" aria-haspopup="dialog" aria-controls="settings-dialog">${icon('sliders')}设置</button>${workbench?'<p id="save-status" role="status">准备实验空间…</p>':''}</div>`;
@@ -66,9 +66,8 @@ export function mountSiteHeader(active,options={}) {
   window.addEventListener('hashchange',()=>closeMenu());
   document.addEventListener('click',event=>{
     const toggle=event.target.closest('[data-toggle-sidebar]');if(!toggle)return;
-    const name=toggle.dataset.toggleSidebar;
-    if(!['quests','workflow'].includes(name))return;
-    const preferences=sidebarPreferences();preferences[name]=!preferences[name];
+    if(toggle.dataset.toggleSidebar!=='quests')return;
+    const preferences=sidebarPreferences();preferences.collapsed=!preferences.collapsed;
     try{localStorage.setItem(SIDEBAR_PREFERENCES_KEY,JSON.stringify(preferences));}catch{}
     syncSidebarPanels();
     if(innerWidth<=760){
@@ -90,25 +89,30 @@ const SIDEBAR_PREFERENCES_KEY='flavoglycolab.sidebar.v1';
 let sidebarState;
 function sidebarPreferences(){
   if(!sidebarState){
-    sidebarState={quests:false,workflow:false};
-    try{const saved=JSON.parse(localStorage.getItem(SIDEBAR_PREFERENCES_KEY)||'{}');for(const key of Object.keys(sidebarState))if(typeof saved?.[key]==='boolean')sidebarState[key]=saved[key];}catch{}
+    sidebarState={collapsed:false};
+    try{
+      const saved=JSON.parse(localStorage.getItem(SIDEBAR_PREFERENCES_KEY)||'{}');
+      if(typeof saved?.collapsed==='boolean')sidebarState.collapsed=saved.collapsed;
+      else if(typeof saved?.quests==='boolean')sidebarState.collapsed=saved.quests;
+      else if(typeof saved?.workflow==='boolean')sidebarState.collapsed=saved.workflow;
+    }catch{}
   }
   return sidebarState;
 }
 export function sidebarToggle(name,label,iconName){
-  const id=name==='quests'?'quest-panel-content':'workflow-content';
+  const id=name==='quests'?'quest-panel-content workflow-content':'workflow-content';
   return `<button type="button" class="sidebar-toggle" data-toggle-sidebar="${e(name)}" aria-expanded="true" aria-controls="${id}" aria-label="收起${e(label)}" title="收起${e(label)}"><span class="sidebar-toggle-arrow">${icon('down')}</span><span class="sidebar-rail-icon">${icon(iconName)}</span></button>`;
 }
 export function syncSidebarPanels(){
-  const preferences=sidebarPreferences(),compact=preferences.quests&&preferences.workflow;
+  const preferences=sidebarPreferences(),compact=preferences.collapsed;
   const workspace=document.querySelector('.workspace'),wasCompact=workspace?.classList.contains('sidebar-collapsed');
   workspace?.classList.toggle('sidebar-collapsed',compact);
   document.body.classList.toggle('fg-sidebar-collapsed',compact);
-  for(const [key,id,label] of [['quests','quest-panel','主线任务'],['workflow','workflow','实验历程']]){
+  for(const [id,label] of [['quest-panel','主线任务'],['workflow','实验历程']]){
     const panel=document.getElementById(id);if(!panel)continue;
-    const collapsed=preferences[key],toggle=panel.querySelector('[data-toggle-sidebar]'),body=panel.querySelector('.sidebar-content');
-    panel.classList.toggle('is-collapsed',collapsed);if(body)body.hidden=collapsed;
-    if(toggle){toggle.setAttribute('aria-expanded',String(!collapsed));toggle.setAttribute('aria-label',`${collapsed?'展开':'收起'}${label}`);toggle.title=`${collapsed?'展开':'收起'}${label}`;}
+    const toggle=panel.querySelector('[data-toggle-sidebar]'),body=panel.querySelector('.sidebar-content');
+    panel.classList.toggle('is-collapsed',compact);if(body)body.hidden=compact;
+    if(toggle){toggle.setAttribute('aria-expanded',String(!compact));toggle.setAttribute('aria-label',`${compact?'展开':'收起'}${label}`);toggle.title=`${compact?'展开':'收起'}${label}`;}
   }
   if(workspace&&wasCompact!==compact)window.dispatchEvent(new Event('resize'));
 }

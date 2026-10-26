@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
-import {freshState,answerIntroAct,recordIntroPaper,confirmRoute} from '../frontend/student/lab-state.js';
+import {freshState,answerIntroAct,recordIntroPaper,selectRoute,confirmRoute} from '../frontend/student/lab-state.js';
 import {draftLearning,checkLearning} from '../frontend/student/learning-state.js';
 const base=(process.env.FRONTEND_URL||'http://127.0.0.1:8767/').replace(/#.*$/,'');
 const out=process.env.QA_OUTPUT||'/tmp/flavoglycolab-pages-qa';
@@ -22,6 +22,7 @@ async function identity(page,label,active){
   check(`${label}: page identity and meaningful content`,(await page.title()).includes('FlavoGlycoLab')&&(await page.locator('main h1').count())>0);
   check(`${label}: no top site header and one bottom control bar`,await page.locator('[data-site-header],.fg-site-header').count()===0&&await page.locator('.fg-site-controls').count()===1&&await page.locator('.fg-site-controls').evaluate(el=>getComputedStyle(el).position==='fixed'&&el.getBoundingClientRect().left===16&&el.getBoundingClientRect().bottom<=innerHeight-15));
   check(`${label}: title and more replace the old navigation row`,await page.locator('.fg-site-controls > #nav-home').count()===1&&await page.locator('.fg-site-controls > #workspace-more').count()===1&&await page.locator('.fg-site-nav,[aria-label*="面包屑"],[aria-label*="breadcrumb"],.breadcrumb').count()===0);
+  check(`${label}: more is an accessible icon-only button`,await page.locator('#workspace-more').evaluate(el=>el.textContent===''&&el.getAttribute('aria-label')==='更多'&&el.querySelectorAll('svg.icon[aria-hidden="true"]').length===1));
   check(`${label}: page header omits redundant lead and development kicker`,await page.locator('main .hero-kicker,main .section-kicker,main .fg-page-header>div>p,main .hero-lead').count()===0);
   check(`${label}: the upward menu has exactly the three requested actions`,await page.locator('#workspace-menu [role="menuitem"]').allTextContents().then(labels=>labels.map(s=>s.trim()).join(',')==='开启新实验,实验记录,设置'));
   check(`${label}: one synchronously mounted settings dialog`,await page.locator('#settings-dialog').count()===1);
@@ -89,21 +90,19 @@ async function workspaceMenuChecks(page,label){
 async function sidebarChecks(page,label,width){
   await page.waitForFunction(()=>Boolean(document.querySelector('#molecule-viewer canvas,#molecule-viewer .molecule-fallback img')));
   const before=await page.evaluate(key=>{window.sidebarViewerBefore=document.querySelector('#molecule-viewer');return localStorage.getItem(key);},stateKey);
-  const quests=page.locator('[data-toggle-sidebar="quests"]'),workflow=page.locator('[data-toggle-sidebar="workflow"]');
+  const quests=page.locator('[data-toggle-sidebar="quests"]'),workflowToggle=page.locator('[data-toggle-sidebar="workflow"]');
+  check(`${label}: workflow has no independent collapse button`,await workflowToggle.count()===0);
+  check(`${label}: quest control owns both content regions`,(await quests.getAttribute('aria-controls'))==='quest-panel-content workflow-content');
   await quests.click();
-  check(`${label}: quests collapse independently`,await page.locator('#quest-panel-content').isVisible()===false&&await page.locator('#workflow-content').isVisible()&&await quests.getAttribute('aria-expanded')==='false');
-  await workflow.click();
-  check(`${label}: both sections form a restorable compact sidebar`,await page.locator('.workspace.sidebar-collapsed').count()===1&&await quests.isVisible()&&await workflow.isVisible());
-  check(`${label}: three compact entries are identical squares and more is hidden`,await page.locator('#quest-panel,#workflow,.fg-site-controls').evaluateAll(items=>items.length===3&&items.every(el=>{const r=el.getBoundingClientRect();return r.width===56&&r.height===56;}))&&await page.locator('#workspace-more').isVisible()===false);
+  check(`${label}: one action collapses both sections`,await page.locator('#quest-panel-content').isVisible()===false&&await page.locator('#workflow-content').isVisible()===false&&await quests.getAttribute('aria-expanded')==='false'&&await page.locator('.workspace.sidebar-collapsed').count()===1);
+  check(`${label}: compact sidebar keeps two square entries and hides workflow and more`,await page.locator('#quest-panel,.fg-site-controls').evaluateAll(items=>items.length===2&&items.every(el=>{const r=el.getBoundingClientRect();return r.width===56&&r.height===56;}))&&await page.locator('#workflow').isVisible()===false&&await page.locator('#workspace-more').isVisible()===false);
+  check(`${label}: unified preference is persisted`,await page.evaluate(()=>JSON.parse(localStorage.getItem('flavoglycolab.sidebar.v1')).collapsed===true));
   if(width>760)check(`${label}: compact sidebar releases canvas width`,await page.locator('.workspace').evaluate(el=>Math.abs(parseFloat(getComputedStyle(el).gridTemplateColumns)-56)<1));
   check(`${label}: presentation changes do not save learning or replace the viewer`,await page.evaluate(({key,before})=>localStorage.getItem(key)===before&&document.querySelector('#molecule-viewer')===window.sidebarViewerBefore,{key:stateKey,before}));
   await page.reload();await page.locator('.intro-act[data-act="1"]').waitFor();
-  check(`${label}: collapsed preferences survive reload`,await page.locator('.workspace.sidebar-collapsed').count()===1&&await quests.getAttribute('aria-expanded')==='false'&&await workflow.getAttribute('aria-expanded')==='false');
+  check(`${label}: collapsed preference survives reload for both sections`,await page.locator('.workspace.sidebar-collapsed').count()===1&&await quests.getAttribute('aria-expanded')==='false'&&await page.locator('#quest-panel-content').isVisible()===false&&await page.locator('#workflow-content').isVisible()===false);
   await quests.click();
-  check(`${label}: expanding quests preserves the collapsed history`,await page.locator('#quest-panel-content').isVisible()&&await page.locator('#workflow-content').isVisible()===false&&await page.locator('.workspace.sidebar-collapsed').count()===0);
-  check(`${label}: expanding a panel restores more`,await page.locator('#workspace-more').isVisible());
-  await workflow.click();
-  check(`${label}: either panel is fully restorable`,await page.locator('#workflow-content').isVisible()&&await quests.getAttribute('aria-expanded')==='true'&&await workflow.getAttribute('aria-expanded')==='true');
+  check(`${label}: one action restores both sections and more`,await page.locator('#quest-panel-content').isVisible()&&await page.locator('#workflow-content').isVisible()&&await page.locator('#workflow').isVisible()&&await quests.getAttribute('aria-expanded')==='true'&&await page.locator('.workspace.sidebar-collapsed').count()===0&&await page.locator('#workspace-more').isVisible());
 }
 try{
 for(const width of [1440,900,375]){
@@ -190,7 +189,7 @@ for(const width of [1440,900,375]){
   check(`${width}: component form provides real feedback`,(await page.locator('#demo-feedback').textContent()).includes('主辅两列'));
   await page.screenshot({path:path.join(out,`${width}-components.png`)});
   const sample=freshState();answerIntroAct(sample.current,1,content.intro.case.question.answer,true);answerIntroAct(sample.current,2,content.intro.chemical_limit.question.answer,true);recordIntroPaper(sample.current,'R1');
-  for(const t of content.learning.steps.filter(t=>t.stage===0)){if(t.choices.length)draftLearning(sample.current,t.id,'choice',t.route_answers?.R1??t.answer);draftLearning(sample.current,t.id,'note','根据来源对照底物、催化体系与供体，保留证据边界。');checkLearning(sample.current,t);}
+  for(const t of content.learning.steps.filter(t=>t.stage===0)){if(t.id==='04')selectRoute(sample.current,'R1');if(t.choices.length)draftLearning(sample.current,t.id,'choice',t.route_answers?.R1??t.answer);draftLearning(sample.current,t.id,'note','根据来源对照底物、催化体系与供体，保留证据边界。');checkLearning(sample.current,t);}
   confirmRoute(sample.current,'根据已完成的主线比较选择路线，等待教师复核。');
   await page.evaluate(({key,value})=>localStorage.setItem(key,JSON.stringify(value)),{key:stateKey,value:sample});
   await page.goto(base+'#/stage/2');await page.locator('#assembly-form,.material-shelf').first().waitFor();

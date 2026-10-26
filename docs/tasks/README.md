@@ -14,6 +14,20 @@
 
 [TASK-057](../tasks/TASK-057-web-improvements-git-sync.md) / [REPORT-057](../reports/REPORT-057-web-improvements-git-sync.md)：2026-10-25已同步三项成果及原执行记录至public/main（功能提交227523e）；属于交付操作，不增加Web改进主题。
 
+## 本次页面调整
+
+[TASK-063：内容高度问答卡底部衔接与笔记本导师入口](TASK-063-bottom-card-notebook-tutor-entry.md) / [REPORT-063](../reports/REPORT-063-bottom-card-notebook-tutor-entry.md)：纠正右卡底边锚点，论文页可直接点击导师图标；human_direct 2026-10-26。
+
+[TASK-062：问答卡内容高度、导师浮层与论文阅读排版](TASK-062-content-height-floating-tutor.md) / [REPORT-062](../reports/REPORT-062-content-height-floating-tutor.md)：问答卡自然高度、删除导入快捷入口、导师覆盖且不挤压页面、论文阅读排版和指定删减；human_direct 2026-10-26。
+
+[TASK-061：侧栏联动折叠与双栏纵向对齐](TASK-061-panel-height-sidebar-sync.md) / [REPORT-061](../reports/REPORT-061-panel-height-sidebar-sync.md)：主线统一控制实验历程、更多只留图标、桌面双栏等高及右卡与笔记本16px衔接；human_direct 2026-10-25。
+
+[TASK-060：任务04去重文案与主面板路线选择](TASK-060-task04-content-layout.md) / [REPORT-060](../reports/REPORT-060-task04-content-layout.md)：删减重复引导，主面板集中说明/选择/论文卡片，右侧只保留问题与作答；human_direct 2026-10-25。
+
+[TASK-059：案例与路线四任务及总结页调整](TASK-059-case-route-flow.md) / [REPORT-059](../reports/REPORT-059-case-route-flow.md)：明确四步职责、放大分子框、统一论文笔记本、空路线与共通学习、总结页及评价目标同步；human_direct 2026-10-25。
+
+2026-10-25追加：[TASK-058：路线比较与路线选择分别合为单页](TASK-058-route-tasks-single-page.md) / [REPORT-058](../reports/REPORT-058-route-tasks-single-page.md)，按所有者直接指令合并任务03/04并删除多余答题提示；沿用现有学生端职责。
+
 ## 原任务对应表
 
 17项来源各归属一次。037/038在10月24日完成；035在10月23日完成，仅作为依赖引用；036仍是未执行提案。表中原合同与报告保存各次改动、测试分母、失败和限制，不能将归并日期当作新功能验收日期。

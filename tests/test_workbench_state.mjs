@@ -39,7 +39,7 @@ test('learning requires a reason, preserves revisions as drafts, and never produ
 });
 test('first independent statement is preserved separately from later AI-assisted edits',()=>{
   const run=L.freshRun(),t=content.learning.steps[3],note='先独立比较原料和供体需求，选择体外双酶路线';
-  Learning.draftLearning(run,'04','note',note);Learning.checkLearning(run,t);
+  L.selectRoute(run,'R1');Learning.draftLearning(run,'04','note',note);Learning.checkLearning(run,t);
   run.chat.push({role:'assistant',mode:'model',content:'请核对证据'});
   Learning.draftLearning(run,'04','note','参考模型建议后补充证据缺口，仍需核验');
   Learning.checkLearning(run,t);assert.equal(run.learning.independent['04'].note,note);
@@ -51,7 +51,7 @@ test('upstream changes invalidate affected learning while snapshots and early re
   run.stage=4;Learning.draftLearning(run,'18','choice','c2');Learning.draftLearning(run,'18','note','需要标准品和样品的原始色谱对应');Learning.checkLearning(run,content.learning.steps[17]);
   run.analysisReviewed=true;run.stage=5;L.completeRun(s,{conclusion:'当前只有方案和演练记录，无法定量',limitation:'尚无审定测量和定量材料可供使用',next:'继续补齐原始测量并设置适当对照'});
   L.clearDownstream(run,2);assert.ok(run.learning.entries['01']);assert.equal(run.learning.entries['18'],undefined);assert.ok(s.records[0].learning.entries['18']);
-  L.selectRoute(run,'R2');assert.deepEqual(run.learning.entries,{});assert.equal(s.records[0].route,'R1');
+  L.selectRoute(run,'R2');assert.deepEqual(Object.keys(run.learning.entries),['01']);assert.equal(s.records[0].route,'R1');
 });
 test('old records migrate and unsupported learning fields fail closed on reload',()=>{
   const s=L.freshState();delete s.current.learning;
@@ -85,7 +85,7 @@ test('intro narrative is fully sourced, non-quantitative and pending teacher rev
 });
 test('route A to B to A invalidates in-flight context and removes the previous route reason',()=>{
   const run=L.freshRun();
-  L.confirmRoute(run,'原路线选择体外双酶，先核对供体来源');
+  L.selectRoute(run,'R1');L.confirmRoute(run,'原路线选择体外双酶，先核对供体来源');
   const sentRoute=run.route,sentRevision=run.contextRevision;
   L.selectRoute(run,'R2');
   assert.equal(run.reason,'');
@@ -103,7 +103,7 @@ test('AI-request fact survives route resets and prevents a new claim of independ
   // Even a request that later fails counts; the frontend sets this before fetching.
   run.aiRequested=true;run.chat.push({role:'user',content:'请比较三种制备路线'});
   L.selectRoute(run,'R2');
-  assert.deepEqual(run.chat,[]);assert.equal(run.aiRequested,true);
+  assert.equal(run.chat[0].content,'请比较三种制备路线');assert.equal(run.aiRequested,true);
   Learning.draftLearning(run,'04','note','已换为选择性水解，重新核对原料和催化体系');
   Learning.checkLearning(run,task);
   assert.equal(run.learning.entries['04'].aiUsedBefore,true);
@@ -119,8 +119,8 @@ test('legacy AI and revision fields migrate only from retained evidence and reje
     delete run.aiRequested;delete run.contextRevision;
     if(evidence==='chat')run.chat.push({role:'user',content:'已请求建议，即使后来失败'});
     if(evidence==='learning'){
-      Learning.draftLearning(run,'04','note','参考建议后重新核对候选路线和证据范围');
-      run.aiRequested=true;Learning.checkLearning(run,content.learning.steps[3]);delete run.aiRequested;
+      L.selectRoute(run,'R1');Learning.draftLearning(run,'04','note','参考建议后重新核对候选路线和证据范围');
+      run.aiRequested=true;Learning.checkLearning(run,content.learning.steps[3]);delete run.aiRequested;delete run.contextRevision;
     }
     const migrated=L.hydrate(JSON.stringify(state)).current;
     assert.equal(migrated.aiRequested,evidence!=='none');
@@ -133,7 +133,7 @@ test('legacy AI and revision fields migrate only from retained evidence and reje
 });
 test('reconfirming a legacy route retains current completed tasks and original independent statement',()=>{
   const run=L.freshRun();
-  L.confirmRoute(run,'旧版主表单记录的初始路线依据');
+  L.selectRoute(run,'R1');L.confirmRoute(run,'旧版主表单记录的初始路线依据');
   run.stage=0;
   for(const task of content.learning.steps.filter(t=>t.stage===0)){
     Learning.draftLearning(run,task.id,'note',`第${task.id}项已经核对原料、反应方向与来源证据`);
@@ -167,7 +167,7 @@ test('intro step questions and task 01 guidance are sourced, answerable and non-
   assert.equal(typeof intro.papers_gate?.text,'string');assert.ok(intro.papers_gate.text.trim().length>0);
   assert.equal(typeof intro.papers_gate?.tutor_prompt,'string');assert.ok(intro.papers_gate.tutor_prompt.trim().length>0);
   const first=content.learning.steps[0];
-  assert.ok(Array.isArray(first.guidance)&&first.guidance.length===3&&first.guidance.every(g=>typeof g==='string'&&g.trim().length>0));
+  assert.ok(Array.isArray(first.guidance)&&first.guidance.length===2&&first.guidance.every(g=>typeof g==='string'&&g.trim().length>0));
   assert.ok(Array.isArray(first.guidance_source_ids)&&first.guidance_source_ids.length>=1&&first.guidance_source_ids.every(id=>known.has(id)));
   assert.ok(typeof first.coach_question==='string'&&first.coach_question.includes('任务01'));
   assert.ok(typeof first.example==='string'&&first.example.trim().length>0);
@@ -227,6 +227,7 @@ test('hydrate cleans malformed exploration fields without locking the save',()=>
 function recordStage(run,stage){
   run.stage=stage;
   for(const task of content.learning.steps.filter(t=>t.stage===stage)){
+    if(task.id==='04'&&!run.route)L.selectRoute(run,'R1');
     Learning.draftLearning(run,task.id,'note',`阶段${stage}记录${task.id}：核对该步骤所需证据与依据的说明`);
     if(task.choices.length)Learning.draftLearning(run,task.id,'choice',task.route_answers?.[run.route]??task.answer);
     Learning.checkLearning(run,task);

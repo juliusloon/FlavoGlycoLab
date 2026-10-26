@@ -1,5 +1,7 @@
 # ADR 长期决策索引
 
+[0011](0011-common-learning-before-route-selection.md)：任务01—03共通学习、任务04显式选择路线，空路线恢复及依赖失效边界。
+
 [0007](0007-retrosynthesis-computational-handoff.md)：接收外部计算来源，不推进实验/教师状态。
 
 ADR回答为什么长期采用某项结构或数据语义决策，不替代TASK授权、REPORT事实和STATE实时状态。仅对跨任务重要选择登记；状态为proposed/accepted/superseded/rejected。

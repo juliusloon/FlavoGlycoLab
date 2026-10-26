@@ -3,7 +3,7 @@ import { STAGES, MATERIALS, RECIPES, canVisit, canEnterOpen, routeRules, ACTIVIT
 import { learningRecords } from './learning.js';
 import { questProgress } from '../quest-state.js';
 import { comparePlanToRecord, CALC_WHITELIST, compute, GAP_OPTIONS } from '../analysis-engine.js';
-import {pageHeader,button as sharedButton,field as sharedField,sidebarToggle} from '../components.js';
+import {pageHeader,button as sharedButton,field as sharedField} from '../components.js';
 export const heading=(title,description)=>pageHeader({title,description});
 const button=(label,action,primary=true)=>sharedButton({label,action,variant:primary?'primary':'secondary',iconName:primary?'arrow':''});
 const field=(label,name,value,unit='',type='number',attributes='')=>sharedField({label,name,value,unit,type,attributes});
@@ -13,7 +13,7 @@ export function routeEvidence(run,c){
   const source=c.sources.find(s=>s.source_id===route.source_id);
   return `<details class="source-details route-evidence"><summary>文献与条件依据 · ${e(route.name)}</summary><dl class="source-meta">${[['反应方向',evidence.direction],['催化体系',evidence.catalyst],['供体要求',evidence.donor],['论文证据',evidence.reported_evidence],['分析材料',evidence.analysis_evidence],['适用边界',evidence.boundary]].map(([label,text])=>`<div><dt>${e(label)}</dt><dd>${e(text)}</dd></div>`).join('')}<div><dt>仍缺证据</dt><dd>${evidence.gaps.map(e).join('<br>')}</dd></div><div><dt>定位</dt><dd>${e(source.label)} · ${e(source.source_locator)}</dd></div></dl><p class="fine-print">案例仍待教师审定。</p></details>`;
 }
-export function workflow(run){return `<div class="workflow-heading"><h2>实验历程</h2>${sidebarToggle('workflow','实验历程','history')}</div><nav class="sidebar-content" id="workflow-content" aria-label="实验阶段">${STAGES.map((name,i)=>`<button class="stage ${run.stage===i?'selected':''}" data-stage="${i}" ${!canVisit(run,i)?'disabled':''} ${run.stage===i?'aria-current="step"':''}><span class="stage-icon">${icon(STAGE_ICONS[i])}</span><span>${name}</span></button>`).join('')}</nav>`;}
+export function workflow(run){return `<div class="workflow-heading"><h2>实验历程</h2></div><nav class="sidebar-content" id="workflow-content" aria-label="实验阶段">${STAGES.map((name,i)=>`<button class="stage ${run.stage===i?'selected':''}" data-stage="${i}" ${!canVisit(run,i)?'disabled':''} ${run.stage===i?'aria-current="step"':''}><span class="stage-icon">${icon(STAGE_ICONS[i])}</span><span>${name}</span></button>`).join('')}</nav>`;}
 export function bench(run,operation=false){
   const labels={idle:'等待检查',checked:'方案已核对',mixed:'已完成混合演练',running:'流程演练进行中',ready:'可以建立取样记录',sampled:'取样记录已建立'};
   return `<section class="bench ${run.operation==='running'?'is-running':''}" aria-label="虚拟反应台"><div class="bench-label"><strong>${operation?'反应与取样':'我的反应体系'}</strong><span>${operation?labels[run.operation]:'按路线逐项装配'}</span></div><div class="bench-scene"><img src="./assets/lab-bench.png" alt="反应瓶、搅拌装置、移液器与样品瓶的操作示意" width="1792" height="896"><div class="bench-feedback" aria-live="polite">${operation?(run.operation==='running'?'正在演示操作流程…':''):`${Object.keys(run.materials).length} / 3 项已加入`}</div></div><div class="material-strip"><span>已加入</span>${Object.entries(run.materials).map(([k,id])=>`<span class="material-tag">${e(MATERIALS[k]?.find(m=>m.id===id)?.label??'')}${!operation?`<button type="button" data-remove="${k}" aria-label="移除${e(MATERIALS[k]?.find(m=>m.id===id)?.label??'')}">×</button>`:''}</span>`).join('')||'<span class="muted">选择下方材料，开始装配</span>'}</div></section>`;

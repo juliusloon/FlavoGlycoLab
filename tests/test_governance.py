@@ -29,7 +29,7 @@ class GovernanceContractTest(unittest.TestCase):
 
     def test_adrs_are_independent_and_sequential(self):
         numbers=sorted(int(p.name[:4]) for p in (ROOT/"docs/adr").glob("[0-9][0-9][0-9][0-9]-*.md"))
-        self.assertEqual(numbers,[1,2,3,4,5,6,7,8,9,10])
+        self.assertEqual(numbers,[1,2,3,4,5,6,7,8,9,10,11])
 
     def test_active_project_identity(self):
         expected=("FlavoGlycoLab","flavoglycolab")

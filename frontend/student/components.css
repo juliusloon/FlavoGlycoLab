@@ -39,7 +39,7 @@ input[type=checkbox],input[type=radio] { width:18px;height:18px;accent-color:var
 .workspace-brand .brand-name b { color:var(--teal);font-weight:inherit; }
 .workspace-brand svg { flex:none;width:24px;height:24px;fill:none;stroke:var(--teal);stroke-width:1.5;margin:0; }
 .workspace-brand svg path+path { fill:var(--teal); }
-.workspace-more { position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;gap:4px;min-height:36px;min-width:52px;padding:6px 0 6px 10px;border:0;border-left:1px solid var(--line);border-radius:0;background:transparent;color:var(--muted);font-size:var(--fg-text-sm); }
+.workspace-more { position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;gap:0;min-height:36px;min-width:36px;width:36px;padding:6px 0 6px 8px;border:0;border-left:1px solid var(--line);border-radius:0;background:transparent;color:var(--muted);font-size:var(--fg-text-sm); }
 .workspace-more .icon { width:16px;height:16px; }
 .workspace-more:hover,.workspace-more[aria-expanded=true] { color:var(--teal); }
 .workspace-more.has-save-warning::after { content:'';position:absolute;top:3px;right:0;width:7px;height:7px;border-radius:50%;background:var(--amber); }

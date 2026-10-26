@@ -1,6 +1,6 @@
 # FlavoGlycoLab 里程碑与阻断
 
-截至2026-10-25。当前事实以[STATE](STATE.md)为准；此处只记录阶段成果和阻断。工程完成不等于科学、课程或公众发布完成。
+截至2026-10-26。当前事实以[STATE](STATE.md)为准；此处只记录阶段成果和阻断。工程完成不等于科学、课程或公众发布完成。
 
 ## 近两天：三项Web改进
 
@@ -13,6 +13,20 @@
 覆盖2026-10-24—25的17项执行记录，完整编号映射与原件见[任务索引](docs/tasks/README.md#原任务对应表)。原报告保留历史验证和失败，里程碑不再逐项堆叠重复验收数字。
 
 2026-10-25交付：三项Web改进及管理归并已随227523e同步public/main；工作树/干净检出与326文件公开核验通过，CI及同步事实见[REPORT-057](docs/reports/REPORT-057-web-improvements-git-sync.md)。
+
+## 本次页面调整
+
+2026-10-26：[TASK-063](docs/tasks/TASK-063-bottom-card-notebook-tutor-entry.md)按所有者澄清将内容高度问答卡改为底边衔接笔记本入口，同时补齐论文modal上方的可点击AI导师图标；保留062排版/删减，见[REPORT-063](docs/reports/REPORT-063-bottom-card-notebook-tutor-entry.md)。
+
+2026-10-26：[TASK-062](docs/tasks/TASK-062-content-height-floating-tutor.md)完成内容高度问答卡、移除导入快捷入口、导师覆盖浮层及论文阅读排版/删减。8766专项和跨页、临时public完整流程验证通过；未重启常驻服务或提交/push，三个审核门不晋级。见[REPORT-062](docs/reports/REPORT-062-content-height-floating-tutor.md)。
+
+2026-10-25：[TASK-061](docs/tasks/TASK-061-panel-height-sidebar-sync.md)完成主线/历程联动折叠、纯图标更多及双栏纵向对齐；桌面右卡与论文笔记本保持16px，窄屏维持流式。public工程、完整实验/跨页/四任务专项及折叠几何实测通过，8766静态字节一致，未重启服务或提交/push；见[REPORT-061](docs/reports/REPORT-061-panel-height-sidebar-sync.md)。
+
+2026-10-25：[TASK-060](docs/tasks/TASK-060-task04-content-layout.md)完成任务04重复文案删减，短说明/路线选择置于主面板论文卡片上方，右侧只保留问题与作答；实际LAN专项244项通过，未操作服务或提交/push，见[REPORT-060](docs/reports/REPORT-060-task04-content-layout.md)。
+
+2026-10-25：[TASK-059](docs/tasks/TASK-059-case-route-flow.md)完成案例与路线四任务及总结页调整；首次路线选择移至04，01—03成为共通学习，初选R2/R3不再重走流程。public工程、完整实验/跨页/专项及异步浏览器验收通过，8766恢复既有托管并加载新评价目标，未提交/push；实测与旧记录边界见[REPORT-059](docs/reports/REPORT-059-case-route-flow.md)。
+
+2026-10-25：[TASK-058](docs/tasks/TASK-058-route-tasks-single-page.md)按所有者要求完成任务03/04各自合页及答题提示删减；public工程、完整浏览器流程、合页专项与异步回归通过，常驻8766两项资产已读取新版本，未重启或提交/push；实测与限制见[REPORT-058](docs/reports/REPORT-058-route-tasks-single-page.md)。
 
 ## 更早里程碑
 
